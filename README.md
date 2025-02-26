@@ -25,7 +25,13 @@
 
 
 ## Tech Stacks 📚
-<!-- 사용 기술 스택 목록 추가 -->
+**Fe Stack**
+- Next.js
+- Tailwind css
+- Zustand
+
+**Deploy**
+- vercel
 
 ## Package 📦
 <!-- 주요 패키지 및 라이브러리 목록 추가 -->
