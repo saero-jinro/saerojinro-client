@@ -34,4 +34,18 @@
 - vercel
 
 ## Package 📦
-<!-- 주요 패키지 및 라이브러리 목록 추가 -->
+- **Next.js**: `15.2.0`
+- **React**: `18.2.0`
+- **Tailwind CSS**: "^4"
+
+### Development Tools
+- **ESLint**: `9.21.0`
+- **TypeScript**: `5^`
+
+### ESLint Rules
+ESLint 규칙:
+- 항상 세미콜론(`;`) 사용 강제
+- 들여쓰기 2칸, switch 문은 1단계 추가 들여쓰기
+- 모든 리액트 함수형 컴포넌트를 화살표 함수(`() => {}`)로 작성해야 함
+- 코드 최대 길이 100자로 제한 (Prettier)
+
