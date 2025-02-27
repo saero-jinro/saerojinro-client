@@ -37,6 +37,7 @@ const eslintConfig = [
       "prettier/prettier": ["error", 
         { 
           printWidth: 100,
+          "endOfLine":"auto",
         }],
     },
   },
