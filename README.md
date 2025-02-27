@@ -36,7 +36,7 @@
 ## Package 📦
 - **Next.js**: `15.2.0`
 - **React**: `18.2.0`
-- **Tailwind CSS**: "^4"
+- **Tailwind CSS**: `^4`
 
 ### Development Tools
 - **ESLint**: `9.21.0`
