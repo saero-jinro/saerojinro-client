@@ -26,7 +26,7 @@ const eslintConfig = [
     files: ['src/**/*.{ts,tsx}'],
 
     rules: {
-      "no-var": error,
+      'no-var': 'error',
       semi: 'off',
       indent: 'off',
       quotes: 'off',
