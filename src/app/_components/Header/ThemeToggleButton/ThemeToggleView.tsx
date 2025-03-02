@@ -1,10 +1,10 @@
-import { Theme } from '@/_type/theme';
+import { Theme } from '@/_type/Header/theme';
 /**
- * view compo
+ * 프레젠테이션 로직
  */
 const ThemeToggleView = ({ theme }: { theme: Theme }) => {
   return (
-    <span className="border-gray-500 dark:border-gray-300 rounded-lg">
+    <span className="select-none border-gray-500 dark:border-gray-300 rounded-lg">
       {theme === 'light' ? '🌙' : '☀️ '}
     </span>
   );

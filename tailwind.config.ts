@@ -1,13 +1,13 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
-  darkMode: "class",
-  content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
+  darkMode: 'class',
+  content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}'],
   theme: {
     extend: {
       fontFamily: {
-        geist: ["Geist Sans", "sans-serif"],
-        mono: ["Geist Mono", "monospace"],
+        geist: ['Geist Sans', 'sans-serif'],
+        mono: ['Geist Mono', 'monospace'],
       },
     },
   },

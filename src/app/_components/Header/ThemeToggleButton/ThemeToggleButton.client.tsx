@@ -1,15 +1,20 @@
 'use client';
 
-import ToggleButton from '@/_components/ToggleButton';
+import ClickButton from '@/_components/Header/ClickButton';
 import ThemeToggleView from './ThemeToggleView';
-import useTheme from '@/_hooks/useTheme.test';
+import { Theme } from '@/_type/Header/theme';
+import useTheme from '@/_hooks/useTheme';
 
-const ThemeToggleButton = () => {
-  const { toggleTheme, theme } = useTheme();
+interface Props {
+  theme: Theme;
+}
+
+const ThemeToggleButton = (props: Props) => {
+  const { toggleTheme, theme } = useTheme(props.theme);
   return (
-    <ToggleButton actionDesc="toggle-theme" onToggle={toggleTheme}>
+    <ClickButton actionDesc="toggle-theme" onClickAction={toggleTheme}>
       <ThemeToggleView theme={theme} />
-    </ToggleButton>
+    </ClickButton>
   );
 };
 

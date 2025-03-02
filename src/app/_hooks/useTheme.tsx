@@ -1,34 +1,34 @@
 'use client';
-import { Theme } from '@/_type/theme';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { Theme } from '@/_type/Header/theme';
 
-const getThemeFromCookie = () => {
-  const cookie = document.cookie
-    .split('; ')
-    .find((row) => row.startsWith('theme='))
-    ?.split('=')[1];
+const useTheme = (initTheme: Theme) => {
+  const [theme, setTheme] = useState<Theme>(initTheme);
 
-  return cookie === 'dark' ? 'dark' : 'light';
-};
+  // 테마 적용
+  const applyTheme = (theme: Theme) => {
+    if (typeof document !== 'undefined') {
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else if (theme === 'light') {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+  };
 
-const applyTheme = (theme: Theme) => {
-  if (typeof document !== 'undefined') {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-  }
-};
+  // 쿠키 세팅
+  const setCookie = (theme: Theme) => {
+    if (theme === 'dark') {
+      document.cookie = 'theme=dark; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;';
+    } else {
+      document.cookie = `theme=dark; path=/; max-age=31536000;`;
+    }
+  };
 
-const useTheme = () => {
-  const [theme, setTheme] = useState<Theme>('light');
-
-  useEffect(() => {
-    const storedTheme = getThemeFromCookie();
-    setTheme(storedTheme);
-    applyTheme(storedTheme);
-  }, []);
-
+  // 토글 함수
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    document.cookie = `theme=${newTheme}; path=/; max-age=31536000;`;
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setCookie(newTheme);
     applyTheme(newTheme);
     setTheme(newTheme);
   };
