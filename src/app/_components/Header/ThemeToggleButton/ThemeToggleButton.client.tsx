@@ -1,8 +1,8 @@
 'use client';
 
-import ClickButton from '@/_components/Header/ClickButton';
+import ClickButton from '@/_components/ClickButton';
 import ThemeToggleView from './ThemeToggleView';
-import { Theme } from '@/_type/Header/theme';
+import { Theme } from '@/_types/Header/theme';
 import useTheme from '@/_hooks/useTheme';
 
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
 
 const ThemeToggleButton = (props: Props) => {
   const { toggleTheme, theme } = useTheme(props.theme);
+
   return (
     <ClickButton actionDesc="toggle-theme" onClickAction={toggleTheme}>
       <ThemeToggleView theme={theme} />

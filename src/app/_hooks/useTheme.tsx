@@ -1,6 +1,6 @@
 'use client';
-import { useState } from 'react';
-import { Theme } from '@/_type/Header/theme';
+import { useCallback, useState } from 'react';
+import { Theme } from '@/_types/Header/theme';
 
 const useTheme = (initTheme: Theme) => {
   const [theme, setTheme] = useState<Theme>(initTheme);
@@ -19,19 +19,21 @@ const useTheme = (initTheme: Theme) => {
   // 쿠키 세팅
   const setCookie = (theme: Theme) => {
     if (theme === 'dark') {
-      document.cookie = 'theme=dark; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;';
-    } else {
       document.cookie = `theme=dark; path=/; max-age=31536000;`;
+    } else {
+      document.cookie = 'theme=dark; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;';
     }
   };
 
   // 토글 함수
-  const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    setCookie(newTheme);
-    applyTheme(newTheme);
-    setTheme(newTheme);
-  };
+  const toggleTheme = useCallback(() => {
+    setTheme((prevTheme) => {
+      const newTheme = prevTheme === 'dark' ? 'light' : 'dark';
+      applyTheme(newTheme);
+      setCookie(newTheme);
+      return newTheme;
+    });
+  }, []);
 
   return { toggleTheme, theme };
 };

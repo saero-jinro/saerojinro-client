@@ -12,9 +12,9 @@ interface Props extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onClick'>
  * 버튼 기능 라벨링 강제
  */
 const ClickButton = ({ children, onClickAction, actionDesc, delay, ...props }: Props) => {
-  const [disabled, setDisabled] = useState(false);
   const DEFAULT_DELAY = 0.3;
   const SEC = (delay ?? DEFAULT_DELAY) * 1000;
+  const [disabled, setDisabled] = useState(false);
 
   const onClickHandler = () => {
     if (disabled) return;

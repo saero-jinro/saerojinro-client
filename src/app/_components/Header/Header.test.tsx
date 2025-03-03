@@ -1,10 +1,8 @@
-import { cookies } from 'next/headers';
-import { Theme } from '@/_type/Header/theme';
+import getTheme from '@/_utils/Header/getTheme.server';
 import ThemeToggleButton from './ThemeToggleButton/ThemeToggleButton.client';
 
 const Header = async () => {
-  const cookieStore = await cookies();
-  const theme = (cookieStore.get('theme')?.value as Theme) ?? 'light';
+  const theme = await getTheme();
 
   return (
     <header className="fixed z-[1000]">

@@ -1,10 +1,9 @@
 import '@/_styles/globals.css';
-import { cookies } from 'next/headers';
 import Header from './_components/Header/Header.test';
+import getTheme from './_utils/Header/getTheme.server';
 
 const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>) => {
-  const cookieStore = await cookies();
-  const theme = cookieStore.get('theme')?.value ?? '';
+  const theme = await getTheme();
 
   return (
     <html lang="en" className={theme === 'dark' ? 'dark' : ''}>
