@@ -2,6 +2,7 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { FlatCompat } from '@eslint/eslintrc';
 import prettierPlugin from 'eslint-plugin-prettier';
+import prettierConfig from './prettier.config.cjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -16,7 +17,7 @@ const ignoreConfig = {
 
 const eslintConfig = [
   ignoreConfig,
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  ...compat.extends('next/core-web-vitals', 'next/typescript', 'prettier'),
   {
     plugins: {
       prettier: prettierPlugin,
@@ -25,7 +26,10 @@ const eslintConfig = [
     files: ['src/**/*.{ts,tsx}'],
 
     rules: {
-      semi: ['error', 'always'],
+      'no-var': 'error',
+      semi: 'off',
+      indent: 'off',
+      quotes: 'off',
       'react/function-component-definition': [
         'error',
         {
@@ -33,17 +37,11 @@ const eslintConfig = [
           unnamedComponents: 'arrow-function',
         },
       ],
-      indent: ['error', 2, { SwitchCase: 1 }],
-      'prettier/prettier': [
-        'error',
-        {
-          printWidth: 100,
-          endOfLine: 'auto',
-        },
-      ],
-      quotes: ['error', 'single', { avoidEscape: true }],
-      'array-bracket-newline': ['error', { multiline: true }],
-      'array-element-newline': ['error', 'always'],
+
+      'array-element-newline': 'off',
+      'array-bracket-newline': 'off',
+
+      'prettier/prettier': ['error', prettierConfig],
     },
   },
 ];
