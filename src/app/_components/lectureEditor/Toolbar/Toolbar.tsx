@@ -1,43 +1,22 @@
+import ColorPickerButton from '../ColorPickerButton/ColorPickerbutton';
+import ClickButton from '@/_components/ClickButton';
+import useToolbarActions from './useToolbarAction';
 import { Editor } from '@tiptap/react';
-import ClickButton from '../ClickButton';
 import React from 'react';
 
-interface Props {
-  editor: Editor | null;
-}
-
-type Level = 1 | 2 | 3 | 4 | 5 | 6;
 type ToolItem = {
   onClickAction: () => void;
   actionDesc: string;
   text: string;
 };
 
-const useToolbarActions = (editor: Editor | null) => {
-  if (!editor) return null;
-
-  return {
-    toggleBold: () => editor.chain().focus().toggleBold().run(),
-    toggleItalic: () => editor.chain().focus().toggleItalic().run(),
-    toggleUnderline: () => editor.chain().focus().toggleUnderline().run(),
-    toggleStrike: () => editor.chain().focus().toggleStrike().run(),
-    toggleHeading: (level: Level) => editor.chain().focus().toggleHeading({ level }).run(),
-    toggleBulletList: () => editor.chain().focus().toggleBulletList().run(),
-    toggleOrderedList: () => editor.chain().focus().toggleOrderedList().run(),
-    toggleBlockquote: () => editor.chain().focus().toggleBlockquote().run(),
-    toggleCodeBlock: () => editor.chain().focus().toggleCodeBlock().run(),
-    setHorizontalRule: () => editor.chain().focus().setHorizontalRule().run(),
-    setLink: () => {
-      const url = prompt('Enter a URL');
-      if (url) editor.chain().focus().setLink({ href: url }).run();
-    },
-    unsetLink: () => editor.chain().focus().unsetLink().run(),
-    clearContent: () => editor.chain().clearContent().run(),
-  };
-};
+interface Props {
+  editor: Editor | null;
+}
 
 const Toolbar = ({ editor }: Props) => {
   const action = useToolbarActions(editor);
+  const colors = ['#ef0c0c', '#630cef', '#90ef0c'];
   if (!editor || !action) return null;
 
   const toolDto: ToolItem[] = [
@@ -58,12 +37,18 @@ const Toolbar = ({ editor }: Props) => {
   ];
 
   return (
-    <div className="flex gap-2 border-b p-2">
+    <div className="flex gap-2 border-b p-2 items-center">
       {toolDto.map(({ text, actionDesc, onClickAction }) => (
         <ClickButton key={actionDesc} actionDesc={actionDesc} onClickAction={onClickAction}>
           <ToolText text={text} />
         </ClickButton>
       ))}
+      {/* 색상 선택 버튼 */}
+      <ColorPickerButton
+        unsetColor={action.unsetColor}
+        setColor={action.setColor}
+        colors={colors}
+      />
     </div>
   );
 };

@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "@tiptap/extension-bullet-list": "^2.11.5",
+    "@tiptap/extension-color": "^2.11.5",
     "@tiptap/extension-heading": "^2.11.5",
     "@tiptap/extension-link": "^2.11.5",
     "@tiptap/extension-list-item": "^2.11.5",
     "@tiptap/extension-ordered-list": "^2.11.5",
+    "@tiptap/extension-text-style": "^2.11.5",
     "@tiptap/extension-underline": "^2.11.5",
     "@tiptap/pm": "^2.11.5",
     "@tiptap/react": "^2.11.5",
@@ -26,6 +28,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
