@@ -1,3 +1,18 @@
 #tiptap-editor > div{
     outline: none;
 }
+
+
+
+#tiptap-editor > div > ul,
+#tiptap-editor > div > ol {
+    list-style-type: disc; /* ul은 기본적으로 disc 스타일 */
+
+    padding: 0 1rem;
+    /* margin: 1.25rem 1rem 1.25rem 0.4rem; */
+}
+
+#tiptap-editor > div > ol {
+    list-style-type: decimal; /* ol은 기본적으로 숫자 스타일 */
+}
+
