@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import lectureResponse from '@/dumyData/lecture/getLecture.json';
-import reviewResponse from '@/dumyData/lecture/getReview.json';
-import questionResponse from '@/dumyData/lecture/getQuestion.json';
+import lectureResponse from '@/dummyData/lecture/getLecture.json';
+import reviewResponse from '@/dummyData/lecture/getReview.json';
+import questionResponse from '@/dummyData/lecture/getQuestion.json';
 
 interface LectureDetailProps {
   id: number;

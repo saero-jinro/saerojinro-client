@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import response from '@/dumyData/lecture-list/getLectureList.json';
+import response from '@/dummyData/lecture-list/getLectureList.json';
 import { useRouter } from 'next/navigation';
 
 interface LectureListProps {
