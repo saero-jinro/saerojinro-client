@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+export const GET = async () => {
   return NextResponse.json({ message: 'Hello from API!' });
-}
+};
 
-export async function POST(req: Request) {
+export const POST = async (req: Request) => {
   const data = await req.json();
   return NextResponse.json({ received: data });
-}
+};
