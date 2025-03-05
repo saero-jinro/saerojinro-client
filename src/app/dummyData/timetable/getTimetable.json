@@ -1,0 +1,47 @@
+{
+  "reservation": [
+    {
+      "id": 1,
+      "user_id": 222,
+      "lecture_id": 1,
+      "title": "강의 제목1",
+      "start_time": "2025-03-04T10:00:00",
+      "end_time": "2025-03-04T12:00:00"
+    },
+    {
+      "id": 2,
+      "user_id": 444,
+      "lecture_id": 1,
+      "title": "강의 제목1",
+      "start_time": "2025-03-04T10:00:00",
+      "end_time": "2025-03-04T12:00:00"
+    },
+    {
+      "id": 3,
+      "user_id": 222,
+      "lecture_id": 3,
+      "title": "강의 제목3",
+      "start_time": "2025-03-06T09:00:00",
+      "end_time": "2025-03-06T11:00:00"
+    }
+  ],
+
+  "wishlist": [
+    {
+      "id": 1,
+      "user_id": 222,
+      "lecture_id": 2,
+      "title": "강의 제목2",
+      "start_time": "2025-03-05T14:00:00",
+      "end_time": "2025-03-05T16:00:00"
+    },
+    {
+      "id": 2,
+      "user_id": 444,
+      "lecture_id": 2,
+      "title": "강의 제목2",
+      "start_time": "2025-03-05T14:00:00",
+      "end_time": "2025-03-05T16:00:00"
+    }
+  ]
+}
