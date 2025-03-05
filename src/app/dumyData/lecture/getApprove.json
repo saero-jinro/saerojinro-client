@@ -1,0 +1,15 @@
+{
+    "data": {
+        "approves": [
+            {
+                "lectureId": 1
+            },
+            {
+                "lectureId": 2
+            },
+            {
+                "lectureId": 3
+            }
+        ]
+    }
+ }

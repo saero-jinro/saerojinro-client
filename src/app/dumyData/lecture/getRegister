@@ -1,0 +1,24 @@
+{
+    "data": {
+        "registers": [
+            {
+                "id": 1,
+                "title": "강의 제목1",
+                "description": "강의 설명1",
+                "start_time": "2025-03-06T10:00:00",
+                "end_time": "2025-03-06T12:00:00",
+                "location": "강의 장소1",
+                "category": "카테고리1"
+            },
+            {
+                "id": 2,
+                "title":"강의 제목2",
+                "description":"강의 설명2",
+                "start_time": "2025-03-06T14:00:00",
+                "end_time": "2025-03-04T16:00:00",
+                "location": "강의 장소2",
+                "category": "카테고리2"
+            }
+        ]
+    }
+}
