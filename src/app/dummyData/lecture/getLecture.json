@@ -1,0 +1,13 @@
+{
+  "data": {
+    "id": 1,
+    "title": "강의 제목1",
+    "description": "강의1 소개",
+    "category": "카테고리1",
+    "start_time": "2025-03-04T10:00:00",
+    "end_time": "2025-03-04T12:00:00",
+    "location": "101호",
+    "userId": 111,
+    "status": "APPROVED"
+  }
+}
