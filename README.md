@@ -1,6 +1,7 @@
-# 프로젝트 이름
+# 새로운 진로
 
-## Code Convention 📝
+### 배포 url
+https://saerojinro-client.vercel.app/
 
 ### Branch Naming Convention
 
