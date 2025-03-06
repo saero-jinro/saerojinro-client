@@ -1,7 +1,7 @@
 import ColorPickerButton from '../ColorPickerButton/ColorPickerbutton';
+import { EditorType } from '@/_types/TextEditor/textEditor.type';
 import ClickButton from '@/_components/ClickButton';
-import useToolbarActions from './useToolbarAction';
-import { Editor } from '@tiptap/react';
+import ToolbarActions from './ToolbarAction';
 import React from 'react';
 
 type ToolItem = {
@@ -11,11 +11,11 @@ type ToolItem = {
 };
 
 interface Props {
-  editor: Editor | null;
+  editor: EditorType;
 }
 
 const Toolbar = ({ editor }: Props) => {
-  const action = useToolbarActions(editor);
+  const action = ToolbarActions(editor);
   const colors = ['#ef0c0c', '#630cef', '#90ef0c'];
   if (!editor || !action) return null;
 
@@ -29,15 +29,15 @@ const Toolbar = ({ editor }: Props) => {
     { text: 'H3', actionDesc: 'Heading 3', onClickAction: () => action.toggleHeading(3) },
     { text: '•', actionDesc: 'Bullet List', onClickAction: action.toggleBulletList },
     { text: '1.', actionDesc: 'Ordered List', onClickAction: action.toggleOrderedList },
-    { text: '`', actionDesc: 'Code Block', onClickAction: action.toggleCodeBlock },
+    { text: '</>', actionDesc: 'Code Block', onClickAction: action.toggleCodeBlock },
     { text: 'HR', actionDesc: 'Horizontal Rule', onClickAction: action.setHorizontalRule },
-    { text: '🔗', actionDesc: 'Add Link', onClickAction: action.setLink },
-    { text: '❌', actionDesc: 'Remove Link', onClickAction: action.unsetLink },
-    { text: '🗑', actionDesc: 'Clear', onClickAction: action.clearContent },
+    { text: 'link', actionDesc: 'Add Link', onClickAction: action.setLink },
+    { text: 'unlink', actionDesc: 'Remove Link', onClickAction: action.unsetLink },
+    { text: 'clear', actionDesc: 'Clear', onClickAction: action.clearContent },
   ];
 
   return (
-    <div className="flex gap-2 border-b p-2 items-center">
+    <div className="flex gap-2 border-b p-2 items-center text-[0.9rem]">
       {toolDto.map(({ text, actionDesc, onClickAction }) => (
         <ClickButton key={actionDesc} actionDesc={actionDesc} onClickAction={onClickAction}>
           <ToolText text={text} />

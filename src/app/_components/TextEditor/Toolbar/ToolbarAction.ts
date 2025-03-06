@@ -3,7 +3,7 @@ import { Editor } from '@tiptap/react';
 type Level = 1 | 2 | 3 | 4 | 5 | 6;
 
 // 툴바 액션 모음
-const useToolbarActions = (editor: Editor | null) => {
+const ToolbarActions = (editor: Editor | null) => {
   if (!editor) return null;
 
   return {
@@ -28,4 +28,4 @@ const useToolbarActions = (editor: Editor | null) => {
   };
 };
 
-export default useToolbarActions;
+export default ToolbarActions;

@@ -22,7 +22,7 @@ const ColorPickerButton = (props: Props) => {
       <ToggleModal
         isOpen={isOpen}
         desc="color-set"
-        className="absolute"
+        className="absolute z-[1000]"
         onClose={() => setIsOpen(false)}
       >
         {/* 색상 선택 프레임 */}

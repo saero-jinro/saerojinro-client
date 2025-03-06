@@ -1,4 +1,4 @@
-import { Theme } from '@/_types/Header/theme';
+import { Theme } from '@/_types/Header/theme.type';
 import { cookies } from 'next/headers';
 
 // 쿠키에서 테마값 추출

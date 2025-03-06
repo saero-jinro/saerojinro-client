@@ -2,6 +2,7 @@
 import { TextSelection } from '@tiptap/pm/state';
 import { Extension } from '@tiptap/react';
 
+// 제어 동작 규칙
 const keyboardRule = () => {
   // 탭 기본동작 삭제
   const DisableTabIndentation = Extension.create({
