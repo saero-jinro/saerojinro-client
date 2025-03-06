@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { useRouter } from 'next/navigation';
 import response from '@/dummyData/timetable/getTimetable.json';
 
@@ -9,6 +9,11 @@ interface LectureProps {
   title: string;
   start_time: string;
   end_time: string;
+  day?: number;
+  location: string;
+  speaker: string;
+  count: number;
+  total: number;
 }
 
 interface UserLectures {
@@ -32,6 +37,28 @@ const TimetablePage = () => {
     //     const userReservations = data.reservation.filter((lecture) => lecture.user_id === userId);
     //     const userWishlist = data.wishlist.filter((lecture) => lecture.user_id === userId);
 
+    const userReservations = response.reservation.filter(
+      (lecture) => lecture.user_id === currentUserId,
+    );
+    const userWishlist = response.wishlist.filter((lecture) => lecture.user_id === currentUserId);
+
+    // Day 1
+    const baseDate = new Date(
+      Math.min(...userReservations.map((lec) => new Date(lec.start_time).getTime())),
+    );
+    baseDate.setHours(0, 0, 0, 0);
+
+    // Day n 매핑
+    const updatedReservations = userReservations.map((lec) => {
+      const lectureDate = new Date(lec.start_time);
+      lectureDate.setHours(0, 0, 0, 0);
+
+      const dayDiff = Math.floor(
+        (lectureDate.getTime() - baseDate.getTime()) / (1000 * 60 * 60 * 24),
+      );
+      return { ...lec, day: dayDiff + 1 };
+    });
+
     //     setUserLectures({ reservation: userReservations, wishlist: userWishlist });
     //   } catch (error) {
     //     console.error('데이터 불러오기 실패: ', error);
@@ -39,55 +66,110 @@ const TimetablePage = () => {
     // };
 
     // fetchUserLectures();
-    const userReservations = response.reservation.filter(
-      (lecture) => lecture.user_id === currentUserId,
-    );
-    const userWishlist = response.wishlist.filter((lecture) => lecture.user_id === currentUserId);
 
-    setUserLectures({ reservation: userReservations, wishlist: userWishlist });
+    setUserLectures({ reservation: updatedReservations, wishlist: userWishlist });
   }, []);
 
+  const timeSlots = Array.from({ length: 18 }, (_, i) => {
+    const hour = Math.floor(i / 2) + 9;
+    const minute = i % 2 === 0 ? '00' : '30';
+    const nextMinute = i % 2 === 0 ? '30' : '00';
+    const nextHour = i % 2 === 0 ? hour : hour + 1;
+    return {
+      start: `${String(hour).padStart(2, '0')}:${minute}`,
+      end: `${String(nextHour).padStart(2, '0')}:${nextMinute}`,
+    };
+  });
+
+  const occupiedSlots = new Set();
+
   return (
-    <div className="pt-10">
-      <h1 className="text-xl font-bold mb-4">시간표</h1>
+    <div className="p-10">
+      <h1 className="text-xl font-bold mb-4">컴퍼런스 일정 시간표</h1>
 
-      <h2 className="text-lg font-semibold">예약된 강의</h2>
-      <ul className="mb-6">
-        {userLectures.reservation.length > 0 ? (
-          userLectures.reservation.map((lecture) => (
-            <li
-              key={lecture.id}
-              className="cursor-pointer hover:bg-gray-100 p-2 border-b"
-              onClick={() => router.push(`/lecture/${lecture.id}`)}
-            >
-              <strong>{lecture.title}</strong>
-              <br />
-              {lecture.start_time} ~ {lecture.end_time}
-            </li>
-          ))
-        ) : (
-          <p className="text-gray-500">예약된 강의가 없습니다.</p>
-        )}
-      </ul>
+      <div
+        className="grid border border-gray-300"
+        style={{ gridTemplateColumns: '140px repeat(3, 1fr)' }}
+      >
+        <div className="border border-gray-300 p-3 font-bold text-center">Time</div>
+        <div className="border border-gray-300 p-3 font-bold text-center">Day1</div>
+        <div className="border border-gray-300 p-3 font-bold text-center">Day2</div>
+        <div className="border border-gray-300 p-3 font-bold text-center">Day3</div>
 
-      <h2 className="text-lg font-semibold">즐겨찾기 강의</h2>
-      <ul>
-        {userLectures.wishlist.length > 0 ? (
-          userLectures.wishlist.map((lecture) => (
-            <li
-              key={lecture.id}
-              className="cursor-pointer hover:bg-gray-100 p-2 border-b"
-              onClick={() => router.push(`/lecture/${lecture.id}`)}
-            >
-              <strong>{lecture.title}</strong>
-              <br />
-              {lecture.start_time} ~ {lecture.end_time}
-            </li>
-          ))
-        ) : (
-          <p className="text-gray-500">즐겨찾기한 강의가 없습니다.</p>
-        )}
-      </ul>
+        {timeSlots.map(({ start, end }, i) => (
+          <Fragment key={`time-${start}-${end}`}>
+            <div className="border border-gray-300 bg-gray-100 dark:bg-gray-600 p-3 text-center font-medium">
+              {start} ~ {end}
+            </div>
+
+            {Array.from({ length: 3 }, (_, j) => {
+              const day = j + 1;
+
+              // 이미 배치된 강의는 렌더링 x
+              if (occupiedSlots.has(`${day}-${start}`)) {
+                return null;
+              }
+
+              const lecture = userLectures.reservation.find((lec) => {
+                const formattedStartTime = new Date(lec.start_time).toLocaleTimeString('ko-KR', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false,
+                });
+                const formattedEndTime = new Date(lec.end_time).toLocaleTimeString('ko-KR', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false,
+                });
+
+                return lec.day === day && formattedStartTime <= start && formattedEndTime > start;
+              });
+
+              if (lecture) {
+                const rowSpan =
+                  (new Date(lecture.end_time).getTime() - new Date(lecture.start_time).getTime()) /
+                  (30 * 60 * 1000);
+
+                for (let k = 0; k < rowSpan; k++) {
+                  const occupiedTime = new Date(
+                    new Date(lecture.start_time).getTime() + k * 30 * 60 * 1000,
+                  ).toLocaleTimeString('ko-KR', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                  });
+                  occupiedSlots.add(`${day}-${occupiedTime}`);
+                }
+
+                return (
+                  <div
+                    key={`day-${day}-time-${start}`}
+                    className="flex flex-col justify-center gap-2 border border-gray-300 p-4 cursor-pointer"
+                    style={{ gridRow: `span ${rowSpan}` }}
+                    onClick={() => router.push(`/lecture/${lecture?.id}`)} // 강의 상세 모달로 변경하기
+                  >
+                    <p className="bg-gray-200 w-fit px-2 dark:bg-gray-600">{lecture.location}</p>
+                    <span>{lecture?.title}</span>
+                    <div className="flex justify-between w-full">
+                      <p>{lecture.speaker}</p>
+                      <p>
+                        인원수 {lecture.count} / {lecture.total}
+                      </p>
+                    </div>
+                  </div>
+                );
+              } else {
+                return (
+                  <div
+                    key={`day-${day}-time-${start}`}
+                    className="border border-gray-300 p-3 bg-gray-100 dark:bg-gray-600 hover:bg-gray-300"
+                  />
+                );
+              }
+            })}
+          </Fragment>
+        ))}
+      </div>
     </div>
   );
 };
