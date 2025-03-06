@@ -70,14 +70,11 @@ const TimetablePage = () => {
     setUserLectures({ reservation: updatedReservations, wishlist: userWishlist });
   }, []);
 
-  const timeSlots = Array.from({ length: 18 }, (_, i) => {
-    const hour = Math.floor(i / 2) + 9;
-    const minute = i % 2 === 0 ? '00' : '30';
-    const nextMinute = i % 2 === 0 ? '30' : '00';
-    const nextHour = i % 2 === 0 ? hour : hour + 1;
+  const timeSlots = Array.from({ length: 9 }, (_, i) => {
+    const hour = i + 9;
     return {
-      start: `${String(hour).padStart(2, '0')}:${minute}`,
-      end: `${String(nextHour).padStart(2, '0')}:${nextMinute}`,
+      start: `${String(hour).padStart(2, '0')}:00`,
+      end: `${String(hour + 1).padStart(2, '0')}:00`,
     };
   });
 
@@ -98,7 +95,7 @@ const TimetablePage = () => {
 
         {timeSlots.map(({ start, end }, i) => (
           <Fragment key={`time-${start}-${end}`}>
-            <div className="border border-gray-300 bg-gray-100 dark:bg-gray-600 p-3 text-center font-medium">
+            <div className="flex justify-center items-center border border-gray-300 bg-gray-100 dark:bg-gray-600 p-3 text-center font-medium h-16">
               {start} ~ {end}
             </div>
 
@@ -128,11 +125,11 @@ const TimetablePage = () => {
               if (lecture) {
                 const rowSpan =
                   (new Date(lecture.end_time).getTime() - new Date(lecture.start_time).getTime()) /
-                  (30 * 60 * 1000);
+                  (60 * 60 * 1000);
 
                 for (let k = 0; k < rowSpan; k++) {
                   const occupiedTime = new Date(
-                    new Date(lecture.start_time).getTime() + k * 30 * 60 * 1000,
+                    new Date(lecture.start_time).getTime() + k * 60 * 60 * 1000,
                   ).toLocaleTimeString('ko-KR', {
                     hour: '2-digit',
                     minute: '2-digit',
