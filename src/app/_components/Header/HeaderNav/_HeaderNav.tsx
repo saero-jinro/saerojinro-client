@@ -11,12 +11,15 @@ const HeaderNav = () => {
   const [isMobile, setIsMobile] = useState(false);
   const links = getUserLinks('viewer');
 
+  const OpenNavMobile = () => setIsToggle(true);
+  const CloseNavMobile = () => setIsToggle(false);
+
   const resizeHandler = useCallback(() => {
     const stageWidth = window.innerWidth;
     setIsMobile((prev) => {
       const cur = prev !== stageWidth < MAX_MOBILE_WIDTH ? stageWidth < MAX_MOBILE_WIDTH : prev;
       if (prev !== cur) {
-        setIsToggle(false);
+        CloseNavMobile();
       }
       return cur;
     });
@@ -28,28 +31,20 @@ const HeaderNav = () => {
     return () => window.removeEventListener('resize', resizeHandler);
   }, [resizeHandler]);
 
+  // 모바일 x => 웹 링크 nav
   if (!isMobile) return <HeaderLinksWeb links={links} />;
 
   return (
     <>
+      {/* 모바일 O, 토글 true x => 오버레이 + 모바일 링크 nav */}
       {isToggle && (
         <>
-          <HeaderOverlay
-            onClickHandler={() => {
-              setIsToggle(false);
-            }}
-          />
+          <HeaderOverlay onClickHandler={CloseNavMobile} />
           <HeaderLinksMobile />;
         </>
       )}
-
-      {isMobile && (
-        <MenuButton
-          onClickHandler={() => {
-            setIsToggle(true);
-          }}
-        />
-      )}
+      {/* 모바일 X, 토글 X 토글 버튼 on */}
+      {isMobile && <MenuButton onClickHandler={OpenNavMobile} />}
     </>
   );
 };

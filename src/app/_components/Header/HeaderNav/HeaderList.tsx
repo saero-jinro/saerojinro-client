@@ -1,7 +1,7 @@
 import { LinkInfo } from '@/_types/Header/Header.type';
-import Link from 'next/link';
+import Right from '@/assets/Header/right.svg';
 import { ReactNode } from 'react';
-import Right from '@/assets/header/right.svg';
+import Link from 'next/link';
 
 interface HeaderLinksProps {
   links: LinkInfo[];
