@@ -1,5 +1,5 @@
 import { LinkInfo } from '@/_types/Header/Header.type';
-import Right from '@/_assets/Header/right.svg';
+import Right from '@/assets/Header/right.svg';
 import { ReactNode } from 'react';
 import Link from 'next/link';
 

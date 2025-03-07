@@ -1,4 +1,4 @@
-import Menu from '@/_assets/Header/menu.svg';
+import Menu from '@/assets/Header/menu.svg';
 import { HTMLAttributes } from 'react';
 
 interface Props extends Omit<HTMLAttributes<HTMLElement>, 'onClick'> {
