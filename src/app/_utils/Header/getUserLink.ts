@@ -1,40 +1,62 @@
-import { LinkInfo, UserRole } from '@/_types/Header/Header.type';
-type UserRoleLinks = Record<UserRole, LinkInfo[]>;
+import { NavGroup, NavigationConfig, NavItem, UserRole } from '@/_types/Header/Header.type';
 
-// 어드민 페이지는 닉네임 클릭하면 어드민 페이지로 리다이렉트
+// 웹 네비게이션 목록
+const web: NavItem[] = [
+  { title: '강의 목록', path: '#', roles: ['no-login', 'viewer', 'editor', 'admin'] },
+  { title: '강의 관리', path: '#', roles: ['editor'] },
+  { title: '시간표 관리', path: '#', roles: ['no-login', 'viewer'] },
+]; // 마이페이지랑 운영자 같은 경우 이름을 클릭하면 이동한다. 마이페이지 배제
 
-const timeline = { title: '시간표', link: '/timeline', desc: '시간표 페이지로 이동' };
-const myPage = { title: '나의 정보', link: '/myPage', desc: '나의 정보 페이지로 이동' };
+// 모바일 네비게이션 목록
+const mobile: NavGroup[] = [
+  {
+    title: '내 정보 서비스',
+    items: [{ title: '내 정보 수정', path: '#', roles: ['viewer', 'editor'] }],
+  },
+  {
+    title: '강의 서비스',
+    items: [
+      { title: '강의 목록', path: '#', roles: ['no-login', 'viewer', 'editor'] },
+      { title: '시간표 관리', path: '#', roles: ['no-login', 'viewer'] },
+      { title: '내 강의 관리', path: '#', roles: ['editor'] },
+      { title: '강의 신청', path: '#', roles: ['editor'] },
+    ],
+  },
+  {
+    title: '운영 서비스',
+    items: [
+      { title: '대시 보드', path: '#', roles: ['admin'] },
+      { title: '강의 리스트', path: '#', roles: ['admin'] },
+      { title: '강의 리뷰 관리', path: '#', roles: ['admin'] },
+      { title: '강의 승인 요청', path: '#', roles: ['admin'] },
+      { title: '강의 권한 수정', path: '#', roles: ['admin'] },
+    ],
+  },
+  {
+    title: '알림 관리',
+    items: [{ title: '알림 보내기', path: '#', roles: ['admin'] }],
+  },
+];
 
-const lectureList = {
-  title: '강의 목록',
-  link: '/leture-list',
-  desc: '강의 리스트 페이지로 이동',
+export const navInfo: NavigationConfig = {
+  web,
+  mobile,
 };
 
-const myLectureList = {
-  title: '나의 강의',
-  link: '#',
-  desc: '나의 강의 리스트 페이지로 이동',
-};
+const filterAccessibleNavItems = (items: NavItem[], userRole: UserRole) =>
+  items.filter((item) => item.roles?.includes(userRole));
 
-const createLecture = {
-  title: '강의 등록',
-  link: '#',
-  desc: '강의 등록 페이지로 이동',
-};
+// 권한에 따른 네비게이션 리스트 반환
+export const getUserNavigation = (userRole: UserRole) => {
+  const { web, mobile } = navInfo;
 
-const userLinks: UserRoleLinks = {
-  viewer: [lectureList, timeline],
-  editor: [lectureList],
-  admin: [lectureList],
+  return {
+    web: filterAccessibleNavItems(web, userRole),
+    mobile: mobile
+      .map((section) => {
+        const accessibleItems = filterAccessibleNavItems(section.items, userRole);
+        return accessibleItems.length ? { ...section, items: accessibleItems } : null;
+      })
+      .filter(Boolean),
+  };
 };
-
-const userLinksMobile: UserRoleLinks = {
-  viewer: [myPage, lectureList, timeline],
-  editor: [myPage, lectureList, myLectureList, createLecture],
-  admin: [lectureList],
-};
-
-export const getUserLinks = (role: UserRole) => userLinks[role];
-export const getUserLinksMobile = (role: UserRole) => userLinksMobile[role];

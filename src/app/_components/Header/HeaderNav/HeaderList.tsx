@@ -1,95 +1,74 @@
-import { LinkInfo } from '@/_types/Header/Header.type';
+import { NavItem, NavGroup } from '@/_types/Header/Header.type';
 import Right from '@/assets/Header/right.svg';
-import { ReactNode } from 'react';
 import Link from 'next/link';
 
-interface HeaderLinksProps {
-  links: LinkInfo[];
-  children?: ReactNode;
+interface WebNavListProps {
+  web: NavItem[];
 }
 
-// 헤더 링크
-export const HeaderLinksWeb = ({ links }: HeaderLinksProps) => {
+// 웹
+export const WebNavList = ({ web }: WebNavListProps) => {
   return (
-    <div className="flex gap-4">
-      <ul className="flex gap-4">
-        {links.map((item) => (
-          <HeaderListWeb key={item.title} {...item} />
-        ))}
-      </ul>
-      <span>김기준님</span>
+    <div className="flex justify-center items-center gap-2 text-sm select-none">
+      <nav>
+        <ol className="flex gap-2 items-center tracking-tighter">
+          {/* 아이템 */}
+          {web.map((props) => (
+            <WebNavItem key={props.title} {...props} />
+          ))}
+        </ol>
+      </nav>
+      <span className="text-sm font-medium">김철수님</span>
     </div>
   );
 };
 
-// 링크 리스트
-const HeaderListWeb = ({ desc, link, title }: LinkInfo) => {
+const WebNavItem = ({ path, title }: NavItem) => {
   return (
-    <li className="">
-      <Link className="hover:brightness-50" href={link} aria-label={desc}>
-        {title}
-      </Link>
+    <li className="cursor-pointer" key={title}>
+      <Link href={path}>{title}</Link>
     </li>
   );
 };
 
-// 헤더 링크
-export const HeaderLinksMobile = () => {
+/** ---------------------------------------------------------------------------------------------------------- **/
+// 모바일
+
+interface MobileNavListProps {
+  mobile: Array<NavGroup | null>;
+}
+
+export const MobileNavList = ({ mobile }: MobileNavListProps) => {
   return (
-    <div className="fixed z-[1000] w-[75%] p-4 h-screen top-0 right-0 bg-white dark:bg-black">
+    <div className="fixed z-[1000] w-[75%] p-4 h-screen top-0 right-0 bg-white dark:bg-black select-none">
       <div className="flex items-end h-[28px] mb-2 gap-[0.5px]">
         <span className="text-[14px]">김기준님</span>
       </div>
 
-      <div className="py-2">
-        <div className="font-bold text-base mb-[4px]">나의 정보</div>
-        <ul className="font-light text-sm py-0.5 flex flex-col">
-          <li className="py-[0.4rem] flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <div className="w-[16px] h-[16px] bg-[#7373739a] rounded-[4px] flex justify-center items-center"></div>
-              <span>마이 페이지</span>
-            </div>
-            <Right width="20" height="20" />
-          </li>
+      {mobile &&
+        mobile.map((item, index) => (
+          <div key={`${item?.title}-${index}`} className="py-2">
+            <div className="font-bold text-base mb-[4px]">{item?.title}</div>
 
-          <li className="py-[0.4rem] flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <div className="w-[16px] h-[16px] bg-[#7373739a] rounded-[4px] flex justify-center items-center"></div>
-              <span>강의 관리</span>
-            </div>
-            <Right width="20" height="20" />
-          </li>
-
-          <li className="py-[0.4rem] flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <div className="w-[16px] h-[16px] bg-[#7373739a] rounded-[4px] flex justify-center items-center"></div>
-              <span>강의 등록</span>
-            </div>
-            <Right width="20" height="20" />
-          </li>
-        </ul>
-      </div>
-
-      <div className="py-2">
-        <div className="font-bold text-base mb-[4px]">강의 서비스</div>
-        <ul className="font-light text-sm py-0.5 flex flex-col">
-          <li className="py-[0.4rem] flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <div className="w-[16px] h-[16px] bg-[#7373739a] rounded-[4px] flex justify-center items-center"></div>
-              <span>강의 목록</span>
-            </div>
-            <Right width="20" height="20" />
-          </li>
-
-          <li className="py-[0.4rem] flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <div className="w-[16px] h-[16px] bg-[#7373739a] rounded-[4px] flex justify-center items-center"></div>
-              <span>시간표</span>
-            </div>
-            <Right width="20" height="20" />
-          </li>
-        </ul>
-      </div>
+            <ul className="font-light text-sm py-0.5 flex flex-col">
+              {item?.items?.map((props) => <MobileNavItem key={props.title} {...props} />)}
+            </ul>
+          </div>
+        ))}
     </div>
+  );
+};
+
+const MobileNavItem = ({ path, title }: NavItem) => {
+  return (
+    <li key={title} className="py-[0.4rem] flex justify-between items-center cursor-pointer">
+      <div className="flex items-center gap-2">
+        <div className="w-[16px] h-[16px] bg-[#7373739a] rounded-[4px] flex justify-center items-center"></div>
+        <span>
+          <Link href={path}>{title}</Link>
+        </span>
+      </div>
+      <Right width="20" height="20" />
+    </li>
   );
 };
