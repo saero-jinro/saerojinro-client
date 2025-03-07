@@ -6,7 +6,11 @@
       "lecture_id": 1,
       "title": "강의 제목1",
       "start_time": "2025-03-04T10:00:00",
-      "end_time": "2025-03-04T12:00:00"
+      "end_time": "2025-03-04T12:00:00",
+      "location": "101호",
+      "speaker": "신짱구",
+      "count": 12,
+      "total": 45
     },
     {
       "id": 2,
@@ -14,7 +18,11 @@
       "lecture_id": 1,
       "title": "강의 제목1",
       "start_time": "2025-03-04T10:00:00",
-      "end_time": "2025-03-04T12:00:00"
+      "end_time": "2025-03-04T12:00:00",
+      "location": "101호",
+      "speaker": "신짱구",
+      "count": 12,
+      "total": 45
     },
     {
       "id": 3,
@@ -22,7 +30,11 @@
       "lecture_id": 3,
       "title": "강의 제목3",
       "start_time": "2025-03-06T09:00:00",
-      "end_time": "2025-03-06T11:00:00"
+      "end_time": "2025-03-06T11:00:00",
+      "location": "303호",
+      "speaker": "김철수",
+      "count": 28,
+      "total": 60
     }
   ],
 
@@ -33,7 +45,11 @@
       "lecture_id": 2,
       "title": "강의 제목2",
       "start_time": "2025-03-05T14:00:00",
-      "end_time": "2025-03-05T16:00:00"
+      "end_time": "2025-03-05T16:00:00",
+      "location": "101호",
+      "speaker": "신짱구",
+      "count": 12,
+      "total": 45
     },
     {
       "id": 2,
@@ -41,7 +57,11 @@
       "lecture_id": 2,
       "title": "강의 제목2",
       "start_time": "2025-03-05T14:00:00",
-      "end_time": "2025-03-05T16:00:00"
+      "end_time": "2025-03-05T16:00:00",
+      "location": "202호",
+      "speaker": "맹구",
+      "count": 14,
+      "total": 20
     }
   ]
 }
