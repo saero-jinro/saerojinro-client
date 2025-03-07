@@ -3,6 +3,7 @@
 import { useEffect, useState, Fragment } from 'react';
 import { useRouter } from 'next/navigation';
 import response from '@/dummyData/timetable/getTimetable.json';
+import recommandLecturesDummy from '@/dummyData/timetable/getTimetableRecommand.json';
 
 interface LectureProps {
   id: number;
@@ -21,9 +22,21 @@ interface UserLectures {
   wishlist: LectureProps[];
 }
 
+interface RecommandLectureProps {
+  lecture_id: number;
+  title: string;
+  start_time: string;
+  end_time: string;
+  location: string;
+  speaker: string;
+}
+
 const TimetablePage = () => {
   const [userLectures, setUserLectures] = useState<UserLectures>({ reservation: [], wishlist: [] });
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [recommandLectures, setRecommandLectures] = useState<RecommandLectureProps[]>([]);
+  const [baseDate, setBaseDate] = useState<Date | null>(null);
+
   const router = useRouter();
   const currentUserId = 222; // 현재 로그인한 유저 ID 가져오는 로직 추가
 
@@ -43,33 +56,74 @@ const TimetablePage = () => {
     );
     const userWishlist = response.wishlist.filter((lecture) => lecture.user_id === currentUserId);
 
-    // Day 1
-    const baseDate = new Date(
-      Math.min(...userReservations.map((lec) => new Date(lec.start_time).getTime())),
-    );
-    baseDate.setHours(0, 0, 0, 0);
-
-    // Day n 매핑
-    const updatedReservations = userReservations.map((lec) => {
-      const lectureDate = new Date(lec.start_time);
-      lectureDate.setHours(0, 0, 0, 0);
-
-      const dayDiff = Math.floor(
-        (lectureDate.getTime() - baseDate.getTime()) / (1000 * 60 * 60 * 24),
+    if (userReservations.length > 0) {
+      const minStartTime = Math.min(
+        ...userReservations.map((lec) => new Date(lec.start_time).getTime()),
       );
-      return { ...lec, day: dayDiff + 1 };
-    });
+      const calculatedBaseDate = new Date(minStartTime);
+      calculatedBaseDate.setHours(0, 0, 0, 0);
+      setBaseDate(calculatedBaseDate);
 
-    //     setUserLectures({ reservation: userReservations, wishlist: userWishlist });
-    //   } catch (error) {
-    //     console.error('데이터 불러오기 실패: ', error);
-    //   }
-    // };
+      // Day n 매핑
+      const updatedReservations = userReservations.map((lec) => {
+        const lectureDate = new Date(lec.start_time);
+        lectureDate.setHours(0, 0, 0, 0);
 
-    // fetchUserLectures();
+        const dayDiff = Math.floor(
+          (lectureDate.getTime() - calculatedBaseDate.getTime()) / (1000 * 60 * 60 * 24),
+        );
 
-    setUserLectures({ reservation: updatedReservations, wishlist: userWishlist });
+        return { ...lec, day: dayDiff + 1 };
+      });
+
+      //     setUserLectures({ reservation: userReservations, wishlist: userWishlist });
+      //   } catch (error) {
+      //     console.error('데이터 불러오기 실패: ', error);
+      //   }
+      // };
+
+      // fetchUserLectures();
+
+      setUserLectures({ reservation: updatedReservations, wishlist: userWishlist });
+    }
   }, []);
+
+  const fetchRecommandLectures = async (startTime: string, endTime: string) => {
+    console.log(startTime, endTime);
+    // try {
+    //   const response = await fetch(`/api/attendees/${currentUserId}/timetable/recommand`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({ start_time: startTime, end_time: endTime }),
+    //   });
+
+    //   if (!response.ok) {
+    //     throw new Error('추천 강의 데이터를 불러오는 데 실패했습니다.');
+    //   }
+
+    //   const data = await response.json();
+    setRecommandLectures(recommandLecturesDummy.data);
+    // } catch (error) {
+    //   console.error(error);
+    // }
+  };
+
+  const handleEmptySlotClick = (day: number, start: string) => {
+    if (!baseDate) return;
+
+    setSelectedTime(`Day${day} ${start}`);
+
+    const selectedDate = new Date(baseDate);
+    selectedDate.setDate(baseDate.getDate() + (day - 1));
+    selectedDate.setHours(Number(start.split(':')[0]), 0, 0, 0);
+
+    const startTimeISO = selectedDate.toISOString();
+    const endTimeISO = new Date(selectedDate.getTime() + 60 * 60 * 1000).toISOString();
+
+    fetchRecommandLectures(startTimeISO, endTimeISO);
+  };
 
   const timeSlots = Array.from({ length: 9 }, (_, i) => {
     const hour = i + 9;
@@ -101,7 +155,7 @@ const TimetablePage = () => {
           <div className="border border-gray-300 p-3 font-bold text-center">Day2</div>
           <div className="border border-gray-300 p-3 font-bold text-center">Day3</div>
 
-          {timeSlots.map(({ start, end }, i) => (
+          {timeSlots.map(({ start, end }) => (
             <Fragment key={`time-${start}-${end}`}>
               <div className="flex justify-center items-center border border-gray-300 bg-gray-100 dark:bg-gray-600 p-3 text-center font-medium">
                 {start} ~ {end}
@@ -169,10 +223,7 @@ const TimetablePage = () => {
                     <div
                       key={`day-${day}-time-${start}`}
                       className="border border-gray-300 p-3 bg-gray-100 dark:bg-gray-600 hover:bg-gray-300"
-                      onClick={() => {
-                        setSelectedTime(`Day${day} ${start}`);
-                        console.log(selectedTime);
-                      }}
+                      onClick={() => handleEmptySlotClick(day, start)}
                     />
                   );
                 }
@@ -219,9 +270,8 @@ const TimetablePage = () => {
           <h3 className="pt-10 text-md font-semibold">공석 추천 목록</h3>
           <div className="h-1/2 overflow-auto">
             <ul className="mt-2 border">
-              {/* 추천 강의로 바꾸기 */}
-              {userLectures.wishlist.map((lecture) => (
-                <li key={lecture.id} className="p-2 border-b border-gray-200">
+              {recommandLectures.map((lecture) => (
+                <li key={lecture.lecture_id} className="p-2 border-b border-gray-200">
                   <div className="flex items-center gap-2">
                     <p className="bg-gray-200 w-fit px-2 dark:bg-gray-600">{lecture.location}</p>
                     <span className="text-xs">
