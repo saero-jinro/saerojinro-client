@@ -2,7 +2,7 @@
 
 import ClickButton from '@/_components/ClickButton';
 import ThemeToggleView from './ThemeToggleView';
-import { Theme } from '@/_types/Header/theme';
+import { Theme } from '@/_types/Header/theme.type';
 import useTheme from '@/_hooks/useTheme';
 
 interface Props {

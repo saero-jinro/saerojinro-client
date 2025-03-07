@@ -1,6 +1,6 @@
 import '@/_styles/globals.css';
-import Header from './_components/Header/Header.test';
-import getTheme from './_utils/Header/getTheme.server';
+import Header from '../_components/Header/Header.test';
+import getTheme from '../_utils/Header/getTheme.server';
 
 const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>) => {
   const theme = await getTheme();
