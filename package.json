@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@svgr/webpack": "^8.1.0",
     "@tiptap/extension-bullet-list": "^2.11.5",
     "@tiptap/extension-color": "^2.11.5",
     "@tiptap/extension-heading": "^2.11.5",

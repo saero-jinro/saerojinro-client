@@ -1,5 +1,5 @@
 import '@/_styles/globals.css';
-import Header from '../_components/Header/Header.test';
+import Header from '../_components/Header/Header';
 import getTheme from '../_utils/Header/getTheme.server';
 
 const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>) => {
