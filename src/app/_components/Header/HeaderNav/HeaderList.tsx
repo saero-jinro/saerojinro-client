@@ -59,7 +59,7 @@ export const MobileNavList = ({ mobile }: MobileNavListProps) => {
   );
 };
 
-const MobileNavItem = ({ path, title }: NavItem) => {
+export const MobileNavItem = ({ path, title }: NavItem) => {
   return (
     <li key={title} className="py-[0.4rem] flex justify-between items-center cursor-pointer">
       <div className="flex items-center gap-2">

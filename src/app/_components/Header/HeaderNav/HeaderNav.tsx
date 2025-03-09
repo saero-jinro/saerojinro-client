@@ -1,9 +1,9 @@
 'use client';
 
-import { getUserNavigation } from '@/_utils/Header/getUserLink';
 import { MobileNavList, WebNavList } from './HeaderList';
 import { useCallback, useEffect, useState } from 'react';
 import { HeaderOverlay, MenuButton } from './ETC';
+import { useNav } from '@/_hooks/useNav/useNav';
 
 const MAX_MOBILE_WIDTH = 769;
 
@@ -11,7 +11,7 @@ const MAX_MOBILE_WIDTH = 769;
 const HeaderNav = () => {
   const [isToggle, setIsToggle] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const navlist = getUserNavigation('viewer');
+  const navlist = useNav('viewer');
 
   const toggleNavMobile = (state: boolean) => setIsToggle(state);
 

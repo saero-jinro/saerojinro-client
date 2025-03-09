@@ -1,4 +1,4 @@
-import { NavGroup, NavigationConfig, NavItem, UserRole } from '@/_types/Header/Header.type';
+import { NavGroup, NavigationConfig, NavItem } from '@/_types/Header/Header.type';
 
 // 웹 네비게이션 목록
 const web: NavItem[] = [
@@ -41,20 +41,4 @@ const mobile: NavGroup[] = [
 export const navInfo: NavigationConfig = {
   web,
   mobile,
-};
-
-const filterAccessibleNavItems = (items: NavItem[], userRole: UserRole) =>
-  items.filter((item) => item.roles?.includes(userRole));
-
-// 권한에 따른 네비게이션 리스트 반환
-export const getUserNavigation = (userRole: UserRole) => {
-  const { web, mobile } = navInfo;
-
-  return {
-    web: filterAccessibleNavItems(web, userRole),
-    mobile: mobile.flatMap((section) => {
-      const accessibleItems = filterAccessibleNavItems(section.items, userRole);
-      return accessibleItems.length ? [{ ...section, items: accessibleItems }] : [];
-    }),
-  };
 };
