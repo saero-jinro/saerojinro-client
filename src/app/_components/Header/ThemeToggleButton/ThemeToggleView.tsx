@@ -1,4 +1,4 @@
-import { Theme } from '@/_types/Header/theme.type';
+import { Theme } from '@/_types/Header/Header.type';
 /**
  * 프레젠테이션 로직
  */
