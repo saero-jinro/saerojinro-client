@@ -11,7 +11,12 @@ const nextConfig: NextConfig = {
   },
 
   images: {
-    domains: ['dyns.co.kr'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'dyns.co.kr',
+      },
+    ],
   },
 };
 
