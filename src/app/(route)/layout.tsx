@@ -1,6 +1,7 @@
 import '@/_styles/globals.css';
 import Header from '../_components/Header/Header';
 import getTheme from '../_utils/Header/getTheme.server';
+import KaKaoScript from '@/_components/Header/Login.script';
 
 const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>) => {
   const theme = await getTheme();
@@ -13,6 +14,7 @@ const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>)
         }
       >
         <Header />
+        <KaKaoScript />
         {children}
       </body>
     </html>

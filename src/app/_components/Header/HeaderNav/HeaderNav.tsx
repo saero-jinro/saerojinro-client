@@ -5,6 +5,7 @@ import { WebNavList } from '@/_components/Nav/navigation/HeaderNav.web';
 import { useCallback, useEffect, useState } from 'react';
 import { HeaderOverlay, MenuButton } from './ETC';
 import { useNav } from '@/_hooks/nav/useNav';
+import useLogin from '@/_hooks/login/useLogin';
 
 const MAX_MOBILE_WIDTH = 769;
 
@@ -13,6 +14,7 @@ const HeaderNav = () => {
   const [isToggle, setIsToggle] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const navlist = useNav('viewer');
+  const { loginWithKakao } = useLogin();
 
   const toggleNavMobile = (state: boolean) => setIsToggle(state);
 
@@ -30,7 +32,13 @@ const HeaderNav = () => {
     return () => window.removeEventListener('resize', resizeHandler);
   }, [resizeHandler]);
 
-  if (!isMobile) return <WebNavList web={navlist.web} />;
+  if (!isMobile)
+    return (
+      <>
+        <button onClick={loginWithKakao}>킬ㄺ</button>
+        <WebNavList web={navlist.web} />
+      </>
+    );
 
   return (
     <>
