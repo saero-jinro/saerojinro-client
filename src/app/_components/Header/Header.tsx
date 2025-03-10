@@ -6,7 +6,7 @@ const Header = async () => {
   const theme = await getTheme();
 
   return (
-    <header className="fixed z-[1000] w-screen border-solid border-b border-[#66666637] ">
+    <header className="fixed z-[1000] w-screen border-solid border-b border-[#66666637] dark:border-[#666]">
       <nav className="w-[100%] max-w-[1920px] h-[2rem] mx-auto px-4 flex justify-between z-[900] items-center">
         <ThemeToggleButton theme={theme} />
         <HeaderNav />
