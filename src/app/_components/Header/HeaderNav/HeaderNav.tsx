@@ -13,7 +13,6 @@ const MAX_MOBILE_WIDTH = 769;
 const HeaderNav = () => {
   const [isToggle, setIsToggle] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const { loginWithKakao } = useLogin();
   const navlist = useNav('viewer');
 
   const toggleNavMobile = (state: boolean) => setIsToggle(state);
@@ -35,7 +34,6 @@ const HeaderNav = () => {
   if (!isMobile)
     return (
       <>
-        <button onClick={loginWithKakao}>킬ㄺ</button>
         <WebNavList web={navlist.web} />
       </>
     );
