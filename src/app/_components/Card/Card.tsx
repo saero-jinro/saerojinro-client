@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 interface CardProps {
   id: number;
@@ -22,7 +23,14 @@ const Card = ({ id, image, title, category, children, time, showWish = true }: C
   return (
     <div className="overflow-hidden w-60 cursor-pointer" onClick={handleClick}>
       <div className="relative">
-        <img src={image} alt={title} className="w-full h-36 object-cover" />
+        <Image
+          src={image}
+          alt={title}
+          width={300}
+          height={200}
+          className="w-full h-36 object-cover"
+          priority
+        />
         {showWish && (
           <button
             className="absolute top-2 right-2 bg-gray-700 text-white text-xs px-2 py-1"
