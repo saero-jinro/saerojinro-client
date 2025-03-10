@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 const Page = () => {
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+  const BASE_URL = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI || 'http://localhost:3000';
   const searchParams = useSearchParams();
   const code = searchParams.get('code');
   const router = useRouter();
@@ -17,7 +17,7 @@ const Page = () => {
 
     (async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/api/auth`, {
+        const res = await fetch(`${BASE_URL}/api/auth`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ const Page = () => {
       }
       router.push(prevUrl ? prevUrl : '/');
     })();
-  }, [code, router, API_BASE_URL]);
+  }, [code, router, BASE_URL]);
 
   return <></>;
 };

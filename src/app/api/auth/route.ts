@@ -9,7 +9,8 @@ export type ApiResponse<T> = {
 export async function POST(request: Request) {
   try {
     const { code } = await request.json();
-    const REDIRECT_URI = 'http://localhost:3000/auth';
+    const BASE_URL = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI || 'http://localhost:3000';
+    const REDIRECT_URI = `${BASE_URL}/auth`;
 
     if (!code) {
       return NextResponse.json({ error: 'No authorization code' }, { status: 400 });
@@ -39,7 +40,7 @@ export async function POST(request: Request) {
       response.cookies.set('id_token', idToken, {
         sameSite: 'lax',
         path: '/',
-        maxAge: 60 * 60 * 24 * 0.5,
+        maxAge: 60 * 60 * 24 * 0.5, //30m
       });
 
       // 추후 JWT 티켓 발행
