@@ -32,7 +32,11 @@ const LectureListPage = () => {
     // };
 
     // fetchLectures();
-    setLectures(response.data.lectures);
+    if (response && response.data && Array.isArray(response.data.lectures)) {
+      setLectures(response.data.lectures);
+    } else {
+      console.error('데이터 구조가 예상과 다릅니다:', response);
+    }
   }, []);
 
   const groupByTime = (lectures: LectureListProps[]) => {
