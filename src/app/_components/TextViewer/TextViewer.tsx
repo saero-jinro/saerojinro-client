@@ -1,6 +1,6 @@
 'use client';
 import { ContentType } from '@/_types/TextEditor/textEditor.type';
-import useTextEditor from '@/_hooks/textEditor/useTextEditor';
+import useTextEditor from '@/_hooks/textEditor__/useTextEditor';
 import { HTMLAttributes, useEffect } from 'react';
 import { EditorContent } from '@tiptap/react';
 import '@/_styles/tiptap.css';
