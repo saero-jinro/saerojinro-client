@@ -5,7 +5,6 @@ import { WebNavList } from '@/_components/Nav/navigation/HeaderNav.web';
 import { useCallback, useEffect, useState } from 'react';
 import { HeaderOverlay, MenuButton } from './ETC';
 import { useNav } from '@/_hooks/nav/useNav';
-import useLogin from '@/_hooks/login/useLogin';
 
 const MAX_MOBILE_WIDTH = 769;
 
