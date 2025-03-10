@@ -1,6 +1,6 @@
 'use client';
 import { NavItem, NavSectionProps } from '@/_types/Header/Header.type';
-import { useNav } from '@/_hooks/useNav/useNav';
+import { useNav } from '@/_hooks/nav/useNav';
 import Right from '@/assets/Header/right.svg';
 import Link from 'next/link';
 import { Nav } from '../nav';
@@ -43,7 +43,7 @@ export const MyPageAsideNavigation = () => {
         renderSection={(section, renderItem) => (
           <AsideNavSection key={section.title} section={section} renderItem={renderItem} />
         )}
-        className="pt-[4px] h-full border-r border-solid border-[#66666637] dark:border-[#666]"
+        className="fixed pt-[4px] h-full border-r border-solid border-[#66666637] dark:border-[#666]"
       />
     </aside>
   );
@@ -60,7 +60,7 @@ export const AdminAsideNavigation = () => {
         renderSection={(section, renderItem) => (
           <AsideNavSection key={section.title} section={section} renderItem={renderItem} />
         )}
-        className="pt-[4px] h-full border-r border-solid border-[#66666637] dark:border-[#666]"
+        className="fixed pt-[4px] h-full border-r border-solid border-[#66666637] dark:border-[#666]"
       />
     </aside>
   );

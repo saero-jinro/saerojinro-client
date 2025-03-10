@@ -4,7 +4,7 @@ import { MobileNavigation } from '@/_components/Nav/navigation/HeaderNav.mobile'
 import { WebNavList } from '@/_components/Nav/navigation/HeaderNav.web';
 import { useCallback, useEffect, useState } from 'react';
 import { HeaderOverlay, MenuButton } from './ETC';
-import { useNav } from '@/_hooks/useNav/useNav';
+import { useNav } from '@/_hooks/nav/useNav';
 
 const MAX_MOBILE_WIDTH = 769;
 
@@ -30,7 +30,12 @@ const HeaderNav = () => {
     return () => window.removeEventListener('resize', resizeHandler);
   }, [resizeHandler]);
 
-  if (!isMobile) return <WebNavList web={navlist.web} />;
+  if (!isMobile)
+    return (
+      <>
+        <WebNavList web={navlist.web} />
+      </>
+    );
 
   return (
     <>
