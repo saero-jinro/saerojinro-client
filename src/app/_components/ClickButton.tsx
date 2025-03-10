@@ -25,7 +25,7 @@ const ClickButton = ({ children, onClickAction, actionDesc, delay, ...props }: P
 
   return (
     <button
-      style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
+      style={{ cursor: 'pointer' }}
       aria-label={actionDesc}
       onClick={onClickHandler}
       {...props}
