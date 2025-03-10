@@ -1,13 +1,13 @@
 'use client';
 
 import { ContentType, EditorType } from '@/_types/TextEditor/textEditor.type';
-import keyboardRule from '@/_hooks/textEditor__/EditorRule';
 import { JSONContent, useEditor } from '@tiptap/react';
 import TextStyle from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
 import StarterKit from '@tiptap/starter-kit';
 import Color from '@tiptap/extension-color';
 import Link from '@tiptap/extension-link';
+import keyboardRule from './EditorRule';
 import { useCallback } from 'react';
 import '@/_styles/tiptap.css';
 
