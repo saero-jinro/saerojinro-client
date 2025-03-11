@@ -3,8 +3,10 @@
 import { useEffect, useState } from 'react';
 import response from '@/dummyData/lecture-list/getLectureList.json';
 import Card from '@/_components/Card/Card';
+import DayTab from '@/_components/DayTab/DayTab';
+import { groupByDay, groupByTime } from '@/_components/DayTab/groupBy';
 
-interface LectureListProps {
+export interface LectureListProps {
   id: number;
   title: string;
   category: string;
@@ -16,6 +18,7 @@ interface LectureListProps {
 
 const LectureListPage = () => {
   const [lectures, setLectures] = useState<LectureListProps[]>([]);
+  const [selectedDay, setSelectedDay] = useState<string>('Day1');
 
   useEffect(() => {
     // const fetchLectures = async () => {
@@ -39,26 +42,11 @@ const LectureListPage = () => {
     }
   }, []);
 
-  const groupByTime = (lectures: LectureListProps[]) => {
-    return lectures.reduce(
-      (acc, lecture) => {
-        const date = new Date(lecture.start_time);
-        const startHour = date.getHours();
-        const timeStart = `${String(startHour).padStart(2, '0')}:00`;
+  const groupedByDay = groupByDay(lectures);
+  const days = Object.keys(groupedByDay);
+  const groupedByTime = selectedDay ? groupByTime(groupedByDay[selectedDay] || []) : {};
 
-        if (!acc[timeStart]) {
-          acc[timeStart] = [];
-        }
-        acc[timeStart].push(lecture);
-        return acc;
-      },
-      {} as Record<string, LectureListProps[]>,
-    );
-  };
-
-  const groupedLectures = groupByTime(lectures);
-
-  const sortedTime = Object.keys(groupedLectures).sort((a, b) => {
+  const sortedTime = Object.keys(groupedByTime).sort((a, b) => {
     const getHour = (timeRange: string) => parseInt(timeRange.split(':')[0], 10);
     return getHour(a) - getHour(b);
   });
@@ -72,13 +60,14 @@ const LectureListPage = () => {
 
   return (
     <div className="p-10">
+      <DayTab days={days} selectedDay={selectedDay} onSelectDay={setSelectedDay} />
       <h1 className="text-2xl font-bold mb-6">{lectures.length} Sessions</h1>
       <div className="space-y-8">
         {sortedTime.map((time) => (
           <div key={time}>
             <h2 className="text-xl font-semibold mb-4">{time}</h2>
             <ul className="flex flex-wrap gap-4">
-              {groupedLectures[time].map((lecture) => (
+              {groupedByTime[time].map((lecture) => (
                 <Card
                   key={lecture.id}
                   id={lecture.id}
