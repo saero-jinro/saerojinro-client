@@ -26,10 +26,7 @@ const mobile: NavGroup[] = [
     title: '운영 서비스',
     items: [
       { title: '대시 보드', path: '#', roles: ['admin'] },
-      { title: '강의 리스트', path: '#', roles: ['admin'] },
-      { title: '강의 리뷰 관리', path: '#', roles: ['admin'] },
-      { title: '강의 승인 요청', path: '#', roles: ['admin'] },
-      { title: '강의 권한 수정', path: '#', roles: ['admin'] },
+      { title: '강의 관리', path: '#', roles: ['admin'] },
     ],
   },
   {

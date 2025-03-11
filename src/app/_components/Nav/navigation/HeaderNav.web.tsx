@@ -1,5 +1,6 @@
 import { NavItem } from '@/_types/Header/Header.type';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 interface WebNavListProps {
   web: NavItem[];
@@ -7,6 +8,8 @@ interface WebNavListProps {
 
 // 웹
 export const WebNavList = ({ web }: WebNavListProps) => {
+  const pathname = usePathname();
+
   return (
     <div className="flex justify-center items-center gap-2 text-sm select-none">
       <nav>
@@ -17,7 +20,10 @@ export const WebNavList = ({ web }: WebNavListProps) => {
           ))}
         </ol>
       </nav>
-      <span className="text-sm font-medium">김철수님</span>
+
+      {!pathname.startsWith('/admin') && (
+        <span className="text-sm font-medium">김철수님</span>
+      )}
     </div>
   );
 };
