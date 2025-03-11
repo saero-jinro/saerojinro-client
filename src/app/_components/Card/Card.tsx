@@ -9,7 +9,7 @@ interface CardProps {
   title: string;
   category: string;
   children: React.ReactNode;
-  time?: string;
+  time: string;
   showWish?: boolean;
 }
 
@@ -41,7 +41,7 @@ const Card = ({ id, image, title, category, children, time, showWish = true }: C
         )}
       </div>
       <div className="p-4 border">
-        {time && <div className="w-full bg-white text-xs text-black py-1 rounded">{time}</div>}
+        <div className="w-full bg-white text-xs text-black py-1 rounded">{time}</div>
         <h3 className="text-lg font-semibold">{title}</h3>
         <div className="flex flex-wrap gap-1">
           <span className="text-xs text-gray-500">#{category}</span>
