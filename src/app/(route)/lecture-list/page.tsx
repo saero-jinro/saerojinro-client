@@ -44,12 +44,12 @@ const LectureListPage = () => {
       (acc, lecture) => {
         const date = new Date(lecture.start_time);
         const startHour = date.getHours();
-        const timeRange = `${String(startHour).padStart(2, '0')}:00 ~ ${String(startHour + 1).padStart(2, '0')}:00`;
+        const timeStart = `${String(startHour).padStart(2, '0')}:00`;
 
-        if (!acc[timeRange]) {
-          acc[timeRange] = [];
+        if (!acc[timeStart]) {
+          acc[timeStart] = [];
         }
-        acc[timeRange].push(lecture);
+        acc[timeStart].push(lecture);
         return acc;
       },
       {} as Record<string, LectureListProps[]>,
@@ -62,6 +62,13 @@ const LectureListPage = () => {
     const getHour = (timeRange: string) => parseInt(timeRange.split(':')[0], 10);
     return getHour(a) - getHour(b);
   });
+
+  function formatTime(time: string): string {
+    const date = new Date(time);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  }
 
   return (
     <div className="p-10">
@@ -78,6 +85,7 @@ const LectureListPage = () => {
                   image={lecture.image}
                   title={lecture.title}
                   category={lecture.category}
+                  time={`${formatTime(lecture.start_time)} ~ ${formatTime(lecture.end_time)}`}
                   showWish={true}
                 >
                   <div className="flex items-center mt-1">
