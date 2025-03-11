@@ -7,7 +7,7 @@ const Header = async () => {
 
   return (
     <header className="fixed z-[1000] w-screen border-solid border bg-white  border-[#66666637] dark:bg-black dark:border-[#666]">
-      <nav className="w-[100%] max-w-[1920px] h-[2rem] mx-auto px-4 flex justify-between z-[900] items-center">
+      <nav className="w-[100%] h-[2rem] mx-auto px-4 flex justify-between z-[900] items-center">
         <ThemeToggleButton theme={theme} />
         <HeaderNav />
       </nav>

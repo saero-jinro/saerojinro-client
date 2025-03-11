@@ -7,7 +7,7 @@ import TrdSection from './mainComponent/TrdSection';
 const Page = () => {
   return (
     <div className="w-screen h-screen">
-      <div className="w-screen flex flex-col gap-[2rem]">
+      <div className="w-screen flex flex-col gap-[2rem] mx-auto item">
         <FstSection />
         <SecSection />
         <TrdSection />

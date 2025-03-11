@@ -6,24 +6,24 @@ import { AnchorHTMLAttributes } from 'react';
 const Footer = () => {
   const footerList = [
     {
-      title: '가나',
+      title: '가나다',
       url: '#',
     },
     {
-      title: '다라마',
-      url: 'https://github.com/DonggyunKim00',
+      title: '라마바',
+      url: '#',
     },
     {
-      title: '바사아',
-      url: 'https://github.com/AhnRian',
+      title: '사아자',
+      url: '#',
     },
     {
-      title: '아차카',
-      url: 'https://github.com/yungan9',
+      title: '차카타',
+      url: '#',
     },
     {
-      title: '나파하',
-      url: 'https://github.com/ki2183',
+      title: '파하',
+      url: '#',
     },
   ];
 

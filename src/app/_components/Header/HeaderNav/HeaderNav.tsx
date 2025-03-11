@@ -2,35 +2,28 @@
 
 import { MobileNavigation } from '@/_components/Nav/navigation/HeaderNav.mobile';
 import { WebNavList } from '@/_components/Nav/navigation/HeaderNav.web';
-import { useCallback, useEffect, useState } from 'react';
+import ViewportSlice from '@/_store/Main/viewportStore';
 import { HeaderOverlay, MenuButton } from './ETC';
+import useResize from '@/_hooks/nav/useResize';
 import { useNav } from '@/_hooks/nav/useNav';
-
-const MAX_MOBILE_WIDTH = 769;
+import { useEffect, useState } from 'react';
 
 // 헤더 네비게이션
 const HeaderNav = () => {
-  const [isToggle, setIsToggle] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const navlist = useNav('viewer');
-
+  const [isToggle, setIsToggle] = useState(false);
+  const viewmode = ViewportSlice((store) => store.state.mode);
   const toggleNavMobile = (state: boolean) => setIsToggle(state);
 
-  const resizeHandler = useCallback(() => {
-    const isNowMobile = window.innerWidth < MAX_MOBILE_WIDTH;
-    setIsMobile((prev) => {
-      if (prev !== isNowMobile) toggleNavMobile(false);
-      return isNowMobile;
-    });
-  }, []);
+  // 리사이즈 훅
+  useResize();
 
+  // web이면 메뉴 닫음
   useEffect(() => {
-    resizeHandler();
-    window.addEventListener('resize', resizeHandler);
-    return () => window.removeEventListener('resize', resizeHandler);
-  }, [resizeHandler]);
+    if (viewmode === 'web') setIsToggle(false);
+  }, [viewmode, setIsToggle]);
 
-  if (!isMobile)
+  if (viewmode === 'web')
     return (
       <>
         <WebNavList web={navlist.web} />
