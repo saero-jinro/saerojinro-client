@@ -73,32 +73,35 @@
       "wishlist": 60
     },
     {
-      "lectureId": 10,
-      "rank": 10,
-      "title": "강의명10",
-      "speaker": "강연자명10",
-      "reservation": 30,
-      "wishlist": 30
-    },
-    {
-      "lectureId": 11,
-      "rank": 11,
-      "title": "강의명11",
-      "speaker": "강연자명11",
-      "reservation": 10,
-      "wishlist": 10
-    },
-    {
-      "lectureId": 12,
-      "rank": 12,
-      "title": "강의명12",
-      "speaker": "강연자명12",
-      "reservation": 10,
-      "wishlist": 10
+        "lectureId": 10,
+        "rank": 10,
+        "title": "강의명10",
+        "speaker": "강연자명10",
+        "reservation": 30,
+        "wishlist": 30
     }
-  ],
+    ],
+    "lectureLowRank": [
+    {
+        "lectureId": 20,
+        "rank": 20,
+        "title": "강의명20",
+        "speaker": "강연자명20",
+        "reservation": 10,
+        "wishlist": 10
+      },
+      {
+        "lectureId": 19,
+        "rank": 19,
+        "title": "강의명19",
+        "speaker": "강연자명19",
+        "reservation": 30,
+        "wishlist": 30
+      }
+    ],
+    
+    "timeRank": [
 
-  "timeRank": [
     {
       "rank": 1,
       "day": "25-03-11",
