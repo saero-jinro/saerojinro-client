@@ -1,6 +1,6 @@
 import { AdminAsideNavigation } from '@/_components/Nav/navigation/AsideNav';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex h-screen">
       {/* 어드민 사이드 네비게이션 */}
@@ -10,4 +10,5 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <main className="flex-1 p-6">{children}</main>
     </div>
   );
-}
+};
+export default Layout;

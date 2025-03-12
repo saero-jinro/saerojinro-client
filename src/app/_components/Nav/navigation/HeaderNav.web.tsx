@@ -1,6 +1,6 @@
 import { NavItem } from '@/_types/Header/Header.type';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 interface WebNavListProps {
   web: NavItem[];
@@ -21,9 +21,7 @@ export const WebNavList = ({ web }: WebNavListProps) => {
         </ol>
       </nav>
 
-      {!pathname.startsWith('/admin') && (
-        <span className="text-sm font-medium">김철수님</span>
-      )}
+      {!pathname.startsWith('/admin') && <span className="text-sm font-medium">김철수님</span>}
     </div>
   );
 };
