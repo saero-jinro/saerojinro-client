@@ -76,6 +76,7 @@ const SecSection = () => {
                 id={lecture.id}
                 image={lecture.image}
                 title={lecture.title}
+                time="임시 시간"
                 category={lecture.category}
                 showWish={true}
               >
