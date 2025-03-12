@@ -2,7 +2,7 @@
 
 // 로그인 훅
 const useLogin = () => {
-  const BASE_URL = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI || 'http://localhost:3000';
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
   const loginWithKakao = () => {
     if (typeof window === 'undefined' || !window.Kakao) {
