@@ -3,7 +3,7 @@
 const FourthSection = () => {
   return (
     <section className="w-screen h-[565px] bg-gray-500">
-      <div className="px-[120px] max-w-[1920px] py-[100px] flex flex-col gap-[0.5rem] mx-auto">
+      <div className="px-[120px] max-w-[1280px] py-[100px] flex flex-col gap-[0.5rem] mx-auto">
         <div className="flex items-center justify-center font-bold text-4xl mb-4 text-white">
           FAQ
         </div>
