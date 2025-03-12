@@ -10,7 +10,6 @@ const config: Config = {
         geist: ['Geist Sans', 'sans-serif'],
         mono: ['Geist Mono', 'monospace'],
       },
-
     },
     
   },

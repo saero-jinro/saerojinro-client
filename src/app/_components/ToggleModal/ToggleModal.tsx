@@ -17,7 +17,6 @@ const ToggleModal = ({ desc, isOpen, children, onClose, ...props }: Props) => {
 
     const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
-        console.log('asjlddjask');
         onClose();
       }
     };

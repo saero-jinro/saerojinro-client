@@ -21,3 +21,25 @@ declare global {
 }
 
 export {};
+
+
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
+
+// ----------------- MAP ----------------- //
+interface KakaoMaps {
+  LatLng: new (lat: number, lng: number) => any;
+  Map: new (container: HTMLElement, options: { center: any; level: number }) => any;
+  Marker: new (options: { position: any }) => any;
+}
+
+interface KakaoNamespace {
+  maps: KakaoMaps;
+}
+
+interface Window {
+  kakao: KakaoNamespace;
+}

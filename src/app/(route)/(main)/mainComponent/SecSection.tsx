@@ -1,7 +1,7 @@
 'use client';
 
 import { ApiResponse } from '@/api/auth/route';
-import { use, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Card from '@/_components/Card/Card';
 import SectionWrapper from './component/SectionWrapper';
 import ViewportSlice from '@/_store/Main/viewportStore';
@@ -27,9 +27,15 @@ const SecSection = () => {
   const viewmode = ViewportSlice((store) => store.state.mode);
   const [scroll, setScroll] = useState<number>(0);
   const [innerWidth, setInnerWidth] = useState<number>(0);
+  const [outerWidth, setOuterWidth] = useState<number>(0);
   const CardRef = useRef<HTMLLIElement>(null);
   const OuterRef = useRef<HTMLDivElement>(null);
   const InnerRef = useRef<HTMLUListElement>(null);
+
+  useEffect(() => {
+    if (!OuterRef.current) return;
+    setOuterWidth(OuterRef.current.clientWidth);
+  }, [lectures, setOuterWidth]);
 
   useEffect(() => {
     const Card = CardRef.current;
