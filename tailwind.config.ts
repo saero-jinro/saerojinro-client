@@ -11,7 +11,6 @@ const config: Config = {
         mono: ['Geist Mono', 'monospace'],
       },
     },
-    
   },
   plugins: [typography],
 };

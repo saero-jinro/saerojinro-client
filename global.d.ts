@@ -22,7 +22,6 @@ declare global {
 
 export {};
 
-
 declare global {
   interface Window {
     kakao: any;

@@ -28,11 +28,11 @@ body {
 } */
 
 .hide-scrollbar {
-  overflow-x: scroll; 
-  -ms-overflow-style: none; 
-  scrollbar-width: none; 
+  overflow-x: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .hide-scrollbar::-webkit-scrollbar {
-  display: none; 
+  display: none;
 }

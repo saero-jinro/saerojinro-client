@@ -10,11 +10,11 @@ import { useEffect, useState } from 'react';
 
 // 헤더 네비게이션
 const HeaderNav = () => {
-  const navlist = useNav('viewer');
   const [isToggle, setIsToggle] = useState(false);
   const viewmode = ViewportSlice((store) => store.state.mode);
   const toggleNavMobile = (state: boolean) => setIsToggle(state);
-
+  const [role, setRole] = useState<'viewer' | 'admin'>('viewer'); // 임시 상태 버튼
+  const navlist = useNav(role);
   // 리사이즈 훅
   useResize();
 
@@ -26,6 +26,16 @@ const HeaderNav = () => {
   if (viewmode === 'web')
     return (
       <>
+        <button
+          onClick={() => {
+            setRole((prev) => {
+              if (prev === 'viewer') return 'admin';
+              return 'viewer';
+            });
+          }}
+        >
+          {role === 'viewer' ? '어드민 전환 버튼' : '참가자 전환 버튼'}
+        </button>
         <WebNavList web={navlist.web} />
       </>
     );
