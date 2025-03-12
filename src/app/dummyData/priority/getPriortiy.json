@@ -79,24 +79,9 @@
         "speaker": "강연자명10",
         "reservation": 30,
         "wishlist": 30
-        },
-        {
-        "lectureId": 11,
-        "rank": 11,
-        "title": "강의명11",
-        "speaker": "강연자명11",
-        "reservation": 10,
-        "wishlist": 10
-        },
-        {
-        "lectureId": 12,
-        "rank": 12,
-        "title": "강의명12",
-        "speaker": "강연자명12",
-        "reservation": 10,
-        "wishlist": 10
         }
     ],
+    
     "lectureLowRank": [
         {
             "lectureId": 10,
