@@ -1,0 +1,53 @@
+#tiptap-editor > div {
+  outline: none;
+}
+
+.prose ul {
+  list-style-type: disc !important;
+  padding-left: 20px !important;
+}
+
+.prose ol {
+  list-style-type: decimal !important;
+  padding-left: 20px !important;
+}
+
+.prose li {
+  margin-bottom: 0.5rem;
+}
+
+.prose h1 {
+  font-size: 2.25rem !important;
+  font-weight: bold !important;
+  margin-bottom: 1rem !important;
+}
+
+.prose h2 {
+  font-size: 1.875rem !important;
+  font-weight: bold !important;
+  margin-bottom: 1rem !important;
+}
+
+.prose h3 {
+  font-size: 1.5rem !important;
+  font-weight: bold !important;
+  margin-bottom: 0.75rem !important;
+}
+
+.prose h4 {
+  font-size: 1.25rem !important;
+  font-weight: bold !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.prose h5 {
+  font-size: 1.125rem !important;
+  font-weight: bold !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.prose h6 {
+  font-size: 1rem !important;
+  font-weight: bold !important;
+  margin-bottom: 0.5rem !important;
+}

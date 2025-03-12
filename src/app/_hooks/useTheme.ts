@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useState } from 'react';
-import { Theme } from '@/_types/Header/theme';
+import { Theme } from '@/_types/Header/Header.type';
 
 const useTheme = (initTheme: Theme) => {
   const [theme, setTheme] = useState<Theme>(initTheme);

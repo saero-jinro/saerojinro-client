@@ -1,0 +1,60 @@
+{
+  "data": {
+    "lectures": [
+      {
+        "id": 1,
+        "title": "강의 제목1",
+        "category": "카테고리1",
+        "start_time": "2025-03-04T10:00:00",
+        "end_time": "2025-03-04T11:00:00",
+        "speakerName": "홍길동",
+        "image": "https://dyns.co.kr/wp-content/uploads/2024/04/placeholder-304.png"
+      },
+      {
+        "id": 2,
+        "title": "강의 제목2",
+        "category": "카테고리2",
+        "start_time": "2025-03-05T10:00:00",
+        "end_time": "2025-03-05T12:00:00",
+        "speakerName": "고길동",
+        "image": "https://dyns.co.kr/wp-content/uploads/2024/04/placeholder-304.png"
+      },
+      {
+        "id": 3,
+        "title": "강의 제목3",
+        "category": "카테고리3",
+        "start_time": "2025-03-06T09:00:00",
+        "end_time": "2025-03-06T10:00:00",
+        "speakerName": "김길동",
+        "image": "https://dyns.co.kr/wp-content/uploads/2024/04/placeholder-304.png"
+      },
+      {
+        "id": 4,
+        "title": "강의 제목4",
+        "category": "카테고리1",
+        "start_time": "2025-03-04T09:00:00",
+        "end_time": "2025-03-04T11:00:00",
+        "speakerName": "이길동",
+        "image": "https://dyns.co.kr/wp-content/uploads/2024/04/placeholder-304.png"
+      },
+      {
+        "id": 5,
+        "title": "강의 제목5",
+        "category": "카테고리2",
+        "start_time": "2025-03-05T11:00:00",
+        "end_time": "2025-03-05T12:00:00",
+        "speakerName": "박길동",
+        "image": "https://dyns.co.kr/wp-content/uploads/2024/04/placeholder-304.png"
+      },
+      {
+        "id": 6,
+        "title": "강의 제목6",
+        "category": "카테고리1",
+        "start_time": "2025-03-06T11:00:00",
+        "end_time": "2025-03-06T13:00:00",
+        "speakerName": "최길동",
+        "image": "https://dyns.co.kr/wp-content/uploads/2024/04/placeholder-304.png"
+      }
+    ]
+  }
+}

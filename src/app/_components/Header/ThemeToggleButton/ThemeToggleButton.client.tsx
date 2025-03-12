@@ -1,8 +1,8 @@
 'use client';
 
 import ClickButton from '@/_components/ClickButton';
+import { Theme } from '@/_types/Header/Header.type';
 import ThemeToggleView from './ThemeToggleView';
-import { Theme } from '@/_types/Header/theme';
 import useTheme from '@/_hooks/useTheme';
 
 interface Props {
