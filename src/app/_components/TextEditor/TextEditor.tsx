@@ -21,6 +21,15 @@ const TextEditor = ({ desc, content, ...props }: Props) => {
 
   return (
     <div id={desc} {...props}>
+      <button
+        onClick={() => {
+          if (!editor) return;
+          const jsonData = editor.getJSON();
+          console.log(JSON.stringify(jsonData));
+        }}
+      >
+        추출
+      </button>
       {/* 툴바 */}
       <Toolbar editor={editor} />
       {/* 에디터 */}

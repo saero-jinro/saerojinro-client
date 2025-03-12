@@ -10,7 +10,7 @@ const DayTab = ({ days, selectedDay, onSelectDay }: DayTabProps) => {
       {days.map((day) => (
         <button
           key={day}
-          className={`text-center w-full py-1 ${selectedDay === day ? 'bg-gray-200 dark:bg-gray-700' : ''}`}
+          className={`text-center w-full py-1 cursor-pointer ${selectedDay === day ? 'bg-gray-200 dark:bg-gray-700' : ''} hover:bg-gray-100`}
           onClick={() => onSelectDay(day)}
         >
           {day}
