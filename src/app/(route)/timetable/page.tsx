@@ -4,6 +4,7 @@ import { useEffect, useState, Fragment } from 'react';
 import { useRouter } from 'next/navigation';
 import response from '@/dummyData/timetable/getTimetable.json';
 import recommandLecturesDummy from '@/dummyData/timetable/getTimetableRecommand.json';
+import DayTab from '@/_components/DayTab/DayTab';
 
 interface LectureProps {
   id: number;
@@ -15,6 +16,7 @@ interface LectureProps {
   speaker: string;
   count: number;
   total: number;
+  lecture_id: number;
 }
 
 interface UserLectures {
@@ -33,6 +35,7 @@ interface RecommandLectureProps {
 
 const TimetablePage = () => {
   const [userLectures, setUserLectures] = useState<UserLectures>({ reservation: [], wishlist: [] });
+  const [selectedDay, setSelectedDay] = useState<string>('Day1');
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [recommandLectures, setRecommandLectures] = useState<RecommandLectureProps[]>([]);
   const [baseDate, setBaseDate] = useState<Date | null>(null);
@@ -125,6 +128,10 @@ const TimetablePage = () => {
     fetchRecommandLectures(startTimeISO, endTimeISO);
   };
 
+  const filteredLectures = userLectures.reservation.filter(
+    (lecture) => `Day${lecture.day}` === selectedDay,
+  );
+
   const timeSlots = Array.from({ length: 9 }, (_, i) => {
     const hour = i + 9;
     return {
@@ -145,91 +152,93 @@ const TimetablePage = () => {
         >
           컴퍼런스 일정 시간표
         </h1>
+        <DayTab
+          days={['Day1', 'Day2', 'Day3']}
+          selectedDay={selectedDay}
+          onSelectDay={setSelectedDay}
+        />
 
-        <div
-          className="grid border border-gray-300"
-          style={{ gridTemplateColumns: '140px repeat(3, 1fr)' }}
-        >
-          <div className="border border-gray-300 p-3 font-bold text-center">Time</div>
-          <div className="border border-gray-300 p-3 font-bold text-center">Day1</div>
-          <div className="border border-gray-300 p-3 font-bold text-center">Day2</div>
-          <div className="border border-gray-300 p-3 font-bold text-center">Day3</div>
+        <div className="grid border border-gray-300" style={{ gridTemplateColumns: '140px 1fr' }}>
+          {timeSlots.map(({ start, end }) => {
+            if (occupiedSlots.has(start)) {
+              return (
+                <div
+                  key={`empty-${start}`}
+                  className="flex justify-center items-center border border-gray-300 bg-gray-100 p-3 h-full text-center font-medium"
+                >
+                  {start} ~ {end}
+                </div>
+              );
+            }
 
-          {timeSlots.map(({ start, end }) => (
-            <Fragment key={`time-${start}-${end}`}>
-              <div className="flex justify-center items-center border border-gray-300 bg-gray-100 dark:bg-gray-600 p-3 text-center font-medium">
-                {start} ~ {end}
-              </div>
+            const lecture = filteredLectures.find(
+              (lecture) =>
+                new Date(lecture.start_time).toLocaleTimeString('ko-KR', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false,
+                }) === start,
+            );
 
-              {Array.from({ length: 3 }, (_, j) => {
-                const day = j + 1;
+            const rowSpan = lecture
+              ? (new Date(lecture.end_time).getTime() - new Date(lecture.start_time).getTime()) /
+                (60 * 60 * 1000)
+              : 1;
 
-                // 이미 배치된 강의는 렌더링 x
-                if (occupiedSlots.has(`${day}-${start}`)) {
-                  return null;
-                }
-
-                const lecture = userLectures.reservation.find((lec) => {
-                  const formattedStartTime = new Date(lec.start_time).toLocaleTimeString('ko-KR', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false,
-                  });
-                  const formattedEndTime = new Date(lec.end_time).toLocaleTimeString('ko-KR', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false,
-                  });
-
-                  return lec.day === day && formattedStartTime <= start && formattedEndTime > start;
+            if (lecture) {
+              const occupiedTime = new Date(lecture.start_time);
+              for (let i = 0; i < rowSpan; i++) {
+                const timeKey = occupiedTime.toLocaleTimeString('ko-KR', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false,
                 });
+                occupiedSlots.add(timeKey);
+                occupiedTime.setHours(occupiedTime.getHours() + 1);
+              }
+            }
 
-                if (lecture) {
-                  const rowSpan =
-                    (new Date(lecture.end_time).getTime() -
-                      new Date(lecture.start_time).getTime()) /
-                    (60 * 60 * 1000);
+            return (
+              <Fragment key={`time-${start}-${end}`}>
+                <div className="flex justify-center items-center border border-gray-300 bg-gray-100 p-3 h-full text-center font-medium">
+                  {start} ~ {end}
+                </div>
 
-                  for (let k = 0; k < rowSpan; k++) {
-                    const occupiedTime = new Date(
-                      new Date(lecture.start_time).getTime() + k * 60 * 60 * 1000,
-                    ).toLocaleTimeString('ko-KR', {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      hour12: false,
-                    });
-                    occupiedSlots.add(`${day}-${occupiedTime}`);
-                  }
-
-                  return (
-                    <div
-                      key={`day-${day}-time-${start}`}
-                      className="flex flex-col justify-center gap-2 border border-gray-300 p-4 cursor-pointer"
-                      style={{ gridRow: `span ${rowSpan}` }}
-                      onClick={() => router.push(`/lecture/${lecture?.id}`)} // 강의 상세 모달로 변경하기
-                    >
-                      <p className="bg-gray-200 w-fit px-2 dark:bg-gray-600">{lecture.location}</p>
-                      <span>{lecture?.title}</span>
-                      <div className="flex justify-between w-full">
-                        <p>{lecture.speaker}</p>
-                        <p>
-                          인원수 {lecture.count} / {lecture.total}
-                        </p>
-                      </div>
+                {lecture ? (
+                  <div
+                    key={lecture.id}
+                    className="p-4 text-left cursor-pointer"
+                    style={{
+                      gridRow: `span ${rowSpan}`,
+                      backgroundColor: '#fff',
+                      border: '1px solid #ccc',
+                      borderBottom: rowSpan > 1 ? 'none' : '1px solid #ccc',
+                    }}
+                    onClick={() => router.push(`/lecture/${lecture.lecture_id}`)}
+                  >
+                    <p className="w-fit bg-gray-200 px-1">{lecture.location}</p>
+                    <p>{lecture.title}</p>
+                    <div className="flex justify-between">
+                      <p>{lecture.speaker}</p>
+                      <p>
+                        인원수 {lecture.count} / {lecture.total}
+                      </p>
                     </div>
-                  );
-                } else {
-                  return (
-                    <div
-                      key={`day-${day}-time-${start}`}
-                      className="border border-gray-300 p-3 bg-gray-100 dark:bg-gray-600 hover:bg-gray-300"
-                      onClick={() => handleEmptySlotClick(day, start)}
-                    />
-                  );
-                }
-              })}
-            </Fragment>
-          ))}
+                  </div>
+                ) : (
+                  <div
+                    className="border border-gray-300 bg-gray-50 hover:bg-gray-200 cursor-pointer"
+                    style={{
+                      gridRow: 'span 1',
+                    }}
+                    onClick={() =>
+                      handleEmptySlotClick(Number(selectedDay.replace('Day', '')), start)
+                    }
+                  />
+                )}
+              </Fragment>
+            );
+          })}
         </div>
       </div>
 
