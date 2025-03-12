@@ -9,7 +9,7 @@ export type ApiResponse<T> = {
 export async function POST(request: Request) {
   try {
     const { code } = await request.json();
-    const BASE_URL = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI || 'http://localhost:3000';
+    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
     const REDIRECT_URI = `${BASE_URL}/auth`;
 
     if (!code) {

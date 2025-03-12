@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
-
+  reactStrictMode: false,
   images: {
     remotePatterns: [
       {
