@@ -1,0 +1,149 @@
+{
+  "lectureHighRank": [
+    {
+      "lectureId": 1,
+      "rank": 1,
+      "title": "강의명1",
+      "speaker": "강연자명1",
+      "reservation": 200,
+      "wishlist": 200
+    },
+    {
+      "lectureId": 2,
+      "rank": 2,
+      "title": "강의명2",
+      "speaker": "강연자명2",
+      "reservation": 180,
+      "wishlist": 180
+    },
+    {
+      "lectureId": 3,
+      "rank": 3,
+      "title": "강의명3",
+      "speaker": "강연자명3",
+      "reservation": 150,
+      "wishlist": 150
+    },
+    {
+      "lectureId": 4,
+      "rank": 4,
+      "title": "강의명4",
+      "speaker": "강연자명4",
+      "reservation": 130,
+      "wishlist": 130
+    },
+    {
+      "lectureId": 5,
+      "rank": 5,
+      "title": "강의명5",
+      "speaker": "강연자명5",
+      "reservation": 100,
+      "wishlist": 100
+    },
+    {
+      "lectureId": 6,
+      "rank": 6,
+      "title": "강의명6",
+      "speaker": "강연자명6",
+      "reservation": 90,
+      "wishlist": 90
+    },
+    {
+      "lectureId": 7,
+      "rank": 7,
+      "title": "강의명7",
+      "speaker": "강연자명7",
+      "reservation": 80,
+      "wishlist": 80
+    },
+    {
+      "lectureId": 8,
+      "rank": 8,
+      "title": "강의명8",
+      "speaker": "강연자명8",
+      "reservation": 70,
+      "wishlist": 70
+    },
+    {
+      "lectureId": 9,
+      "rank": 9,
+      "title": "강의명9",
+      "speaker": "강연자명9",
+      "reservation": 60,
+      "wishlist": 60
+    },
+    {
+      "lectureId": 10,
+      "rank": 10,
+      "title": "강의명10",
+      "speaker": "강연자명10",
+      "reservation": 30,
+      "wishlist": 30
+    },
+    {
+      "lectureId": 11,
+      "rank": 11,
+      "title": "강의명11",
+      "speaker": "강연자명11",
+      "reservation": 10,
+      "wishlist": 10
+    },
+    {
+      "lectureId": 12,
+      "rank": 12,
+      "title": "강의명12",
+      "speaker": "강연자명12",
+      "reservation": 10,
+      "wishlist": 10
+    }
+    ],
+    
+    "lectureLowRank": [
+    {
+        "lectureId": 10,
+        "rank": 10,
+        "title": "강의명10",
+        "speaker": "강연자명10",
+        "reservation": 10,
+        "wishlist": 10
+    }, 
+    {
+        "lectureId": 9,
+        "rank": 9,
+        "title": "강의명9",
+        "speaker": "강연자명9",
+        "reservation": 20,
+        "wishlist": 20
+    },
+    {
+        "lectureId": 8,
+        "rank": 8,
+        "title": "강의명8",
+        "speaker": "강연자명8",
+        "reservation": 30,
+        "wishlist": 30
+    },
+    {
+        "lectureId": 7,
+        "rank": 7,
+        "title": "강의명7",
+        "speaker": "강연자명7",
+        "reservation": 40,
+        "wishlist": 40
+    }
+    ],
+    
+    "timeRank": [
+    {
+      "rank": 1,
+      "day": "25-03-11",
+      "startTime": "2025-03-11T11:00:00"
+    },
+    {
+      "rank": 2,
+      "day": "25-03-12",
+      "startTime": "2025-03-12T12:00:00"
+    }
+  ]
+}
+
