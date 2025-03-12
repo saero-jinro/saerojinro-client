@@ -12,7 +12,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [typography],
+  plugins: [],
 };
 
 export default config;
