@@ -24,7 +24,7 @@ const AdminDashboard = () => {
 
   // 강의 데이터 (상위 10개 또는 하위 10개)
   const highRankLectures: Lecture[] = priorityData.lectureHighRank.slice(0, 10); // 상위 10개
-  const lowRankLectures: Lecture[] = priorityData.lectureHighRank.slice().reverse().slice(0, 10); // 하위 10개 (복사 후 역순 정렬)
+  const lowRankLectures: Lecture[] = priorityData.lectureLowRank.slice(0, 10); // 하위 10개
 
   const lectures = showHighRank ? highRankLectures : lowRankLectures;
 
