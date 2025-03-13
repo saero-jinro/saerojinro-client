@@ -6,7 +6,7 @@ import { Nav } from '../nav';
 const MobileNavTop = () => {
   return (
     <div className="flex items-end h-[28px] mb-2 gap-[0.5px]">
-      <span className="text-[14px]">김기준님</span>
+      <span className="text-[14px]">김철수님</span>
     </div>
   );
 };
@@ -51,7 +51,7 @@ export const MobileNavigation = ({ navDtos }: Props) => {
       renderSection={(section, renderItem) => (
         <MobileNavSection key={section.title} section={section} renderItem={renderItem} />
       )}
-      className="fixed z-[1000] w-[75%] p-4 h-screen top-0 right-0 bg-white dark:bg-black select-none"
+      className="fixed z-[1000] w-[75%] p-4 h-screen top-0 right-0 text-black dark:text-white bg-white dark:bg-black select-none"
     />
   );
 };

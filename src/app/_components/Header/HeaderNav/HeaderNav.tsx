@@ -3,13 +3,17 @@
 import { MobileNavigation } from '@/_components/Nav/navigation/HeaderNav.mobile';
 import { WebNavList } from '@/_components/Nav/navigation/HeaderNav.web';
 import ViewportSlice from '@/_store/Main/viewportStore';
+import { ReactNode, useEffect, useState } from 'react';
 import { HeaderOverlay, MenuButton } from './ETC';
 import useResize from '@/_hooks/nav/useResize';
 import { useNav } from '@/_hooks/nav/useNav';
-import { useEffect, useState } from 'react';
+
+interface Props {
+  children?: ReactNode;
+}
 
 // 헤더 네비게이션
-const HeaderNav = () => {
+const HeaderNav = ({ children }: Props) => {
   const [isToggle, setIsToggle] = useState(false);
   const viewmode = ViewportSlice((store) => store.state.mode);
   const toggleNavMobile = (state: boolean) => setIsToggle(state);
@@ -36,7 +40,7 @@ const HeaderNav = () => {
         >
           {role === 'viewer' ? '어드민 전환 버튼' : '참가자 전환 버튼'}
         </button>
-        <WebNavList web={navlist.web} />
+        <WebNavList web={navlist.web}>{children}</WebNavList>
       </>
     );
 
