@@ -2,8 +2,8 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* --font-sans: var(--font-geist-sans); */
+  /* --font-mono: var(--font-geist-mono); */
 }
 
 :root {
@@ -20,7 +20,7 @@ body {
 
 .hide-scrollbar {
   overflow-x: scroll;
-  -ms-overflow-style: none;
+  /* -ms-overflow-style: none; */
   scrollbar-width: none;
 }
 

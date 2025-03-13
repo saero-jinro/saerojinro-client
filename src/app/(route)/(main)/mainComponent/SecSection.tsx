@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import Card from '@/_components/Card/Card';
 import OptionList from './component/OptionList';
 
-interface LectureList {
+export interface LectureList {
   id: number;
   title: string;
   category: string;

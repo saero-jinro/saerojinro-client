@@ -1,4 +1,4 @@
-import KakaoMap from './component/kakaoMap';
+// import KakaoMap from './component/kakaoMap';
 
 const TrdSection = () => {
   return (
@@ -13,7 +13,7 @@ const TrdSection = () => {
           <span>blurrrr</span>
         </div>
         <div className="w-[100%] aspect-video max-md:w-[100%] max-md:h-[100%] mt-auto mx-auto bg-gray-400 flex justify-center items-center text-gray-700 ">
-          <KakaoMap />
+          {/* <KakaoMap /> */}
         </div>
       </div>
     </section>
