@@ -6,7 +6,7 @@ interface DayTabProps {
 
 const DayTab = ({ days, selectedDay, onSelectDay }: DayTabProps) => {
   return (
-    <div className="flex justify-between border-b-1 mt-2 mb-4 ">
+    <div className="flex justify-between border-b-1 mb-4 ">
       {days.map((day) => (
         <button
           key={day}
