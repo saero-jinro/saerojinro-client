@@ -3,6 +3,7 @@
 import { useEffect, useState, Fragment } from 'react';
 import { useRouter } from 'next/navigation';
 import response from '@/dummyData/timetable/getTimetable.json';
+import wishlistResponse from '@/dummyData/timetable/getWishlist.json';
 import recommandLecturesDummy from '@/dummyData/timetable/getTimetableRecommand.json';
 import DayTab from '@/_components/DayTab/DayTab';
 
@@ -33,12 +34,23 @@ interface RecommandLectureProps {
   speaker: string;
 }
 
+interface WishLectureProps {
+  id: number;
+  lectureTitle: string;
+  startTime: string;
+  endTime: string;
+  speaker: string;
+  location: string;
+}
+
 const TimetablePage = () => {
   const [userLectures, setUserLectures] = useState<UserLectures>({ reservation: [], wishlist: [] });
   const [selectedDay, setSelectedDay] = useState<string>('Day1');
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [recommandLectures, setRecommandLectures] = useState<RecommandLectureProps[]>([]);
   const [baseDate, setBaseDate] = useState<Date | null>(null);
+  const [wishlist, setWishlist] = useState<WishLectureProps[]>([]);
+  const [showWishlist, setShowWishlist] = useState<boolean>(false);
 
   const router = useRouter();
   const currentUserId = 222; // 현재 로그인한 유저 ID 가져오는 로직 추가
@@ -116,6 +128,7 @@ const TimetablePage = () => {
   const handleEmptySlotClick = (day: number, start: string) => {
     if (!baseDate) return;
 
+    setShowWishlist(false);
     setSelectedTime(`Day${day} ${start}`);
 
     const selectedDate = new Date(baseDate);
@@ -142,16 +155,21 @@ const TimetablePage = () => {
 
   const occupiedSlots = new Set();
 
+  const handleWishlistClick = () => {
+    setWishlist(wishlistResponse.response);
+    setSelectedTime(null);
+    setShowWishlist((prev) => !prev);
+  };
+
   return (
     <div className="flex gap-4">
       <div className="flex-2 p-10">
-        <h1
-          className={`text-xl font-bold mb-4 transition-all ${
-            selectedTime ? 'text-left' : 'text-center w-full'
-          }`}
-        >
-          컴퍼런스 일정 시간표
-        </h1>
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-xl font-bold transition-all">컴퍼런스 일정 시간표</h1>
+          <button className="bg-gray-200 px-1 cursor-pointer" onClick={handleWishlistClick}>
+            즐찾
+          </button>
+        </div>
         <DayTab
           days={['Day1', 'Day2', 'Day3']}
           selectedDay={selectedDay}
@@ -298,6 +316,45 @@ const TimetablePage = () => {
                     </span>
                   </div>
                   <span>{lecture?.title}</span>
+                  <div className="flex justify-between w-full">
+                    <p>{lecture.speaker}</p>
+                    <button className="bg-gray-600 text-white p-1 text-xs dark:bg-gray-500 cursor-pointer">
+                      강의 신청
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+
+      {showWishlist && (
+        <div className="flex-1 p-4 pt-10 bg-gray-50 h-screen dark:bg-gray-900">
+          <h3 className="text-md font-semibold">즐겨찾기 목록</h3>
+          <div className="h-full overflow-auto">
+            <ul className="mt-2 border">
+              {wishlist.map((lecture) => (
+                <li key={lecture.id} className="p-2 border-b border-gray-200">
+                  <div className="flex items-center gap-2">
+                    <p className="bg-gray-200 text-sm w-fit px-2 dark:bg-gray-600">
+                      {lecture.location}
+                    </p>
+                    <span className="text-xs">
+                      {new Date(lecture?.startTime).toLocaleTimeString('ko-KR', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false,
+                      })}{' '}
+                      -{' '}
+                      {new Date(lecture?.endTime).toLocaleTimeString('ko-KR', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false,
+                      })}
+                    </span>
+                  </div>
+                  <span>{lecture?.lectureTitle}</span>
                   <div className="flex justify-between w-full">
                     <p>{lecture.speaker}</p>
                     <button className="bg-gray-600 text-white p-1 text-xs dark:bg-gray-500 cursor-pointer">
