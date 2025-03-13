@@ -6,8 +6,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        geist: ['Geist Sans', 'sans-serif'],
-        mono: ['Geist Mono', 'monospace'],
+        pretendard: ['Pretendard', 'sans-serif'],
       },
     },
   },
