@@ -101,10 +101,8 @@ const Page = () => {
                   title={lecture.title}
                   time={`${formatTime(lecture.start_time)} ~ ${formatTime(lecture.end_time)}`}
                   category={lecture.category}
-                  showWish={true}
-                >
-                  <></>
-                </Card>
+                  isProfile={true}
+                />
               ))}
             </ScrollWrapper>
           </div>

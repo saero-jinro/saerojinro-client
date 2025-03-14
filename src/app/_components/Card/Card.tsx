@@ -9,11 +9,11 @@ interface CardProps {
   title: string;
   category: string;
   time: string;
-  speakerName: string;
+  speakerName?: string;
   isProfile?: boolean;
 }
 
-const Card = ({ id, image, title, category, time, speakerName, isProfile }: CardProps) => {
+const Card = ({ id, image, title, category, time, speakerName, isProfile = false }: CardProps) => {
   const router = useRouter();
 
   const handleClick = () => {
