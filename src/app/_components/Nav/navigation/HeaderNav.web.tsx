@@ -2,7 +2,7 @@ import { NavItem } from '@/_types/Header/Header.type';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { ReactNode } from 'react';
-import Alarm from '@/_components/Header/alarm/alarm';
+// import Alarm from '@/_components/Header/alarm/alarm';
 
 interface WebNavListProps {
   web: NavItem[];
@@ -25,7 +25,7 @@ export const WebNavList = ({ web, children }: WebNavListProps) => {
         </ol>
       </nav>
       {!pathname.startsWith('/admin') && <span>김철수님</span>}
-      <Alarm />
+      {/* <Alarm /> */}
     </div>
   );
 };
