@@ -154,6 +154,7 @@ const LectureListPage = () => {
                   category={lecture.category}
                   time={`${formatTime(lecture.start_time)} ~ ${formatTime(lecture.end_time)}`}
                   speakerName={lecture.speakerName}
+                  isWished={true}
                   isProfile={false}
                 />
               ))}
