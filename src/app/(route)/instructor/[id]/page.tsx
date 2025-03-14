@@ -5,6 +5,7 @@ import Card from '@/_components/Card/Card';
 import { formatTime } from '@/_utils/Card/formatTime';
 import { ApiResponse } from '@/api/auth/route';
 import { useEffect, useState } from 'react';
+import { useLectureStore } from '@/_store/LectureList/useLectureStore';
 
 interface LectureList {
   id: number;
@@ -19,6 +20,7 @@ type GetDtoResPonse = ApiResponse<string>;
 const Page = () => {
   const [lectures, setLectures] = useState<LectureList[]>([]); // 강의 아이템 리스트[]
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const { wishlist } = useLectureStore();
 
   useEffect(() => {
     (async () => {
@@ -101,6 +103,7 @@ const Page = () => {
                   title={lecture.title}
                   time={`${formatTime(lecture.start_time)} ~ ${formatTime(lecture.end_time)}`}
                   category={lecture.category}
+                  isWished={wishlist.has(lecture.id)}
                   isProfile={true}
                 />
               ))}
