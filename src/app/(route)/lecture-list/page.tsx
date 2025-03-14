@@ -153,19 +153,9 @@ const LectureListPage = () => {
                   title={lecture.title}
                   category={lecture.category}
                   time={`${formatTime(lecture.start_time)} ~ ${formatTime(lecture.end_time)}`}
-                  showWish={true}
-                >
-                  <div className="flex items-center mt-1">
-                    <div className="w-4 h-4 bg-gray-300 rounded-full mr-2"></div>
-                    <p className="text-sm font-semibold">{lecture.speakerName}</p>
-                  </div>
-                  <button
-                    className="w-full mt-2 bg-gray-700 text-white py-2 text-sm"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    강의 신청하기
-                  </button>
-                </Card>
+                  speakerName={lecture.speakerName}
+                  isProfile={false}
+                />
               ))}
             </ul>
           </div>
