@@ -78,10 +78,9 @@ const SecSection = () => {
                 title={lecture.title}
                 time="임시 시간"
                 category={lecture.category}
-                showWish={true}
-              >
-                <></>
-              </Card>
+                speakerName={lecture.speakerName}
+                isProfile={false}
+              />
             ))}
           </ScrollWrapper>
         </div>
