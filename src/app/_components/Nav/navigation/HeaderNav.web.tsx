@@ -1,17 +1,21 @@
-import { NavItem } from '@/_types/Header/Header.type';
+import { NavItem, UserRole } from '@/_types/Header/Header.type';
 import Alarm from '@/_components/Header/Alarm/Alarm';
-import { usePathname } from 'next/navigation';
+// import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { ReactNode } from 'react';
+import { useNav } from '@/_hooks/nav/useNav';
+import { usePathname } from 'next/navigation';
 
 interface WebNavListProps {
-  web: NavItem[];
+  role: UserRole;
+  nickName: string;
   children?: ReactNode;
 }
 
 // 웹
-export const WebNavList = ({ web, children }: WebNavListProps) => {
+export const WebNavList = ({ role, nickName, children }: WebNavListProps) => {
   const pathname = usePathname();
+  const { web } = useNav(role);
 
   return (
     <div className="flex justify-center items-center gap-2 select-none text-[18px]">
@@ -24,7 +28,8 @@ export const WebNavList = ({ web, children }: WebNavListProps) => {
           ))}
         </ol>
       </nav>
-      {!pathname.startsWith('/admin') && <span>김철수님</span>}
+
+      {!pathname.startsWith('/admin') && role !== 'no-login' && <span>{nickName}</span>}
       <Alarm />
     </div>
   );

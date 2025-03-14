@@ -50,7 +50,13 @@ const ToggleModal = ({ desc, isOpen, children, hasOverlay = false, onClose, ...p
 };
 
 const Overlay = () => {
-  return <div className="fixed z-100 w-screen h-screen bg-[#8181815e] top-0 left-0" />;
+  const TOP_GAP = 78.32;
+  return (
+    <div
+      style={{ height: `calc(100vh - ${TOP_GAP}px )` }}
+      className="fixed z-100 w-screen bottom-0 bg-[#8181815e] left-0"
+    />
+  );
 };
 
 export default ToggleModal;

@@ -4,7 +4,7 @@ import AlramIcon from '@/assets/Header/alarm.svg';
 import { useState } from 'react';
 
 const Alarm = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
   const openModal = () => setIsOpen(true);
   const ICON_WIDTH = 24;

@@ -1,12 +1,13 @@
-import { NavGroup, NavItem, NavSectionProps } from '@/_types/Header/Header.type';
+import { NavItem, NavSectionProps, UserRole } from '@/_types/Header/Header.type';
 import Right from '@/assets/Header/right.svg';
 import Link from 'next/link';
 import { Nav } from '../nav';
+import { useNav } from '@/_hooks/nav/useNav';
 
-const MobileNavTop = () => {
+const MobileNavTop = ({ nickName }: { nickName: string }) => {
   return (
     <div className="flex items-end h-[28px] mb-2 gap-[0.5px]">
-      <span className="text-[14px]">김철수님</span>
+      <span className="text-[14px]">{nickName}</span>
     </div>
   );
 };
@@ -39,14 +40,17 @@ const MobileNavItem = ({ path, title }: NavItem) => {
 // -------------네비게이션--------------
 
 interface Props {
-  navDtos: NavGroup[];
+  role: UserRole;
+  nickName: string;
 }
 
-export const MobileNavigation = ({ navDtos }: Props) => {
+export const MobileNavigation = ({ role, nickName }: Props) => {
+  const { mobile } = useNav(role);
+
   return (
     <Nav
-      navDto={navDtos}
-      renderTop={() => <MobileNavTop />}
+      navDto={mobile}
+      renderTop={() => (role !== 'no-login' ? <MobileNavTop nickName={nickName} /> : <></>)}
       renderItem={(item) => <MobileNavItem key={item.title} {...item} />}
       renderSection={(section, renderItem) => (
         <MobileNavSection key={section.title} section={section} renderItem={renderItem} />

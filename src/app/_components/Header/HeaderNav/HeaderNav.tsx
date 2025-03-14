@@ -6,7 +6,7 @@ import ViewportSlice from '@/_store/Main/viewportStore';
 import { ReactNode, useEffect, useState } from 'react';
 import { HeaderOverlay, MenuButton } from './ETC';
 import useResize from '@/_hooks/nav/useResize';
-import { useNav } from '@/_hooks/nav/useNav';
+import { UserRole } from '@/_types/Header/Header.type';
 
 interface Props {
   children?: ReactNode;
@@ -17,8 +17,8 @@ const HeaderNav = ({ children }: Props) => {
   const [isToggle, setIsToggle] = useState(false);
   const viewmode = ViewportSlice((store) => store.state.mode);
   const toggleNavMobile = (state: boolean) => setIsToggle(state);
-  const [role, setRole] = useState<'viewer' | 'admin'>('viewer'); // 임시 상태 버튼
-  const navlist = useNav(role);
+  const [role, setRole] = useState<UserRole>('viewer'); // 임시 상태 버튼
+
   // 리사이즈 훅
   useResize();
 
@@ -27,28 +27,40 @@ const HeaderNav = ({ children }: Props) => {
     if (viewmode === 'web') setIsToggle(false);
   }, [viewmode, setIsToggle]);
 
-  if (viewmode === 'web')
+  // 가상 넥넴
+  const GetNickName = (role: UserRole) => {
+    if (role === 'no-login') return 'null';
+    if (role === 'viewer') return '김철수';
+    return 'admin';
+  };
+
+  // 가상 권한
+  const changeRole = () => {
+    setRole((prev) => {
+      if (prev === 'viewer') return 'admin';
+      if (prev === 'admin') return 'no-login';
+      return 'viewer';
+    });
+  };
+
+  /** 웹 모드 **/
+  if (viewmode === 'web') {
     return (
       <>
-        <button
-          onClick={() => {
-            setRole((prev) => {
-              if (prev === 'viewer') return 'admin';
-              return 'viewer';
-            });
-          }}
-        >
-          {role === 'viewer' ? '어드민 전환 버튼' : '참가자 전환 버튼'}
-        </button>
-        <WebNavList web={navlist.web}>{children}</WebNavList>
+        <button onClick={changeRole}>{`권한 변경 버튼(${role})`}</button>
+        <WebNavList role={role} nickName={GetNickName(role)}>
+          {children}
+        </WebNavList>
       </>
     );
+  }
 
+  /** 모바일 모드 **/
   return (
     <>
       {isToggle && (
         <>
-          <MobileNavigation navDtos={navlist.mobile} />
+          <MobileNavigation role={role} nickName={GetNickName(role)} />
           <HeaderOverlay onClickHandler={() => toggleNavMobile(false)} />
         </>
       )}
