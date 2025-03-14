@@ -10,11 +10,11 @@ interface Props {
 }
 
 const ThemeToggleButton = (props: Props) => {
-  const { toggleTheme, theme } = useTheme(props.theme);
+  const { toggleTheme } = useTheme(props.theme);
 
   return (
     <ClickButton actionDesc="toggle-theme" onClickAction={toggleTheme}>
-      <ThemeToggleView theme={theme} />
+      <ThemeToggleView />
     </ClickButton>
   );
 };
