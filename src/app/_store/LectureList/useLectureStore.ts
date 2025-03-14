@@ -26,6 +26,7 @@ interface LectureStore {
   wishlist: Set<number>;
   fetchLectures: () => void;
   fetchWishlist: () => void;
+  toggleWish: (id: number) => void;
 }
 
 const lectureData = lectureDataResponse as { data: { lectures: LectureListProps[] } };
@@ -75,5 +76,44 @@ export const useLectureStore = create<LectureStore>((set) => ({
     } else {
       console.error('즐겨찾기 데이터 구조가 예상과 다릅니다:', wishlistData);
     }
+  },
+
+  toggleWish: (id: number) => {
+    set((state) => {
+      const newWishlist = new Set(state.wishlist);
+      if (newWishlist.has(id)) {
+        newWishlist.delete(id);
+      } else {
+        newWishlist.add(id);
+      }
+      return { wishlist: newWishlist };
+    });
+
+    //  try {
+    //    const isWished = useLectureStore.getState().wishlist.has(id);
+    //    const url = `/api/wishlist/${id}`;
+    //    const method = isWished ? 'POST' : 'DELETE';
+
+    //    const response = await fetch(url, {
+    //      method,
+    //      credentials: 'include',
+    //    });
+
+    //    if (!response.ok) {
+    //      throw new Error(`즐겨찾기 ${isWished ? '추가' : '삭제'} 실패`);
+    //    }
+    //  } catch (error) {
+    //    console.error('즐겨찾기 상태 변경 실패:', error);
+
+    //    set((state) => {
+    //      const rollbackWishlist = new Set(state.wishlist);
+    //      if (rollbackWishlist.has(id)) {
+    //        rollbackWishlist.delete(id);
+    //      } else {
+    //        rollbackWishlist.add(id);
+    //      }
+    //      return { wishlist: rollbackWishlist };
+    //    });
+    //  }
   },
 }));

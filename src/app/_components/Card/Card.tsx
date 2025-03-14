@@ -45,12 +45,7 @@ const Card = ({
           className="w-full h-[170] object-cover"
           priority
         />
-        <WishButton
-          isWished={isWished}
-          onToggleWish={() => console.log(`즐찾 상태 변경: ${id}`)}
-          itemId={id}
-          className="absolute top-2 right-2"
-        />
+        <WishButton isWished={isWished} itemId={id} className="absolute top-2 right-2" />
       </div>
       <div className="px-4 py-5">
         <div className="w-full bg-white text-sm font-semibold leading-[140%] dark:bg-black dark:text-white">
