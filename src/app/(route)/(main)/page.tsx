@@ -1,12 +1,12 @@
 import Footer from './mainComponent/_MainFooter';
-import FourthSection from './mainComponent/FourthSection';
 import FstSection from './mainComponent/FstSection';
 import SecSection from './mainComponent/SecSection';
 import TrdSection from './mainComponent/TrdSection';
+import FourthSection from './mainComponent/FourthSection';
 
 const Page = () => {
   return (
-    <div className="w-screen h-screen">
+    <div className="w-screen">
       <div className="w-screen flex flex-col gap-[2rem] mx-auto item">
         <main>
           <FstSection />
