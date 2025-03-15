@@ -7,7 +7,7 @@ import FourthSection from './mainComponent/FourthSection';
 const Page = () => {
   return (
     <div className="w-screen">
-      <div className="w-screen flex flex-col gap-[2rem] mx-auto item">
+      <div className="w-screen flex flex-col mx-auto">
         <main>
           <FstSection />
           <SecSection />
