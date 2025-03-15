@@ -8,10 +8,12 @@ const Page = () => {
   return (
     <div className="w-screen h-screen">
       <div className="w-screen flex flex-col gap-[2rem] mx-auto item">
-        <FstSection />
-        <SecSection />
-        <TrdSection />
-        <FourthSection />
+        <main>
+          <FstSection />
+          <SecSection />
+          <TrdSection />
+          <FourthSection />
+        </main>
         <Footer />
       </div>
     </div>

@@ -1,12 +1,12 @@
 'use client';
 
+import { useLectureStore } from '@/_store/LectureList/useLectureStore';
 import SectionWrapper from './component/SectionWrapper';
 import ScrollWrapper from './component/ScrollWrapper';
+import OptionList from './component/OptionList';
 import { ApiResponse } from '@/api/auth/route';
 import { useEffect, useState } from 'react';
 import Card from '@/_components/Card/Card';
-import OptionList from './component/OptionList';
-import { useLectureStore } from '@/_store/LectureList/useLectureStore';
 
 export interface LectureList {
   id: number;
