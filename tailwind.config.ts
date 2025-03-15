@@ -6,9 +6,9 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary:  "#155DFC", 
+        primary: '#155DFC',
       },
-      
+
       fontFamily: {
         pretendard: ['Pretendard', 'sans-serif'],
       },

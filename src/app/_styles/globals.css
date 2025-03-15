@@ -4,17 +4,17 @@
 
 @layer components {
   .btn {
-    color:#fff;
-    background-color: var(--color-bg-interactive-primary, #155DFC);
+    color: #fff;
+    background-color: var(--color-bg-interactive-primary, #155dfc);
   }
 
   .dark .btn {
     background-color: #333;
-    color:#fff;
+    color: #fff;
   }
 
   .bg-primary {
-    background-color: var(--color-bg-interactive-primary, #155DFC);
+    background-color: var(--color-bg-interactive-primary, #155dfc);
   }
 
   .dark .bg-primary {
@@ -22,13 +22,12 @@
   }
 
   .text-primary {
-    color:#fff;
+    color: #fff;
   }
 
   .dark .text-primary {
     background-color: #333;
   }
-
 }
 
 @theme {
@@ -57,4 +56,3 @@ body {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
-
