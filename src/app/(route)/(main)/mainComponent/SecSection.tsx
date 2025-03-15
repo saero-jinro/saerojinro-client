@@ -6,6 +6,7 @@ import { ApiResponse } from '@/api/auth/route';
 import { useEffect, useState } from 'react';
 import Card from '@/_components/Card/Card';
 import OptionList from './component/OptionList';
+import { useLectureStore } from '@/_store/LectureList/useLectureStore';
 
 export interface LectureList {
   id: number;
@@ -24,6 +25,7 @@ const SecSection = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
   const [lectureOption, setLectureOption] = useState<LectureOption>('all'); // 강의 옵션 상태
   const [lectures, setLectures] = useState<LectureList[]>([]); // 강의 아이템 리스트[]
+  const { wishlist } = useLectureStore();
 
   // lectureOption에 따른 API 요청
   useEffect(() => {
@@ -79,6 +81,7 @@ const SecSection = () => {
                 time="임시 시간"
                 category={lecture.category}
                 speakerName={lecture.speakerName}
+                isWished={wishlist.has(lecture.id)}
                 isProfile={false}
               />
             ))}

@@ -3,7 +3,7 @@
 import { useEffect, useState, Fragment } from 'react';
 import { useRouter } from 'next/navigation';
 import response from '@/dummyData/timetable/getTimetable.json';
-import wishlistResponse from '@/dummyData/timetable/getWishlist.json';
+import wishlistResponse from '@/dummyData/wishlist/getWishlist.json';
 import recommandLecturesDummy from '@/dummyData/timetable/getTimetableRecommand.json';
 import DayTab from '@/_components/DayTab/DayTab';
 

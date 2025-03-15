@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import WishButton from '../Wish/WishButton';
 
 interface CardProps {
   id: number;
@@ -10,10 +11,20 @@ interface CardProps {
   category: string;
   time: string;
   speakerName?: string;
+  isWished: boolean;
   isProfile?: boolean;
 }
 
-const Card = ({ id, image, title, category, time, speakerName, isProfile = false }: CardProps) => {
+const Card = ({
+  id,
+  image,
+  title,
+  category,
+  time,
+  speakerName,
+  isWished,
+  isProfile = false,
+}: CardProps) => {
   const router = useRouter();
 
   const handleClick = () => {
@@ -34,12 +45,7 @@ const Card = ({ id, image, title, category, time, speakerName, isProfile = false
           className="w-full h-[170] object-cover"
           priority
         />
-        <button
-          className="absolute top-4 right-4 bg-gray-200 text-white text-xs px-2 py-1 w-8 h-8"
-          onClick={(e) => e.stopPropagation()}
-        >
-          ⭐️
-        </button>
+        <WishButton isWished={isWished} itemId={id} className="absolute top-2 right-2" />
       </div>
       <div className="px-4 py-5">
         <div className="w-full bg-white text-sm font-semibold leading-[140%] dark:bg-black dark:text-white">
