@@ -15,7 +15,7 @@ const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>)
       >
         <KaKaoScript />
         <Header />
-        {children}
+        <div className="pt-[81px]">{children}</div>
       </body>
     </html>
   );

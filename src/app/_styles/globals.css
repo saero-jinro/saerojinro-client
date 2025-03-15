@@ -2,6 +2,34 @@
 @import 'tailwindcss';
 @custom-variant dark (&:where(.dark, .dark *));
 
+@layer components {
+  .btn {
+    color: #fff;
+    background-color: var(--color-bg-interactive-primary, #155dfc);
+  }
+
+  .dark .btn {
+    background-color: #333;
+    color: #fff;
+  }
+
+  .bg-primary {
+    background-color: var(--color-bg-interactive-primary, #155dfc);
+  }
+
+  .dark .bg-primary {
+    background-color: #333;
+  }
+
+  .text-primary {
+    color: #fff;
+  }
+
+  .dark .text-primary {
+    background-color: #333;
+  }
+}
+
 @theme {
   /* --font-sans: var(--font-geist-sans); */
   /* --font-mono: var(--font-geist-mono); */
