@@ -6,7 +6,7 @@
 import Image from 'next/image';
 
 // 빌드시 가끔 1초에 5번 이상 호출되어 가끔 API 락걸림
-// 때문에 개발 단계에서는 사진으로 대체
+// 때문에 사진으로 대체
 const KakaoMap = () => {
   // const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_JS_KEY}&autoload=false`;
   // const [isLoaded, setIsLoaded] = useState(false);
@@ -21,7 +21,7 @@ const KakaoMap = () => {
         // onError={() => setHasError(true)}
       /> */}
 
-      {/* {!isLoaded || !hasError ? ( */}
+      {/* {isLoaded || hasError ? ( */}
       <LoadingMapImg />
       {/* ) : (
         <Map
