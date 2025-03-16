@@ -41,7 +41,8 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const results = ${{ steps.lighthouse_audit.outputs.manifest }};
-            if (!results) {
+            if (!results || results.length === 0) {
+              console.log("🚨 Lighthouse 결과가 없습니다.");
               core.setOutput("comment", "🚦 Lighthouse 테스트가 실행되었지만 결과가 없습니다. 실행 로그를 확인해주세요.");
             } else {
               const formattedResults = results.map(result => {
@@ -53,6 +54,7 @@ jobs:
                 **Best Practices:** ${result.summary['best-practices'] * 100}`;
               }).join("\n\n---\n\n");
 
+              console.log("✅ Lighthouse 결과: ", formattedResults);
               core.setOutput("comment", formattedResults);
             }
 
@@ -64,4 +66,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ github.event.pull_request.number }}
           header: lighthouse
-          message: ${{ steps.lighthouse_result.outputs.comment }}
+          message: ${{ steps.lighthouse_result.outputs.comment || '🚦 Lighthouse 결과가 없습니다. 실행 로그를 확인해주세요.' }}
