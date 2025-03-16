@@ -2,7 +2,7 @@
 
 ### 배포 url
 
-https://saerojinro-client.vercel.app/
+https://ittime.site
 
 ### Branch Naming Convention
 
