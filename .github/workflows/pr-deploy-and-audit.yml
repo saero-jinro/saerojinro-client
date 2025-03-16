@@ -40,7 +40,21 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            core.setOutput("comment", "🚀 Lighthouse 테스트 완료");
+            const results = ${{ steps.lighthouse_audit.outputs.manifest }};
+            if (!results) {
+              core.setOutput("comment", "🚦 Lighthouse 테스트가 실행되었지만 결과가 없습니다. 실행 로그를 확인해주세요.");
+            } else {
+              const formattedResults = results.map(result => {
+                return `🌍 [${result.url}](${result.url})  
+                ⚡️ [Lighthouse Report](${result.report})  
+                **Performance:** ${result.summary.performance * 100}  
+                **Accessibility:** ${result.summary.accessibility * 100}  
+                **SEO:** ${result.summary.seo * 100}  
+                **Best Practices:** ${result.summary['best-practices'] * 100}`;
+              }).join("\n\n---\n\n");
+
+              core.setOutput("comment", formattedResults);
+            }
 
       - name: Add Lighthouse comment to PR
         id: lighthouse_comment_to_pr
@@ -50,5 +64,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ github.event.pull_request.number }}
           header: lighthouse
-          message: |
-            ${{ steps.lighthouse_result.outputs.comment || "🚦 Lighthouse 결과가 없습니다." }}
+          message: ${{ steps.lighthouse_result.outputs.comment }}
