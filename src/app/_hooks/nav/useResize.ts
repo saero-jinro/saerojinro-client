@@ -1,12 +1,12 @@
 'use client';
 
-import ViewportSlice from '@/_store/Header/useHeaderStore';
+import useHeaderStore from '@/_store/Header/useHeaderStore';
 import { useEffect } from 'react';
 
 const useResize = () => {
   const MAX_MOBILE_WIDTH = 769;
-  const setWidth = ViewportSlice((store) => store.viewport.actions.setWidth);
-  const setMode = ViewportSlice((store) => store.viewport.actions.setMode);
+  const setWidth = useHeaderStore((store) => store.actions.setWidth);
+  const setMode = useHeaderStore((store) => store.actions.setMode);
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;

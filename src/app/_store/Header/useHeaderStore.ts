@@ -1,11 +1,8 @@
-import { Alarm } from '@/_types/Header/Alarm.type';
-import { produce } from 'immer';
+import { BaseSlice } from '@/_types/store';
 import { create } from 'zustand';
+import { produce } from 'immer';
 
-/** -------type------- **/
-//#region
-
-type ViewMode = 'mobile' | 'web';
+export type ViewMode = 'mobile' | 'web';
 
 interface ViewportState {
   width: number;
@@ -17,66 +14,30 @@ interface ViewportActions {
   setMode: (mode: ViewMode) => void;
 }
 
-export type AlarmView = Alarm & { time: string };
+type HeaderSlice = BaseSlice<ViewportState, ViewportActions>;
 
-interface AlarmState {
-  alarms: AlarmView[];
-}
-
-interface AlarmActions {
-  addAlarm: (alarm: Alarm) => void;
-}
-
-//------------------total------------------
-interface BaseSlice<State, Action> {
-  state: State;
-  actions: Action;
-}
-
-export interface HeaderSlice {
-  viewport: BaseSlice<ViewportState, ViewportActions>;
-  alarm: BaseSlice<AlarmState, AlarmActions>;
-}
-
-//#endregion
-
-const useHeaderSlice = create<HeaderSlice>((set) => ({
-  viewport: {
-    state: {
-      mode: 'web',
-      width: 1920,
-    },
-    actions: {
-      setWidth(width: number) {
-        set(
-          produce<HeaderSlice>((store) => {
-            store.viewport.state.width = width;
-          }),
-        );
-      },
-      setMode(mode: ViewMode) {
-        set(
-          produce<HeaderSlice>((store) => {
-            store.viewport.state.mode = mode;
-          }),
-        );
-      },
-    },
+// 해더 스토어
+const useHeaderStore = create<HeaderSlice>((set) => ({
+  state: {
+    mode: 'web',
+    width: 1920,
   },
-  alarm: {
-    state: {
-      alarms: [],
+  actions: {
+    setWidth(width: number) {
+      set(
+        produce<HeaderSlice>((store) => {
+          store.state.width = width;
+        }),
+      );
     },
-    actions: {
-      addAlarm(alarm) {
-        set(
-          produce<HeaderSlice>((store) => {
-            store.alarm.state.alarms.push({ ...alarm, time: new Date().toISOString() });
-          }),
-        );
-      },
+    setMode(mode: ViewMode) {
+      set(
+        produce<HeaderSlice>((store) => {
+          store.state.mode = mode;
+        }),
+      );
     },
   },
 }));
 
-export default useHeaderSlice;
+export default useHeaderStore;
