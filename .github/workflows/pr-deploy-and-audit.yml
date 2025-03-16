@@ -1,6 +1,9 @@
 name: PR Deploy and Audit
 on: [pull_request]
 
+permissions:
+  pull-requests: write
+
 jobs:
   deploy_and_audit:
     runs-on: ubuntu-latest
