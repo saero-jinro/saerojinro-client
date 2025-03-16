@@ -41,6 +41,9 @@ const ToggleModal = ({ desc, isOpen, children, hasOverlay = false, onClose, ...p
         ref={ref}
         aria-labelledby={desc}
         onClick={(e) => e.stopPropagation()}
+        onKeyDown={(e) => {
+          if (e.key === 'Escape') onClose();
+        }}
         {...props}
       >
         {children}
