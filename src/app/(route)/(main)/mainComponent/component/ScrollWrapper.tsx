@@ -1,5 +1,5 @@
 import ClickButton from '@/_components/ClickButton';
-import ViewportSlice from '@/_store/Main/viewportStore';
+import ViewportSlice from '@/_store/Header/useHeaderStore';
 import React, { useState, useRef, useEffect, ReactNode } from 'react';
 
 interface ScrollWrapperProps {
@@ -10,7 +10,7 @@ interface ScrollWrapperProps {
 }
 
 const ScrollWrapper = ({ children, gap = 10, scrollStep = 3, className }: ScrollWrapperProps) => {
-  const viewmode = ViewportSlice((store) => store.state.mode);
+  const viewmode = ViewportSlice((store) => store.viewport.state.mode);
   const [innerWidth, setInnerWidth] = useState(0);
   const [outerWidth, setOuterWidth] = useState(0);
   const [scroll, setScroll] = useState(0);

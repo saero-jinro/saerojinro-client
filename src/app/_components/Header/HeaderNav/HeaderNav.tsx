@@ -2,11 +2,11 @@
 
 import { MobileNavigation } from '@/_components/Nav/navigation/HeaderNav.mobile';
 import { WebNavList } from '@/_components/Nav/navigation/HeaderNav.web';
-import ViewportSlice from '@/_store/Main/viewportStore';
+import ViewportSlice from '@/_store/Header/useHeaderStore';
+import { UserRole } from '@/_types/Header/Header.type';
 import { ReactNode, useEffect, useState } from 'react';
 import { HeaderOverlay, MenuButton } from './ETC';
 import useResize from '@/_hooks/nav/useResize';
-import { UserRole } from '@/_types/Header/Header.type';
 
 interface Props {
   children?: ReactNode;
@@ -15,7 +15,7 @@ interface Props {
 // 헤더 네비게이션
 const HeaderNav = ({ children }: Props) => {
   const [isToggle, setIsToggle] = useState(false);
-  const viewmode = ViewportSlice((store) => store.state.mode);
+  const viewmode = ViewportSlice((store) => store.viewport.state.mode);
   const toggleNavMobile = (state: boolean) => setIsToggle(state);
   const [role, setRole] = useState<UserRole>('viewer'); // 임시 상태 버튼
 
