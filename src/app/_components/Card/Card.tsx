@@ -33,7 +33,7 @@ const Card = ({
 
   return (
     <div
-      className="overflow-hidden w-[282px] bg-white border border-[#DEE2E6] rounded-xl cursor-pointer"
+      className="overflow-hidden w-[282px] bg-white dark:bg-black border border-[#DEE2E6] rounded-xl cursor-pointer"
       onClick={handleClick}
     >
       <div className="relative">
