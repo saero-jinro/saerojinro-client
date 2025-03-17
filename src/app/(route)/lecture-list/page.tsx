@@ -53,7 +53,9 @@ const LectureListPage = () => {
     <div className="px-10 py-16">
       <DayTab days={days} selectedDay={selectedDay} onSelectDay={setSelectedDay} />
       <div className="relative flex justify-between items-center h-10 mt-10">
-        <h1 className="text-lg font-medium leading-[140%]">{lectures.length} Sessions</h1>
+        <h1 className="text-lg font-medium leading-[140%]">
+          {groupedByDay[selectedDay]?.length || 0} Sessions
+        </h1>
         <button
           onClick={() => setIsFilterOpen(true)}
           className="text-lg font-medium leading-[140%] border-1 border-gray-300 rounded-lg dark:bg-neutral-800"
