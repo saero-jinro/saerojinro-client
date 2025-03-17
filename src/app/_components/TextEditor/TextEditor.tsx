@@ -21,6 +21,7 @@ const TextEditor = ({ desc, content, editor, setEditorContent, ...props }: Props
   return (
     <div id={desc} {...props}>
       <button
+        type="button"
         onClick={() => {
           if (!editor) return;
           const jsonData = editor.getJSON();
