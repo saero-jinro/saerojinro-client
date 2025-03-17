@@ -36,7 +36,7 @@ export const WebNavList = ({ role, nickName, children }: WebNavListProps) => {
 
 const WebNavItem = ({ path, title }: NavItem) => {
   return (
-    <li className="cursor-pointer px-2 py-3" key={title}>
+    <li className="cursor-pointer px-2 py-3 text-nowrap" key={title}>
       <Link href={path}>{title}</Link>
     </li>
   );
