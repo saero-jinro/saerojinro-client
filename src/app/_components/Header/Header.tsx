@@ -8,9 +8,9 @@ const Header = async () => {
 
   return (
     <header className="fixed z-[1000] w-screen bg-[#171717] px-10 py-4">
-      <nav className="w-[100%] h-full mx-auto px-4 flex justify-between z-[900] items-center text-[#F8F9FA]">
+      <nav className="w-[100%] mx-auto px-4 h-[46px] flex justify-between z-[900] items-center text-[#F8F9FA]">
         <Link className="font-bold" href={'/'}>
-          IT TIME
+          <span>IT TIME</span>
         </Link>
         <HeaderNav>
           <ThemeToggleButton theme={theme} />
