@@ -39,7 +39,12 @@ const Toolbar = ({ editor }: Props) => {
   return (
     <div className="flex gap-2 border-b p-2 items-center text-[0.9rem]">
       {toolDto.map(({ text, actionDesc, onClickAction }) => (
-        <ClickButton key={actionDesc} actionDesc={actionDesc} onClickAction={onClickAction}>
+        <ClickButton
+          type="button"
+          key={actionDesc}
+          actionDesc={actionDesc}
+          onClickAction={onClickAction}
+        >
           <ToolText text={text} />
         </ClickButton>
       ))}

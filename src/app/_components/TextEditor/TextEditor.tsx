@@ -1,20 +1,19 @@
 'use client';
 
-import { ContentType } from '@/_types/TextEditor/textEditor.type';
-import useTextEditor from '@/_hooks/textEditor/useTextEditor';
+import { ContentType, EditorType } from '@/_types/TextEditor/textEditor.type';
+import { Editor, EditorContent } from '@tiptap/react';
 import { HTMLAttributes, useEffect } from 'react';
-import { EditorContent } from '@tiptap/react';
 import Toolbar from './Toolbar/Toolbar';
 import '@/_styles/tiptap.css';
 
 interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'content'> {
   desc?: string;
   content?: ContentType;
+  editor: Editor | null;
+  setEditorContent: (editor: EditorType, content: ContentType) => void;
 }
 
-const TextEditor = ({ desc, content, ...props }: Props) => {
-  const { editor, setEditorContent } = useTextEditor('write');
-
+const TextEditor = ({ desc, content, editor, setEditorContent, ...props }: Props) => {
   useEffect(() => {
     setEditorContent(editor, content);
   }, [content, editor, setEditorContent]);
@@ -22,6 +21,7 @@ const TextEditor = ({ desc, content, ...props }: Props) => {
   return (
     <div id={desc} {...props}>
       <button
+        type="button"
         onClick={() => {
           if (!editor) return;
           const jsonData = editor.getJSON();
