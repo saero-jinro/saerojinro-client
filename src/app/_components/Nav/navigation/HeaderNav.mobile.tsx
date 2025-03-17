@@ -1,12 +1,13 @@
-import { NavGroup, NavItem, NavSectionProps } from '@/_types/Header/Header.type';
+import { NavItem, NavSectionProps, UserRole } from '@/_types/Header/Header.type';
+import { useNav } from '@/_hooks/nav/useNav';
 import Right from '@/assets/Header/right.svg';
 import Link from 'next/link';
 import { Nav } from '../nav';
 
-const MobileNavTop = () => {
+const MobileNavTop = ({ nickName }: { nickName: string }) => {
   return (
     <div className="flex items-end h-[28px] mb-2 gap-[0.5px]">
-      <span className="text-[14px]">김기준님</span>
+      <span className="text-[14px]">{nickName}</span>
     </div>
   );
 };
@@ -39,19 +40,22 @@ const MobileNavItem = ({ path, title }: NavItem) => {
 // -------------네비게이션--------------
 
 interface Props {
-  navDtos: NavGroup[];
+  role: UserRole;
+  nickName: string;
 }
 
-export const MobileNavigation = ({ navDtos }: Props) => {
+export const MobileNavigation = ({ role, nickName }: Props) => {
+  const { mobile } = useNav(role);
+
   return (
     <Nav
-      navDto={navDtos}
-      renderTop={() => <MobileNavTop />}
+      navDto={mobile}
+      renderTop={() => (role !== 'no-login' ? <MobileNavTop nickName={nickName} /> : <></>)}
       renderItem={(item) => <MobileNavItem key={item.title} {...item} />}
       renderSection={(section, renderItem) => (
         <MobileNavSection key={section.title} section={section} renderItem={renderItem} />
       )}
-      className="fixed z-[1000] w-[75%] p-4 h-screen top-0 right-0 bg-white dark:bg-black select-none"
+      className="fixed z-[1000] w-[75%] p-4 h-screen top-0 right-0 text-black dark:text-white bg-white dark:bg-black select-none"
     />
   );
 };

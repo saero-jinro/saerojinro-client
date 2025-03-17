@@ -1,17 +1,19 @@
 import Footer from './mainComponent/_MainFooter';
-import FourthSection from './mainComponent/FourthSection';
 import FstSection from './mainComponent/FstSection';
 import SecSection from './mainComponent/SecSection';
 import TrdSection from './mainComponent/TrdSection';
+import FourthSection from './mainComponent/FourthSection';
 
 const Page = () => {
   return (
-    <div className="w-screen h-screen">
-      <div className="w-screen flex flex-col gap-[2rem] mx-auto item">
-        <FstSection />
-        <SecSection />
-        <TrdSection />
-        <FourthSection />
+    <div className="w-screen">
+      <div className="w-screen flex flex-col mx-auto">
+        <main>
+          <FstSection />
+          <SecSection />
+          <TrdSection />
+          <FourthSection />
+        </main>
         <Footer />
       </div>
     </div>
@@ -28,10 +30,6 @@ export default Page;
 //   title={lecture.title}
 //   category={lecture.category}
 //   time={`${formatTime(lecture.start_time)} ~ ${formatTime(lecture.end_time)}`}
-//   showWish={true}
-// >
-//   <div className="flex items-center mt-1">
-//     <div className="w-4 h-4 bg-gray-300 rounded-full mr-2"></div>
-//     <p className="text-sm font-semibold">{lecture.speakerName}</p>
-//   </div>
-// </Card>;
+//   speakerName={lecture.speakerName}
+//   isProfile={false}
+// />

@@ -1,4 +1,4 @@
-import { LectureListProps } from '@/(route)/lecture-list/page';
+import { LectureListProps } from '@/_store/LectureList/useLectureStore';
 
 export const groupByDay = (lectures: LectureListProps[]) => {
   const grouped: Record<string, LectureListProps[]> = {};

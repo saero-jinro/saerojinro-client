@@ -1,15 +1,16 @@
-import ClickButton from '@/_components/ClickButton';
-import ViewportSlice from '@/_store/Main/viewportStore';
 import React, { useState, useRef, useEffect, ReactNode } from 'react';
+import useHeaderStore from '@/_store/Header/useHeaderStore';
+import ClickButton from '@/_components/ClickButton';
 
 interface ScrollWrapperProps {
   scrollStep?: number;
   children: ReactNode;
   gap?: number;
+  className?: string;
 }
 
-const ScrollWrapper = ({ children, gap = 10, scrollStep = 3 }: ScrollWrapperProps) => {
-  const viewmode = ViewportSlice((store) => store.state.mode);
+const ScrollWrapper = ({ children, gap = 10, scrollStep = 3, className }: ScrollWrapperProps) => {
+  const viewmode = useHeaderStore((store) => store.state.mode);
   const [innerWidth, setInnerWidth] = useState(0);
   const [outerWidth, setOuterWidth] = useState(0);
   const [scroll, setScroll] = useState(0);
@@ -76,12 +77,13 @@ const ScrollWrapper = ({ children, gap = 10, scrollStep = 3 }: ScrollWrapperProp
 
       <div
         ref={OuterRef}
+        aria-live="polite"
         onScroll={(e) => setScroll(e.currentTarget.scrollLeft)}
-        className="overflow-x-scroll hide-scrollbar"
+        className={`overflow-x-scroll hide-scrollbar ${className}`}
       >
         <ul ref={InnerRef} className="flex gap-2.5">
-          {React.Children.map(children, (child, idx) => (
-            <li key={idx} ref={ItemRef}>
+          {React.Children.toArray(children).map((child, idx) => (
+            <li key={idx} ref={idx === 0 ? ItemRef : undefined}>
               {child}
             </li>
           ))}

@@ -1,65 +1,16 @@
-'use client';
-
-import Link from 'next/link';
-import { AnchorHTMLAttributes } from 'react';
-
 const Footer = () => {
-  const footerList = [
-    {
-      title: '가나다',
-      url: '#',
-    },
-    {
-      title: '라마바',
-      url: '#',
-    },
-    {
-      title: '사아자',
-      url: '#',
-    },
-    {
-      title: '차카타',
-      url: '#',
-    },
-    {
-      title: '파하',
-      url: '#',
-    },
-  ];
-
   return (
-    <footer aria-label="footer" className="w-full p-[4rem]">
-      <ul id="footer-contents" className="text-center">
-        {footerList.map(({ title, url }, idx) => (
-          <FooterItem key={idx} url={url}>
-            {title}
-          </FooterItem>
-        ))}
-
-        <FooterItem key="lastItem" url="#" lastIdx={true}>
-          <strong>ⓣ 처음처럼.</strong>
-        </FooterItem>
-      </ul>
+    <footer
+      aria-label="footer"
+      className="w-full px-[40px] py-[48px] min-w-[768px] max-w-[1280] flex flex-col self-stretch text-white bg-[#202427] gap-6"
+    >
+      <h2 className="font-bold text-4xl">IT TIME</h2>
+      <div className="flex flex-col gap-6">
+        <span>© 2025 IT Conference. All rights reserved</span>
+        <span>개인정보방침</span>
+      </div>
     </footer>
   );
 };
 
 export default Footer;
-
-interface FooterItemProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
-  lastIdx?: boolean;
-  url: string;
-}
-
-const FooterItem = (props: FooterItemProps) => {
-  const { url, lastIdx, ...rest } = props;
-  const afterStyle =
-    "after:content-[''] after:absolute after:top-[7px] after:bottom-[7px] after:right-0 after:w-[1px] after:bg-[#6666667d]";
-  return (
-    <li
-      className={`${!lastIdx ? afterStyle : ' '} text-[#666] inline-block text-[12px] leading-[15px] p-[5px_11px_5px_10px] relative align-top hover:underline decoration-gray-500`}
-    >
-      <Link {...rest} href={url} />
-    </li>
-  );
-};

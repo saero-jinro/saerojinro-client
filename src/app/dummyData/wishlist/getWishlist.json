@@ -1,0 +1,36 @@
+{
+  "response": [
+    {
+      "id": 1,
+      "speaker": "황효주",
+      "lectureTitle": "즐찾제목1",
+      "startTime": "2025-03-04T10:00:00",
+      "endTime": "2025-03-04T12:00:00",
+      "location": "Room A-1"
+    },
+    {
+      "id": 2,
+      "speaker": "황효주",
+      "lectureTitle": "즐찾제목2",
+      "startTime": "2025-03-04T14:00:00",
+      "endTime": "2025-03-04T15:00:00",
+      "location": "Room A-2"
+    },
+    {
+      "id": 3,
+      "speaker": "황효주",
+      "lectureTitle": "즐찾제목3",
+      "startTime": "2025-03-05T10:00:00",
+      "endTime": "2025-03-05T12:00:00",
+      "location": "Room A-3"
+    },
+    {
+      "id": 4,
+      "speaker": "황효주",
+      "lectureTitle": "즐찾제목4",
+      "startTime": "2025-03-06T10:00:00",
+      "endTime": "2025-03-06T12:00:00",
+      "location": "Room A-4"
+    }
+  ]
+}

@@ -5,9 +5,12 @@ const config: Config = {
   content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}'],
   theme: {
     extend: {
+      colors: {
+        primary: '#155DFC',
+      },
+
       fontFamily: {
-        geist: ['Geist Sans', 'sans-serif'],
-        mono: ['Geist Mono', 'monospace'],
+        pretendard: ['Pretendard', 'sans-serif'],
       },
     },
   },

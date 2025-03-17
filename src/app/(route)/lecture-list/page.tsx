@@ -1,59 +1,36 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import response from '@/dummyData/lecture-list/getLectureList.json';
+import { LectureListProps, useLectureStore } from '@/_store/LectureList/useLectureStore';
 import Card from '@/_components/Card/Card';
 import DayTab from '@/_components/DayTab/DayTab';
 import { groupByDay, groupByTime } from '@/_components/DayTab/groupBy';
 
-export interface LectureListProps {
-  id: number;
-  title: string;
-  category: string;
-  start_time: string;
-  end_time: string;
-  speakerName: string;
-  image: string;
-}
-
 const LectureListPage = () => {
-  const [lectures, setLectures] = useState<LectureListProps[]>([]);
+  const { lecturelist, wishlist, fetchLectures, fetchWishlist } = useLectureStore();
   const [selectedDay, setSelectedDay] = useState<string>('Day1');
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(['ALL']);
 
   useEffect(() => {
-    // const fetchLectures = async () => {
-    //   try {
-    //     const response = await fetch('/api/lecture');
-    //     if (!response.ok) {
-    //       throw new Error('네트워크 응답 오류');
-    //     }
-    //     const lectureList: { data: { lectures: LectureListProps[] } } = await response.json();
-    //     setLectures(lectureList.data.lectures);
-    //   } catch (error) {
-    //     console.error('데이터 불러오기 실패: ', error);
-    //   }
-    // };
-
-    // fetchLectures();
-    if (response && response.data && Array.isArray(response.data.lectures)) {
-      setLectures(response.data.lectures);
-    } else {
-      console.error('데이터 구조가 예상과 다릅니다:', response);
-    }
+    fetchLectures();
+    fetchWishlist();
   }, []);
+
+  const lectures: LectureListProps[] = lecturelist;
 
   const groupedByDay = groupByDay(lectures);
   const days = Object.keys(groupedByDay);
   const groupedByTime = selectedDay ? groupByTime(groupedByDay[selectedDay] || []) : {};
 
-  const filteredLectures = selectedCategories.includes('ALL')
+  const filteredLectures: Record<string, LectureListProps[]> = selectedCategories.includes('ALL')
     ? groupedByTime
     : Object.fromEntries(
         Object.entries(groupedByTime).map(([time, lectures]) => [
           time,
-          lectures.filter((lecture) => selectedCategories.includes(lecture.category)),
+          (Array.isArray(lectures) ? lectures : []).filter((lecture) =>
+            selectedCategories.includes(lecture.category),
+          ),
         ]),
       );
 
@@ -153,19 +130,10 @@ const LectureListPage = () => {
                   title={lecture.title}
                   category={lecture.category}
                   time={`${formatTime(lecture.start_time)} ~ ${formatTime(lecture.end_time)}`}
-                  showWish={true}
-                >
-                  <div className="flex items-center mt-1">
-                    <div className="w-4 h-4 bg-gray-300 rounded-full mr-2"></div>
-                    <p className="text-sm font-semibold">{lecture.speakerName}</p>
-                  </div>
-                  <button
-                    className="w-full mt-2 bg-gray-700 text-white py-2 text-sm"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    강의 신청하기
-                  </button>
-                </Card>
+                  speakerName={lecture.speakerName}
+                  isWished={wishlist.has(lecture.id)}
+                  isProfile={false}
+                />
               ))}
             </ul>
           </div>
