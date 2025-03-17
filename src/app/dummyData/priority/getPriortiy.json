@@ -105,12 +105,14 @@
     {
       "rank": 1,
       "day": "25-03-11",
-      "startTime": "2025-03-11T11:00:00"
+      "startTime": "2025-03-11T11:00:00",
+      "reservation": 200
     },
     {
       "rank": 2,
       "day": "25-03-12",
-      "startTime": "2025-03-12T12:00:00"
+      "startTime": "2025-03-12T12:00:00",
+      "reservation": 100
     }
   ]
 }
