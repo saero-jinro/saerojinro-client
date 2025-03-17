@@ -10,18 +10,27 @@ interface WebNavListProps {
 export const WebNavList = ({ web }: WebNavListProps) => {
   const pathname = usePathname();
 
+  // 어드민 페이지에서는 네비게이션 숨김
+  if (pathname.startsWith('/admin')) {
+    return (
+      <div className="flex justify-center items-center gap-2 text-sm select-none">
+        <span className="text-sm font-medium">Admin</span>
+      </div>
+    );
+  }
+
   return (
     <div className="flex justify-center items-center gap-2 text-sm select-none">
       <nav>
         <ol className="flex gap-2 items-center tracking-tighter">
-          {/* 아이템 */}
+          {/* 네비게이션 아이템 표시 */}
           {web.map((props) => (
             <WebNavItem key={props.title} {...props} />
           ))}
         </ol>
       </nav>
 
-      {!pathname.startsWith('/admin') && <span className="text-sm font-medium">김철수님</span>}
+      <span className="text-sm font-medium">김철수님</span>
     </div>
   );
 };
