@@ -1,10 +1,9 @@
 import { NavItem, UserRole } from '@/_types/Header/Header.type';
 import Alarm from '@/_components/Header/Alarm/Alarm';
-// import { usePathname } from 'next/navigation';
-import Link from 'next/link';
-import { ReactNode } from 'react';
-import { useNav } from '@/_hooks/nav/useNav';
 import { usePathname } from 'next/navigation';
+import { useNav } from '@/_hooks/nav/useNav';
+import { ReactNode } from 'react';
+import Link from 'next/link';
 
 interface WebNavListProps {
   role: UserRole;
@@ -30,7 +29,7 @@ export const WebNavList = ({ role, nickName, children }: WebNavListProps) => {
       </nav>
 
       {!pathname.startsWith('/admin') && role !== 'no-login' && <span>{nickName}</span>}
-      <Alarm />
+      {!pathname.startsWith('/admin') && role === 'viewer' && <Alarm />}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { HTMLAttributes, useEffect, useRef } from 'react';
 
-interface Props extends HTMLAttributes<HTMLDivElement> {
+export interface ToggleModalProps extends HTMLAttributes<HTMLDivElement> {
   desc: string; // 라벨링
   isOpen: boolean; // 상태
   hasOverlay?: boolean; // 오버레이 유무
@@ -9,7 +9,14 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 }
 
 // 모달 내부를 제외한 어디를 클릭을 하던 모달은 닫힘
-const ToggleModal = ({ desc, isOpen, children, hasOverlay = false, onClose, ...props }: Props) => {
+const ToggleModal = ({
+  desc,
+  isOpen,
+  children,
+  hasOverlay = false,
+  onClose,
+  ...props
+}: ToggleModalProps) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

@@ -1,8 +1,8 @@
 import { NavItem, NavSectionProps, UserRole } from '@/_types/Header/Header.type';
+import { useNav } from '@/_hooks/nav/useNav';
 import Right from '@/assets/Header/right.svg';
 import Link from 'next/link';
 import { Nav } from '../nav';
-import { useNav } from '@/_hooks/nav/useNav';
 
 const MobileNavTop = ({ nickName }: { nickName: string }) => {
   return (
