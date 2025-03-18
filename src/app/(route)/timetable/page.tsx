@@ -70,6 +70,7 @@ const TimetablePage = () => {
   const [baseDate, setBaseDate] = useState<Date | null>(null);
   const [timeWish, setTimeWish] = useState<TimeWishProps[]>([]);
   const [showWishlist, setShowWishlist] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true); // 임시로 항상 true
 
   const router = useRouter();
 
@@ -176,9 +177,13 @@ const TimetablePage = () => {
     <div className="p-10">
       <div className="w-full flex justify-between items-center py-4">
         <h1 className="text-xl font-bold">컴퍼런스 일정 시간표</h1>
-        <button className="bg-gray-200 px-1 cursor-pointer" onClick={handleWishlistClick}>
-          즐찾
-        </button>
+        {isLoggedIn ? (
+          <button className="bg-gray-200 px-1 cursor-pointer" onClick={handleWishlistClick}>
+            즐찾
+          </button>
+        ) : (
+          <div></div>
+        )}
       </div>
       <div className="flex gap-2 w-full">
         <div className="flex-2">
@@ -187,89 +192,97 @@ const TimetablePage = () => {
             selectedDay={selectedDay}
             onSelectDay={setSelectedDay}
           />
-
-          <div className="grid border border-gray-300" style={{ gridTemplateColumns: '140px 1fr' }}>
-            {timeSlots.map(({ start, end }) => {
-              if (occupiedSlots.has(start)) {
-                return (
-                  <div
-                    key={`empty-${start}`}
-                    className="flex justify-center items-center border border-gray-300 bg-gray-100 p-3 h-full text-center font-medium"
-                  >
-                    {start} ~ {end}
-                  </div>
-                );
-              }
-
-              const lecture = filteredLectures.find(
-                (lecture) =>
-                  new Date(lecture.startTime).toLocaleTimeString('ko-KR', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false,
-                  }) === start,
-              );
-
-              const rowSpan = lecture
-                ? (new Date(lecture.endTime).getTime() - new Date(lecture.startTime).getTime()) /
-                  (60 * 60 * 1000)
-                : 1;
-
-              if (lecture) {
-                const occupiedTime = new Date(lecture.startTime);
-                for (let i = 0; i < rowSpan; i++) {
-                  const timeKey = occupiedTime.toLocaleTimeString('ko-KR', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false,
-                  });
-                  occupiedSlots.add(timeKey);
-                  occupiedTime.setHours(occupiedTime.getHours() + 1);
-                }
-              }
-
-              return (
-                <Fragment key={`time-${start}-${end}`}>
-                  <div className="flex justify-center items-center border border-gray-300 bg-gray-100 p-3 h-full text-center font-medium">
-                    {start} ~ {end}
-                  </div>
-
-                  {lecture ? (
+          {isLoggedIn ? (
+            <div
+              className="grid border border-gray-300"
+              style={{ gridTemplateColumns: '140px 1fr' }}
+            >
+              {timeSlots.map(({ start, end }) => {
+                if (occupiedSlots.has(start)) {
+                  return (
                     <div
-                      key={lecture.reservationId}
-                      className="p-4 text-left cursor-pointer"
-                      style={{
-                        gridRow: `span ${rowSpan}`,
-                        backgroundColor: '#fff',
-                        border: '1px solid #ccc',
-                        borderBottom: rowSpan > 1 ? 'none' : '1px solid #ccc',
-                      }}
-                      onClick={() => router.push(`/lecture/${lecture.lectureId}`)}
+                      key={`empty-${start}`}
+                      className="flex justify-center items-center border border-gray-300 bg-gray-100 p-3 h-full text-center font-medium"
                     >
-                      <p className="w-fit bg-gray-200 px-1">{lecture.location}</p>
-                      <p>{lecture.title}</p>
-                      <div className="flex justify-between">
-                        <p>{lecture.speakerName}</p>
-                        <p>
-                          인원수 {lecture.currentReservation} / {lecture.capacity}
-                        </p>
-                      </div>
+                      {start} ~ {end}
                     </div>
-                  ) : (
-                    <div
-                      className="border border-gray-300 bg-gray-50 hover:bg-gray-200 cursor-pointer"
-                      style={{
-                        gridRow: 'span 1',
-                      }}
-                      onClick={() =>
-                        handleEmptySlotClick(Number(selectedDay.replace('Day', '')), start)
-                      }
-                    />
-                  )}
-                </Fragment>
-              );
-            })}
-          </div>
+                  );
+                }
+
+                const lecture = filteredLectures.find(
+                  (lecture) =>
+                    new Date(lecture.startTime).toLocaleTimeString('ko-KR', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: false,
+                    }) === start,
+                );
+
+                const rowSpan = lecture
+                  ? (new Date(lecture.endTime).getTime() - new Date(lecture.startTime).getTime()) /
+                    (60 * 60 * 1000)
+                  : 1;
+
+                if (lecture) {
+                  const occupiedTime = new Date(lecture.startTime);
+                  for (let i = 0; i < rowSpan; i++) {
+                    const timeKey = occupiedTime.toLocaleTimeString('ko-KR', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: false,
+                    });
+                    occupiedSlots.add(timeKey);
+                    occupiedTime.setHours(occupiedTime.getHours() + 1);
+                  }
+                }
+
+                return (
+                  <Fragment key={`time-${start}-${end}`}>
+                    <div className="flex justify-center items-center border border-gray-300 bg-gray-100 p-3 h-full text-center font-medium">
+                      {start} ~ {end}
+                    </div>
+
+                    {lecture ? (
+                      <div
+                        key={lecture.reservationId}
+                        className="p-4 text-left cursor-pointer"
+                        style={{
+                          gridRow: `span ${rowSpan}`,
+                          backgroundColor: '#fff',
+                          border: '1px solid #ccc',
+                          borderBottom: rowSpan > 1 ? 'none' : '1px solid #ccc',
+                        }}
+                        onClick={() => router.push(`/lecture/${lecture.lectureId}`)}
+                      >
+                        <p className="w-fit bg-gray-200 px-1">{lecture.location}</p>
+                        <p>{lecture.title}</p>
+                        <div className="flex justify-between">
+                          <p>{lecture.speakerName}</p>
+                          <p>
+                            인원수 {lecture.currentReservation} / {lecture.capacity}
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        className="border border-gray-300 bg-gray-50 hover:bg-gray-200 cursor-pointer"
+                        style={{
+                          gridRow: 'span 1',
+                        }}
+                        onClick={() =>
+                          handleEmptySlotClick(Number(selectedDay.replace('Day', '')), start)
+                        }
+                      />
+                    )}
+                  </Fragment>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="flex justify-center items-center h-[690px] bg-gray-100">
+              로그인 이후 이용 가능합니다.
+            </div>
+          )}
         </div>
 
         {selectedTime && (
