@@ -1,12 +1,17 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 // 초기값 server -> client(상태 초기값) -> update
 const Page = () => {
+  const navigation = useRouter();
   const logout_test = () => {
     if (typeof window === 'undefined') return;
     // 쿠키 값 만료
     document.cookie = 'id_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+    navigation.push('/');
   };
+
   return (
     <div className="flex w-screen">
       <div className="max-w-[1280px] px-[40px] h-auto w-full flex flex-col mt-16 mx-auto">

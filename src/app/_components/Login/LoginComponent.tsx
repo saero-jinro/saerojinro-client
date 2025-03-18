@@ -5,7 +5,11 @@ import ClickButton from '../ClickButton';
 import { HTMLAttributes } from 'react';
 import Link from 'next/link';
 
-const LoginComponent = (props: HTMLAttributes<HTMLElement>) => {
+interface Props extends HTMLAttributes<HTMLElement> {
+  onClose?: () => void;
+}
+
+const LoginComponent = ({ onClose, ...props }: Props) => {
   const { loginWithKakao } = useLogin();
   return (
     <div {...props}>
@@ -16,7 +20,10 @@ const LoginComponent = (props: HTMLAttributes<HTMLElement>) => {
       <div className="flex flex-col mt-11 gap-[14px]">
         <ClickButton
           actionDesc="user-kakao-login"
-          onClickAction={loginWithKakao}
+          onClickAction={() => {
+            if (onClose) onClose();
+            loginWithKakao();
+          }}
           className="px-7 h-[90px] flex justify-center items-center gap-4 rounded-[12px] bg-[#FEE500] cursor-pointer"
         >
           <KaKaoLogoSvg width="36px" height="36px" />
@@ -24,6 +31,7 @@ const LoginComponent = (props: HTMLAttributes<HTMLElement>) => {
         </ClickButton>
 
         <Link
+          onClick={onClose}
           href="/login/admin"
           className="px-7 h-[90px] flex justify-center items-center gap-4 rounded-[12px] bg-[#9e9e9e]  cursor-pointer"
         >

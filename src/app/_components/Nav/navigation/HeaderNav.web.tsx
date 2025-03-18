@@ -1,43 +1,27 @@
 'use client';
-import { NavItem, UserRole } from '@/_types/Header/Header.type';
+
 import LoginComponent from '@/_components/Login/LoginComponent';
+import { HeaderRoleState, useNav } from '@/_hooks/nav/useNav';
+import { NavItem } from '@/_types/Header/Header.type';
 import Alarm from '@/_components/Header/Alarm/Alarm';
-import { usePathname } from 'next/navigation';
-import { useNav } from '@/_hooks/nav/useNav';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import Link from 'next/link';
 import ToggleModal from '@/_components/ToggleModal';
 import ClickButton from '@/_components/ClickButton';
 
-interface WebNavListProps {
-  nickName: string;
+interface WebNavListProps extends HeaderRoleState {
   children?: ReactNode;
+  nickName?: string;
 }
 
 // 웹
-const WebNavList = ({ nickName, children }: WebNavListProps) => {
-  const [clientPathname, setClientPathname] = useState<string | null>(null);
-  const [role, setRole] = useState<UserRole>('no-login');
-  const pathname = usePathname();
-
-  // 액세스 토큰 유무 확인 (클라이언트에서만 실행)
-  useEffect(() => {
-    setClientPathname(pathname);
-    if (typeof window !== 'undefined') {
-      const cookies = document.cookie.split('; ');
-      for (const cookie of cookies) {
-        const [key] = cookie.split('=');
-        if (key === 'id_token') {
-          setRole(pathname === '/admin' ? 'admin' : 'viewer');
-          return;
-        }
-      }
-      setRole('no-login');
-    }
-  }, [pathname]);
-
+const WebNavList = ({ children, role, pathname, nickName }: WebNavListProps) => {
   const { web } = useNav(role);
 
+  const path = {
+    admin: '/admin',
+    viewer: '/mypage',
+  };
   return (
     <div className="flex justify-center items-center gap-2 select-none text-[18px]">
       <nav>
@@ -50,11 +34,11 @@ const WebNavList = ({ nickName, children }: WebNavListProps) => {
         </ol>
       </nav>
 
-      {!clientPathname?.startsWith('/admin') && role !== 'no-login' && (
-        <Link href="/mypage">{nickName}</Link>
+      {!pathname?.startsWith('/admin') && role !== 'no-login' && (
+        <Link href={path[role]}>{nickName}</Link>
       )}
-      {!clientPathname?.startsWith('/admin') && role === 'no-login' && <LoginButton />}
-      {!clientPathname?.startsWith('/admin') && role === 'viewer' && <Alarm />}
+      {role === 'no-login' && <LoginButton />}
+      {role === 'viewer' && <Alarm />}
     </div>
   );
 };
@@ -90,7 +74,7 @@ const LoginButton = () => {
                 >
                   x
                 </button>
-                <LoginComponent />
+                <LoginComponent onClose={onClose} />
               </div>
             </div>
           </div>

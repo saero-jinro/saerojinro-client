@@ -10,7 +10,7 @@ interface ScrollWrapperProps {
 }
 
 const ScrollWrapper = ({ children, gap = 10, scrollStep = 3, className }: ScrollWrapperProps) => {
-  const viewmode = useHeaderStore((store) => store.state.mode);
+  const viewmode = useHeaderStore((store) => store.viewport.state.mode);
   const [innerWidth, setInnerWidth] = useState(0);
   const [outerWidth, setOuterWidth] = useState(0);
   const [scroll, setScroll] = useState(0);
