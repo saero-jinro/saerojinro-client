@@ -5,8 +5,8 @@ import { useEffect } from 'react';
 
 const useResize = () => {
   const MAX_MOBILE_WIDTH = 769;
-  const setWidth = useHeaderStore((store) => store.actions.setWidth);
-  const setMode = useHeaderStore((store) => store.actions.setMode);
+  const setWidth = useHeaderStore((store) => store.viewport.actions.setWidth);
+  const setMode = useHeaderStore((store) => store.viewport.actions.setMode);
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;

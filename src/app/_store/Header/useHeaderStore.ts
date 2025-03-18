@@ -14,28 +14,63 @@ interface ViewportActions {
   setMode: (mode: ViewMode) => void;
 }
 
-type HeaderSlice = BaseSlice<ViewportState, ViewportActions>;
+interface MobileNavOpenState {
+  isOpen: boolean;
+}
+
+interface MobileNavOpenAction {
+  setOpen: () => void;
+  setClose: () => void;
+}
+
+type HeaderSlice = {
+  viewport: BaseSlice<ViewportState, ViewportActions>;
+  mobileNavOpen: BaseSlice<MobileNavOpenState, MobileNavOpenAction>;
+};
 
 // 해더 스토어
 const useHeaderStore = create<HeaderSlice>((set) => ({
-  state: {
-    mode: 'web',
-    width: 1920,
-  },
-  actions: {
-    setWidth(width: number) {
-      set(
-        produce<HeaderSlice>((store) => {
-          store.state.width = width;
-        }),
-      );
+  viewport: {
+    state: {
+      mode: 'web',
+      width: 1920,
     },
-    setMode(mode: ViewMode) {
-      set(
-        produce<HeaderSlice>((store) => {
-          store.state.mode = mode;
-        }),
-      );
+    actions: {
+      setWidth(width: number) {
+        set(
+          produce<HeaderSlice>((store) => {
+            store.viewport.state.width = width;
+          }),
+        );
+      },
+      setMode(mode: ViewMode) {
+        set(
+          produce<HeaderSlice>((store) => {
+            store.viewport.state.mode = mode;
+          }),
+        );
+      },
+    },
+  },
+  mobileNavOpen: {
+    state: {
+      isOpen: false,
+    },
+    actions: {
+      setOpen() {
+        set(
+          produce<HeaderSlice>((store) => {
+            store.mobileNavOpen.state.isOpen = true;
+          }),
+        );
+      },
+      setClose() {
+        set(
+          produce<HeaderSlice>((store) => {
+            store.mobileNavOpen.state.isOpen = false;
+          }),
+        );
+      },
     },
   },
 }));

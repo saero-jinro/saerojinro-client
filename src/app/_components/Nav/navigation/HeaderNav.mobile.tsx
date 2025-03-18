@@ -1,14 +1,16 @@
 import { NavItem, NavSectionProps, UserRole } from '@/_types/Header/Header.type';
-import { useNav } from '@/_hooks/nav/useNav';
+import { HeaderRoleState, useNav } from '@/_hooks/nav/useNav';
+import useHeaderStore from '@/_store/Header/useHeaderStore';
 import Right from '@/assets/Header/right.svg';
 import Link from 'next/link';
 import { Nav } from '../nav';
 
-const MobileNavTop = ({ nickName }: { nickName: string }) => {
+const MobileNavTop = ({ nickName, path }: { nickName: string; path: string }) => {
+  const onClose = useHeaderStore((store) => store.mobileNavOpen.actions.setClose);
   return (
-    <div className="flex items-end h-[28px] mb-2 gap-[0.5px]">
+    <Link href={path} onClick={onClose} className="flex items-end h-[28px] mb-2 gap-[0.5px]">
       <span className="text-[14px]">{nickName}</span>
-    </div>
+    </Link>
   );
 };
 
@@ -24,12 +26,15 @@ const MobileNavSection = ({ section, renderItem }: NavSectionProps) => {
 };
 
 const MobileNavItem = ({ path, title }: NavItem) => {
+  const onCloseModal = useHeaderStore((state) => state.mobileNavOpen.actions.setClose);
   return (
     <li key={title} className="py-[0.4rem] flex justify-between items-center cursor-pointer">
       <div className="flex items-center gap-2">
         <div className="w-[16px] h-[16px] bg-[#7373739a] rounded-[4px] flex justify-center items-center"></div>
         <span>
-          <Link href={path}>{title}</Link>
+          <Link onClick={onCloseModal} href={path}>
+            {title}
+          </Link>
         </span>
       </div>
       <Right width="20" height="20" />
@@ -39,18 +44,23 @@ const MobileNavItem = ({ path, title }: NavItem) => {
 
 // -------------네비게이션--------------
 
-interface Props {
-  role: UserRole;
+interface Props extends HeaderRoleState {
   nickName: string;
 }
 
-export const MobileNavigation = ({ role, nickName }: Props) => {
+export const MobileNavigation = ({ nickName, role }: Props) => {
   const { mobile } = useNav(role);
+
+  const path: Record<UserRole, string> = {
+    admin: '/admin',
+    viewer: '/mypage',
+    'no-login': '/login',
+  };
 
   return (
     <Nav
       navDto={mobile}
-      renderTop={() => (role !== 'no-login' ? <MobileNavTop nickName={nickName} /> : <></>)}
+      renderTop={() => <MobileNavTop nickName={nickName} path={path[role]} />}
       renderItem={(item) => <MobileNavItem key={item.title} {...item} />}
       renderSection={(section, renderItem) => (
         <MobileNavSection key={section.title} section={section} renderItem={renderItem} />

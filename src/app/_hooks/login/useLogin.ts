@@ -15,9 +15,9 @@ const useLogin = () => {
 
     const curURL = window.location.href;
     const redirectUri = `${BASE_URL}/auth`;
-
-    // 이전 경로 기억
-    sessionStorage.setItem('prevUrl', curURL);
+    const curPath = window.location.pathname;
+    // 모달에서 로그인 할시 현재 경로 기억
+    if (curPath === '/login') sessionStorage.setItem('prevUrl', curURL);
 
     window.Kakao.Auth.authorize({
       redirectUri,
