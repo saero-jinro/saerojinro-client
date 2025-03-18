@@ -1,20 +1,24 @@
 {
-  "data": [
+  "lectures": [
     {
-      "lecture_id": 1,
+      "id": 1,
       "title": "추천강의제목1",
-      "start_time": "2025-03-05T10:00:00",
-      "end_time": "2025-03-05T11:00:00",
-      "location": "101호",
-      "speaker": "홍길동"
+      "category": "카테고리1",
+      "startTime": "2025-03-05T10:00:00",
+      "endTime": "2025-03-05T11:00:00",
+      "speakerName": "홍길동",
+      "speakerImageUri": "",
+      "location": "101호"
     },
     {
-      "lecture_id": 2,
+      "id": 2,
       "title": "추천강의제목2",
-      "start_time": "2025-03-05T13:00:00",
-      "end_time": "2025-03-05T15:00:00",
-      "location": "201호",
-      "speaker": "고길동"
+      "category": "카테고리2",
+      "startTime": "2025-03-05T10:00:00",
+      "endTime": "2025-03-05T11:00:00",
+      "speakerName": "홍길동",
+      "speakerImageUri": "",
+      "location": "102호"
     }
   ]
 }
