@@ -5,6 +5,7 @@ import { LectureListProps, useLectureStore } from '@/_store/LectureList/useLectu
 import Card from '@/_components/Card/Card';
 import DayTab from '@/_components/DayTab/DayTab';
 import { groupByDay, groupByTime } from '@/_components/DayTab/groupBy';
+import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2';
 
 const LectureListPage = () => {
   const { lecturelist, wishlist, fetchLectures, fetchWishlist } = useLectureStore();
@@ -49,22 +50,24 @@ const LectureListPage = () => {
   const categories = Array.from(new Set(lectures.map((lecture) => lecture.category)));
 
   return (
-    <div className="p-10">
+    <div className="px-10 py-16">
       <DayTab days={days} selectedDay={selectedDay} onSelectDay={setSelectedDay} />
-      <div className="relative flex justify-between">
-        <h1 className="text-2xl font-bold mb-6">{lectures.length} Sessions</h1>
+      <div className="relative flex justify-between items-center h-10 mt-10">
+        <h1 className="text-lg font-medium leading-[140%]">
+          {groupedByDay[selectedDay]?.length || 0} Sessions
+        </h1>
         <button
           onClick={() => setIsFilterOpen(true)}
-          className="bg-red-300 text-white px-4 py-2 mb-4 dark:bg-neutral-800"
+          className="text-lg font-medium leading-[140%] border-1 border-gray-300 rounded-lg dark:bg-neutral-800"
         >
-          Filter
+          <HiOutlineAdjustmentsHorizontal size={40} />
         </button>
 
         {isFilterOpen && (
           <div className="absolute top-10 right-0 z-10">
-            <div className="bg-red-200 p-6 w-72 dark:bg-neutral-800">
+            <div className="bg-[#eee] p-6 w-72 dark:bg-neutral-800">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-l font-bold">카테고리</h2>
+                <h2 className="text-l font-bold leading-[140%]">카테고리</h2>
                 <div className="flex justify-end space-x-2">
                   <button
                     onClick={() => setSelectedCategories(['ALL'])}
@@ -80,15 +83,15 @@ const LectureListPage = () => {
                   </button>
                 </div>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <label className="flex items-center">
                   <input
                     type="checkbox"
                     checked={selectedCategories.includes('ALL')}
                     onChange={() => setSelectedCategories(['ALL'])}
-                    className="mr-2"
+                    className="mr-3 text-base font-semibold leading-[140%]"
                   />
-                  ALL
+                  전체
                 </label>
                 {categories.map((category) => (
                   <label key={category} className="flex items-center">
@@ -106,7 +109,7 @@ const LectureListPage = () => {
                           );
                         }
                       }}
-                      className="mr-2"
+                      className="mr-3 text-base font-semibold leading-[140%]"
                     />
                     {category}
                   </label>
@@ -120,8 +123,8 @@ const LectureListPage = () => {
       <div className="space-y-8">
         {sortedTime.map((time) => (
           <div key={time}>
-            <h2 className="text-xl font-semibold mb-4">{time}</h2>
-            <ul className="flex flex-wrap gap-4">
+            <h2 className="text-2xl font-bold mt-8 mb-6">{time}</h2>
+            <ul className="flex flex-wrap gap-6">
               {filteredLectures[time].map((lecture) => (
                 <Card
                   key={lecture.id}
