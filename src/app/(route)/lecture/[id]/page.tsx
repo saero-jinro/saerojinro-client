@@ -96,13 +96,7 @@ const LectureDetailPage = () => {
   return (
     <div className="w-full px-[40px] py-16 flex flex-col gap-[40px]">
       {/* 데이터 연결 안해서 오류 빌드가 안됨 나중에 삭제 요망 */}
-      <div className="read-only hidden">{lectureId}</div>
-      {reviews.map((item) => (
-        <div key={item.id} className="read-only hidden"></div>
-      ))}
-      {questions.map((item) => (
-        <div key={item.id} className="read-only hidden"></div>
-      ))}
+      {reviews && questions && <div className="read-only hidden">{lectureId}</div>}
 
       {/* 헤더 */}
       <header className="flex flex-col items-start gap-[40px] self-stretch">
@@ -224,7 +218,7 @@ const LectureDetailPage = () => {
                 value={review}
                 spellCheck={false}
                 onChange={(e) => setReview(e.target.value)}
-                className="resize-none w-full overflow-hidden border-none outline-none px-4 focus:border rounded-[4px] p-2 focus:border-solid focus:border-[#1677FF]"
+                className="resize-none w-full overflow-hidden border-none outline-none rounded-[4px] py-2 focus:px-2 focus:border focus:border-solid focus:border-[#1677FF]"
               />
             </div>
           </div>
