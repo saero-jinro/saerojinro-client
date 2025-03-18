@@ -60,10 +60,13 @@ const AdminDashboard = () => {
 
   return (
     <div className="p-6 space-y-8">
-      <div className="grid grid-cols-2 gap-[24px]"> {/* 두 박스 간 간격 24px */}
+      <div className="grid grid-cols-2 gap-[24px]">
+        {' '}
+        {/* 두 박스 간 간격 24px */}
         {/* 참가자가 많은 날짜 (Crowd Forecast) */}
         <div className="border border-gray-300 rounded-md">
-          <h2 className="text-lg font-bold mb-[20px]">Crowd Forecast</h2> {/* 제목과 테이블 간 간격 20px */}
+          <h2 className="text-lg font-bold mb-[20px]">Crowd Forecast</h2>{' '}
+          {/* 제목과 테이블 간 간격 20px */}
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-gray-100 text-left">
@@ -85,10 +88,11 @@ const AdminDashboard = () => {
             </tbody>
           </table>
         </div>
-  
         {/* 강의 순위 (Lecture Tracker) */}
         <div className="border border-gray-300 rounded-md">
-          <div className="flex justify-between items-center mb-[20px]"> {/* 제목과 버튼 간 간격 20px */}
+          <div className="flex justify-between items-center mb-[20px]">
+            {' '}
+            {/* 제목과 버튼 간 간격 20px */}
             <h2 className="text-lg font-bold">Lecture Tracker</h2>
             <button
               onClick={toggleRank}
@@ -122,7 +126,7 @@ const AdminDashboard = () => {
         </div>
       </div>
     </div>
-  );    
+  );
 };
 
 export default AdminDashboard;
