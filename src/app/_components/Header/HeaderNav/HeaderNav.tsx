@@ -1,14 +1,14 @@
 'use client';
 
 import { MobileNavigation } from '@/_components/Nav/navigation/HeaderNav.mobile';
-import { WebNavList } from '@/_components/Nav/navigation/HeaderNav.web';
+import WebNavList from '@/_components/Nav/navigation/HeaderNav.web';
 import useHeaderStore from '@/_store/Header/useHeaderStore';
+import useAlarmStore from '@/_store/Header/useAlarmStore';
 import { UserRole } from '@/_types/Header/Header.type';
 import { ReactNode, useEffect, useState } from 'react';
 import { HeaderOverlay, MenuButton } from './ETC';
 import useResize from '@/_hooks/nav/useResize';
 import { Alarm } from '@/_types/Header/Alarm.type';
-import useAlarmStore from '@/_store/Header/useAlarmStore';
 
 interface Props {
   children?: ReactNode;
@@ -16,7 +16,7 @@ interface Props {
 
 // 헤더 네비게이션
 const HeaderNav = ({ children }: Props) => {
-  const [role, setRole] = useState<UserRole>('viewer'); // 임시 상태 버튼
+  const [role, setRole] = useState<UserRole>('viewer');
   const [isToggle, setIsToggle] = useState(false);
   const viewmode = useHeaderStore((store) => store.state.mode);
   const toggleNavMobile = (state: boolean) => setIsToggle(state);
@@ -85,9 +85,7 @@ const HeaderNav = ({ children }: Props) => {
     return (
       <>
         <button onClick={changeRole}>{`권한 변경 버튼(${role})`}</button>
-        <WebNavList role={role} nickName={GetNickName(role)}>
-          {children}
-        </WebNavList>
+        <WebNavList nickName={GetNickName(role)}>{children}</WebNavList>
       </>
     );
   }

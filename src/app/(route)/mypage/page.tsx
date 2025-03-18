@@ -1,5 +1,12 @@
+'use client';
+
 // 초기값 server -> client(상태 초기값) -> update
 const Page = () => {
+  const logout_test = () => {
+    if (typeof window === 'undefined') return;
+    // 쿠키 값 만료
+    document.cookie = 'id_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+  };
   return (
     <div className="flex w-screen">
       <div className="max-w-[1280px] px-[40px] h-auto w-full flex flex-col mt-16 mx-auto">
@@ -48,7 +55,9 @@ const Page = () => {
         <div className="w-full mt-[40px]">
           <span className="block">현재 계정에서 로그아웃합니다.</span>
           <span className="block">다시 로그인하려면 카카오 계정을 사용해 주세요</span>
-          <button className="btn block px-4 py-2 mt-6 rounded-[8px]">로그아웃</button>
+          <button onClick={logout_test} className="btn block px-4 py-2 mt-6 rounded-[8px]">
+            로그아웃
+          </button>
         </div>
 
         {/* 회원탈퇴 */}
@@ -58,7 +67,7 @@ const Page = () => {
           <span className="block">
             3. 복구가 불가능하며, 동일한 이메일로 재가입이 제한될 수 있음
           </span>
-          <button className="btn block px-4 py-2 mt-6 rounded-[8px]">로그아웃</button>
+          <button className="btn block px-4 py-2 mt-6 rounded-[8px]">회원 탈퇴</button>
         </div>
       </div>
       <div />
