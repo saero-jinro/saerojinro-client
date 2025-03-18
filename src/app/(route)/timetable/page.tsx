@@ -111,6 +111,7 @@ const TimetablePage = () => {
       }
     };
     fetchTimetable();
+    setIsLoggedIn(true);
   }, []);
 
   const fetchTimeWish = async (startTime: string) => {
@@ -119,6 +120,7 @@ const TimetablePage = () => {
       // if (!response.ok) throw new Error('즐겨찾기 강의 데이터를 불러오는 데 실패했습니다.');
 
       // const data = await response.json();
+      console.log(startTime); // never used build error 방지용
       const data = timeWishRes;
       setTimeWish(data.responses);
     } catch (error) {
@@ -132,6 +134,7 @@ const TimetablePage = () => {
       // if (!response.ok) throw new Error('추천 강의 데이터를 불러오는 데 실패했습니다.');
 
       // const data = await response.json();
+      console.log(startTime);
       const data = timeRecommandRes;
       setRecommandLectures(data.lectures);
     } catch (error) {
