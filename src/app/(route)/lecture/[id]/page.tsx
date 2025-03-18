@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import lectureResponse from '@/dummyData/lecture/getLecture.json';
 import reviewResponse from '@/dummyData/lecture/getReview.json';
 import questionResponse from '@/dummyData/lecture/getQuestion.json';
+import Publish from '../component/publish';
 
 interface LectureDetailProps {
   id: number;
@@ -64,56 +65,57 @@ const LectureDetailPage = () => {
   if (!lecture) return <p>로딩 중...</p>;
 
   return (
-    <div className="flex flex-col pt-10 gap-10">
-      <div>
-        <h1>강의 {lectureId}에 대한 상세 정보</h1>
-        <h2>강의제목: {lecture.title}</h2>
-        <p>강의소개: {lecture.description}</p>
-        <p>카테고리: {lecture.category}</p>
-        <p>
-          시간: {lecture.start_time} ~ {lecture.end_time}
-        </p>
-        <p>장소: {lecture.location}</p>
-        <p>상태: {lecture.status}</p>
-      </div>
-      <div>
-        <h2>사전질문</h2>
-        {questions.length > 0 ? (
-          <ul>
-            {questions
-              .filter((q) => q.lecture_id === Number(lectureId))
-              .map((question) => (
-                <li key={question.id}>
-                  <p>유저 ID: {question.user_id}</p>
-                  <p>{question.contents}</p>
-                </li>
-              ))}
-          </ul>
-        ) : (
-          <p>사전 질문이 없습니다.</p>
-        )}
-      </div>
-      <div>
-        <h2>리뷰</h2>
-        {reviews.length > 0 ? (
-          <ul>
-            {reviews.map((review) => (
-              <li key={review.id}>
-                <p>
-                  <strong>{review.username}</strong> ({review.rating}⭐)
-                </p>
-                <p>{review.content}</p>
-                <p>
-                  <small>{review.createdAt}</small>
-                </p>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>등록된 리뷰가 없습니다.</p>
-        )}
-      </div>
-    </div>
+    <Publish />
+    // <div className="flex flex-col pt-10 gap-10">
+    //   <div>
+    //     <h1>강의 {lectureId}에 대한 상세 정보</h1>
+    //     <h2>강의제목: {lecture.title}</h2>
+    //     <p>강의소개: {lecture.description}</p>
+    //     <p>카테고리: {lecture.category}</p>
+    //     <p>
+    //       시간: {lecture.start_time} ~ {lecture.end_time}
+    //     </p>
+    //     <p>장소: {lecture.location}</p>
+    //     <p>상태: {lecture.status}</p>
+    //   </div>
+    //   <div>
+    //     <h2>사전질문</h2>
+    //     {questions.length > 0 ? (
+    //       <ul>
+    //         {questions
+    //           .filter((q) => q.lecture_id === Number(lectureId))
+    //           .map((question) => (
+    //             <li key={question.id}>
+    //               <p>유저 ID: {question.user_id}</p>
+    //               <p>{question.contents}</p>
+    //             </li>
+    //           ))}
+    //       </ul>
+    //     ) : (
+    //       <p>사전 질문이 없습니다.</p>
+    //     )}
+    //   </div>
+    //   <div>
+    //     <h2>리뷰</h2>
+    //     {reviews.length > 0 ? (
+    //       <ul>
+    //         {reviews.map((review) => (
+    //           <li key={review.id}>
+    //             <p>
+    //               <strong>{review.username}</strong> ({review.rating}⭐)
+    //             </p>
+    //             <p>{review.content}</p>
+    //             <p>
+    //               <small>{review.createdAt}</small>
+    //             </p>
+    //           </li>
+    //         ))}
+    //       </ul>
+    //     ) : (
+    //       <p>등록된 리뷰가 없습니다.</p>
+    //     )}
+    //   </div>
+    // </div>
   );
 };
 
