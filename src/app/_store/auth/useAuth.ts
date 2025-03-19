@@ -1,6 +1,6 @@
 'use client';
 
-import { UserRole } from '@/_types/api/api.type';
+import { UserRole } from '@/_types/Auth/auth.type';
 import { BaseSlice } from '@/_types/store';
 import { produce } from 'immer';
 import { create } from 'zustand';

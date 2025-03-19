@@ -1,4 +1,4 @@
-import { ApiResponse, AuthRefreshResponse, UserRole } from '@/_types/api/api.type';
+import { ApiResponse, AuthRefreshResponse, UserRole } from '@/_types/Auth/auth.type';
 import { NextResponse } from 'next/server';
 
 export async function GET(req: Request) {
@@ -70,14 +70,14 @@ export async function GET(req: Request) {
 
     response.cookies.set('accessToken', accessToken, {
       httpOnly: true,
-      secure: true,
+      // secure: true,
       sameSite: 'strict',
       path: '/',
     });
 
     response.cookies.set('refreshToken', newRefreshToken, {
       httpOnly: true,
-      secure: true,
+      // secure: true,
       sameSite: 'strict',
       path: '/',
     });

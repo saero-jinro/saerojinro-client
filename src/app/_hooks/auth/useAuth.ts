@@ -1,4 +1,4 @@
-import { ApiResponse, AuthRefreshResponse } from '@/_types/api/api.type';
+import { ApiResponse, AuthRefreshResponse } from '@/_types/Auth/auth.type';
 import useAuthStore from '@/_store/auth/useAuth';
 import { useEffect } from 'react';
 
@@ -7,8 +7,10 @@ type ApiAuthRefreshResponse = ApiResponse<AuthRefreshResponse>;
 const useAuth = () => {
   const accessToken = useAuthStore((store) => store.state.accessToken);
   const setAuth = useAuthStore((store) => store.actions.setAuth);
+  const role = useAuthStore((store) => store.state.role);
+
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-  
+
   useEffect(() => {
     if (accessToken !== null) return;
 
@@ -34,8 +36,8 @@ const useAuth = () => {
   }, []);
 
   useEffect(() => {
-    console.log(accessToken);
-  }, [accessToken]);
+    console.log(accessToken, role);
+  }, [accessToken, role]);
 
   return { accessToken };
 };

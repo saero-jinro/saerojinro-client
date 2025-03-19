@@ -14,3 +14,10 @@ export type AuthRefreshResponse = {
   accessToken: string;
   role: UserRole;
 };
+
+export type AuthAdminRequest = {
+  email: string;
+  password: string;
+};
+
+export type ApiAuthUserResponse = ApiResponse<AuthUserResponse>;
