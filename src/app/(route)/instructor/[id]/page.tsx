@@ -3,9 +3,9 @@
 import ScrollWrapper from '@/(route)/(main)/mainComponent/component/ScrollWrapper';
 import Card from '@/_components/Card/Card';
 import { formatTime } from '@/_utils/Card/formatTime';
-import { ApiResponse } from '@/api/auth/route';
 import { useEffect, useState } from 'react';
 import { useLectureStore } from '@/_store/LectureList/useLectureStore';
+import { ApiResponse } from '@/_types/Auth/auth.type';
 
 interface LectureList {
   id: number;

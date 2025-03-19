@@ -1,13 +1,10 @@
 'use client';
-
+import { ApiAuthUserResponse } from '@/_types/Auth/auth.type';
 import { useSearchParams, useRouter } from 'next/navigation';
+import useAuthStore from '@/_store/auth/useAuth';
 import { useEffect } from 'react';
 
-import { AuthUserResponse, ApiResponse } from '@/_types/api/api.type';
-import useAuthStore from '@/_store/auth/useAuth';
-
-type ApiAuthUserResponse = ApiResponse<AuthUserResponse>;
-
+// 로그인 리다이렉트 페이지
 const Page = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
   const searchParams = useSearchParams();

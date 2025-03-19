@@ -1,10 +1,10 @@
 'use client';
 import { useLectureStore } from '@/_store/LectureList/useLectureStore';
+import { ApiResponse } from '@/_types/Auth/auth.type';
 import SectionWrapper from './component/SectionWrapper';
 import ScrollWrapper from './component/ScrollWrapper';
 import { formatTime } from '@/_utils/Card/formatTime';
 import OptionList from './component/OptionList';
-import { ApiResponse } from '@/api/auth/route';
 import { useEffect, useState } from 'react';
 import Card from '@/_components/Card/Card';
 
