@@ -9,6 +9,7 @@ export type ApiResponse<T> = {
 export async function POST(request: Request) {
   try {
     const { code } = await request.json();
+    const BACK_URL = process.env.NEXT_PUBLIC_BACKEND_AUTH_API;
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
     const REDIRECT_URI = `${BASE_URL}/auth`;
 
@@ -35,17 +36,6 @@ export async function POST(request: Request) {
 
     const response = NextResponse.json({ message: '로그인 성공' });
 
-    if (idToken) {
-      // 일단 발급된 id_token을 쿠키에 저장함 (백엔드 연결 하면 삭제@@@@@@)
-      response.cookies.set('id_token', idToken, {
-        sameSite: 'lax',
-        path: '/',
-        maxAge: 60 * 60 * 24 * 0.5, //30m
-      });
-
-      // 추후 JWT 티켓 발행
-    }
-
     if (accessToken) {
       try {
         const response = await fetch('https://kapi.kakao.com/v1/user/logout', {
@@ -64,6 +54,55 @@ export async function POST(request: Request) {
       } catch (error) {
         console.error('로그아웃 요청 오류:', error);
       }
+    }
+
+    if (idToken) {
+      const backendResponse = await fetch(`${BACK_URL}/api/auth/kakao/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ idToken }),
+      });
+
+      if (!backendResponse.ok) {
+        return NextResponse.json({ error: '백엔드 로그인 실패' }, { status: 500 });
+      }
+
+      let backendData;
+
+      try {
+        backendData = await backendResponse.json();
+      } catch (error) {
+        return NextResponse.json({ error: '백엔드 응답이 JSON이 아님' }, { status: 500 });
+      }
+
+      const userAccessToken = backendData.accessToken;
+      const userRefreshToken = backendData.refreshToken;
+
+      if (!userAccessToken || !userRefreshToken) {
+        return NextResponse.json({ error: '토큰 발급 실패' }, { status: 500 });
+      }
+
+      const response = NextResponse.json({
+        message: '로그인 성공',
+        accessToken: userAccessToken,
+        refreshToken: userRefreshToken,
+      });
+
+      response.cookies.set('accessToken', userAccessToken, {
+        httpOnly: false, // 개발 단계에서는 접근이 가능해야함
+        secure: true,
+        sameSite: 'strict',
+        path: '/',
+      });
+
+      response.cookies.set('refreshToken', userRefreshToken, {
+        httpOnly: false,
+        secure: true,
+        sameSite: 'strict',
+        path: '/',
+      });
     }
 
     return response;
