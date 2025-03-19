@@ -6,15 +6,14 @@ import timetableRes from '@/dummyData/timetable/getTimetable.json';
 import timeWishRes from '@/dummyData/timetable/getTimeWish.json';
 import timeRecommandRes from '@/dummyData/timetable/getTimetableRecommand.json';
 import DayTab from '@/_components/DayTab/DayTab';
-import WishButton from '@/_components/Wish/WishButton';
 import { PiListStar } from 'react-icons/pi';
-import { useLectureStore } from '@/_store/LectureList/useLectureStore';
 import {
   LectureProps,
   WishLectureProps,
   TimeWishProps,
   RecommandLectureProps,
 } from '@/_types/Timetable/Lecture.type';
+import ListCard from './timetableComponent/ListCard';
 
 const TimetablePage = () => {
   const [userLectures, setUserLectures] = useState<{
@@ -33,7 +32,6 @@ const TimetablePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true); // 임시로 항상 true
 
   const router = useRouter();
-  const { wishlist } = useLectureStore();
 
   useEffect(() => {
     const fetchTimetable = async () => {
@@ -265,89 +263,11 @@ const TimetablePage = () => {
           <div className="flex-1 px-6 pt-11 bg-[#F4F4F4] h-full dark:bg-gray-900">
             <h3 className="font-bold text-xl leading-[140%] pb-6">즐겨찾기 목록</h3>
             <div className="h-1/3 overflow-auto">
-              <ul className="flex flex-col gap-4">
-                {timeWish.map((lecture) => (
-                  <li key={lecture.lectureId} className="flex flex-col px-5 py-6 border bg-white">
-                    <div className="flex items-center gap-2">
-                      <p className="w-fit border rounded-sm border-[#91CAFF] text-[#1677FF] px-2 py-[1px] font-semibold text-sm leading-[140%]">
-                        {lecture.location}
-                      </p>
-                      <span className="font-semibold text-sm leading-[140%]">
-                        {new Date(lecture?.startTime).toLocaleTimeString('ko-KR', {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          hour12: false,
-                        })}{' '}
-                        -{' '}
-                        {new Date(lecture?.endTime).toLocaleTimeString('ko-KR', {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          hour12: false,
-                        })}
-                      </span>
-                    </div>
-                    <span className="pt-3 pb-2 font-bold text-lg leading-[140%]">
-                      {lecture?.title}
-                    </span>
-                    <p className="pb-4 font-medium text-base leading-[140%]">
-                      {lecture.speakerName}
-                    </p>
-                    <div className="flex justify-end items-center gap-2 w-full">
-                      <WishButton
-                        isWished={wishlist.has(lecture.lectureId)}
-                        itemId={lecture.lectureId}
-                        className="w-9 h-9"
-                      />
-                      <button className="bg-[#155DFC] rounded-lg text-white px-4 py-3 font-semibold text-sm leading-[140%] dark:bg-gray-500 cursor-pointer">
-                        강의 신청하기
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+              <ListCard lectureList={timeWish} />
             </div>
             <h3 className="pt-8 pb-6 font-bold text-xl leading-[140%]">공석 추천 목록</h3>
             <div className="h-1/2 overflow-auto">
-              <ul className="flex flex-col gap-4">
-                {recommandLectures.map((lecture) => (
-                  <li key={lecture.id} className="flex flex-col px-5 py-6 border bg-white">
-                    <div className="flex items-center gap-2">
-                      <p className="w-fit border rounded-sm border-[#91CAFF] text-[#1677FF] px-2 py-[1px] font-semibold text-sm leading-[140%]">
-                        {lecture.location}
-                      </p>
-                      <span className="font-semibold text-sm leading-[140%]">
-                        {new Date(lecture?.startTime).toLocaleTimeString('ko-KR', {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          hour12: false,
-                        })}{' '}
-                        -{' '}
-                        {new Date(lecture?.endTime).toLocaleTimeString('ko-KR', {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          hour12: false,
-                        })}
-                      </span>
-                    </div>
-                    <span className="pt-3 pb-2 font-bold text-lg leading-[140%]">
-                      {lecture?.title}
-                    </span>
-                    <p className="pb-4 font-medium text-base leading-[140%]">
-                      {lecture.speakerName}
-                    </p>
-                    <div className="flex justify-end items-center gap-2 w-full">
-                      <WishButton
-                        isWished={wishlist.has(lecture.id)}
-                        itemId={lecture.id}
-                        className="w-9 h-9"
-                      />
-                      <button className="bg-[#155DFC] rounded-lg text-white px-4 py-3 font-semibold text-sm leading-[140%] dark:bg-gray-500 cursor-pointer">
-                        강의 신청하기
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+              <ListCard lectureList={recommandLectures} />
             </div>
           </div>
         )}
@@ -356,53 +276,7 @@ const TimetablePage = () => {
           <div className="flex-1 px-6 pt-11 bg-[#F4F4F4] h-full dark:bg-gray-900">
             <h3 className="font-bold text-xl leading-[140%] pb-6">즐겨찾기 목록</h3>
             <div className="h-full overflow-auto">
-              <ul className="flex flex-col gap-4">
-                {userLectures.wishlist.length > 0 ? (
-                  userLectures.wishlist.map((lecture) => (
-                    <li
-                      key={lecture.wishlistId}
-                      className="flex flex-col px-5 py-6 border bg-white"
-                    >
-                      <div className="flex items-center gap-2">
-                        <p className="w-fit border rounded-sm border-[#91CAFF] text-[#1677FF] px-2 py-[1px] font-semibold text-sm leading-[140%]">
-                          {lecture.location}
-                        </p>
-                        <span className="font-semibold text-sm leading-[140%]">
-                          {new Date(lecture?.startTime).toLocaleTimeString('ko-KR', {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            hour12: false,
-                          })}{' '}
-                          -{' '}
-                          {new Date(lecture?.endTime).toLocaleTimeString('ko-KR', {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            hour12: false,
-                          })}
-                        </span>
-                      </div>
-                      <span className="pt-3 pb-2 font-bold text-lg leading-[140%]">
-                        {lecture?.title}
-                      </span>
-                      <p className="pb-4 font-medium text-base leading-[140%]">
-                        {lecture.speakerName}
-                      </p>
-                      <div className="flex justify-end items-center gap-2 w-full">
-                        <WishButton
-                          isWished={true}
-                          itemId={lecture.wishlistId}
-                          className="w-9 h-9"
-                        />
-                        <button className="bg-[#155DFC] rounded-lg text-white px-4 py-3 font-semibold text-sm leading-[140%] dark:bg-gray-500 cursor-pointer">
-                          강의 신청하기
-                        </button>
-                      </div>
-                    </li>
-                  ))
-                ) : (
-                  <p className="text-center p-4">즐겨찾기한 강의가 없습니다.</p>
-                )}
-              </ul>
+              <ListCard lectureList={userLectures.wishlist} />
             </div>
           </div>
         )}
