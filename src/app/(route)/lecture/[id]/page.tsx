@@ -20,7 +20,7 @@ const Textarea = ({
   ...props
 }: TextareaHTMLAttributes<HTMLTextAreaElement>) => {
   const ref = useRef<HTMLTextAreaElement | null>(null);
-  const resize = useHeaderStore((store) => store.state.width);
+  const resize = useHeaderStore((store) => store.viewport.state.width);
   const state = value ?? '';
   useEffect(() => {
     if (ref.current) {
