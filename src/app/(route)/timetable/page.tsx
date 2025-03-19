@@ -6,6 +6,9 @@ import timetableRes from '@/dummyData/timetable/getTimetable.json';
 import timeWishRes from '@/dummyData/timetable/getTimeWish.json';
 import timeRecommandRes from '@/dummyData/timetable/getTimetableRecommand.json';
 import DayTab from '@/_components/DayTab/DayTab';
+import WishButton from '@/_components/Wish/WishButton';
+import { PiListStar } from 'react-icons/pi';
+import { useLectureStore } from '@/_store/LectureList/useLectureStore';
 
 interface LectureProps {
   reservationId: number;
@@ -42,10 +45,11 @@ interface RecommandLectureProps {
   endTime: string;
   speakerName: string;
   speakerImageUri: string;
-  location?: string;
+  location: string;
 }
 
 interface TimeWishProps {
+  lectureId: number;
   category: string;
   thumbnailUri: string;
   title: string;
@@ -73,6 +77,7 @@ const TimetablePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true); // 임시로 항상 true
 
   const router = useRouter();
+  const { wishlist } = useLectureStore();
 
   useEffect(() => {
     const fetchTimetable = async () => {
@@ -177,37 +182,41 @@ const TimetablePage = () => {
   };
 
   return (
-    <div className="p-10">
-      <div className="w-full flex justify-between items-center py-4">
-        <h1 className="text-xl font-bold">컴퍼런스 일정 시간표</h1>
+    <div className="pt-16 px-10">
+      <div className="w-full flex justify-between items-center pb-10">
+        <h1 className="text-[32px] font-bold">컴퍼런스 시간표</h1>
         {isLoggedIn ? (
-          <button className="bg-gray-200 px-1 cursor-pointer" onClick={handleWishlistClick}>
-            즐찾
+          <button className="cursor-pointer" onClick={handleWishlistClick}>
+            <PiListStar size={32} />
           </button>
         ) : (
           <div></div>
         )}
       </div>
-      <div className="flex gap-2 w-full">
+      <div className="flex gap-8 w-full ">
         <div className="flex-2">
-          <DayTab
-            days={['Day1', 'Day2', 'Day3']}
-            selectedDay={selectedDay}
-            onSelectDay={setSelectedDay}
-          />
+          <div className="pb-8">
+            <DayTab
+              days={['Day1', 'Day2', 'Day3']}
+              selectedDay={selectedDay}
+              onSelectDay={setSelectedDay}
+            />
+          </div>
           {isLoggedIn ? (
             <div
               className="grid border border-gray-300"
-              style={{ gridTemplateColumns: '140px 1fr' }}
+              style={{ gridTemplateColumns: '100px 1fr' }}
             >
               {timeSlots.map(({ start, end }) => {
                 if (occupiedSlots.has(start)) {
                   return (
                     <div
                       key={`empty-${start}`}
-                      className="flex justify-center items-center border border-gray-300 bg-gray-100 p-3 h-full text-center font-medium"
+                      className="flex justify-center items-center border border-gray-300 px-5 py-6 h-full text-center font-semibold text-base leading-[140%]"
                     >
-                      {start} ~ {end}
+                      {start}
+                      <br />~<br />
+                      {end}
                     </div>
                   );
                 }
@@ -241,14 +250,16 @@ const TimetablePage = () => {
 
                 return (
                   <Fragment key={`time-${start}-${end}`}>
-                    <div className="flex justify-center items-center border border-gray-300 bg-gray-100 p-3 h-full text-center font-medium">
-                      {start} ~ {end}
+                    <div className="flex justify-center items-center border border-gray-300 px-5 py-6 h-full text-center font-semibold text-base leading-[140%]">
+                      {start}
+                      <br />~<br />
+                      {end}
                     </div>
 
                     {lecture ? (
                       <div
                         key={lecture.reservationId}
-                        className="p-4 text-left cursor-pointer"
+                        className="p-6 text-left cursor-pointer"
                         style={{
                           gridRow: `span ${rowSpan}`,
                           backgroundColor: '#fff',
@@ -257,18 +268,24 @@ const TimetablePage = () => {
                         }}
                         onClick={() => router.push(`/lecture/${lecture.lectureId}`)}
                       >
-                        <p className="w-fit bg-gray-200 px-1">{lecture.location}</p>
-                        <p>{lecture.title}</p>
-                        <div className="flex justify-between">
-                          <p>{lecture.speakerName}</p>
-                          <p>
+                        <p className="w-fit border rounded-sm border-[#91CAFF] text-[#1677FF] px-2 py-[1px] font-semibold text-sm leading-[140%]">
+                          {lecture.location}
+                        </p>
+                        <p className="font-bold text-xl leading-[140%] pt-3 pb-2">
+                          {lecture.title}
+                        </p>
+                        <div className="flex justify-between items-center">
+                          <p className="font-medium text-lg leading-[140%]">
+                            {lecture.speakerName}
+                          </p>
+                          <p className="bg-[#F4F4F4] px-3 py-[9px]">
                             인원수 {lecture.currentReservation} / {lecture.capacity}
                           </p>
                         </div>
                       </div>
                     ) : (
                       <div
-                        className="border border-gray-300 bg-gray-50 hover:bg-gray-200 cursor-pointer"
+                        className="border border-gray-300 bg-[#F5F8FA] cursor-pointer"
                         style={{
                           gridRow: 'span 1',
                         }}
@@ -289,15 +306,17 @@ const TimetablePage = () => {
         </div>
 
         {selectedTime && (
-          <div className="flex-1 p-4 bg-gray-50 h-screen dark:bg-gray-900">
-            <h3 className=" text-md font-semibold">즐찾 목록</h3>
+          <div className="flex-1 px-6 pt-11 bg-[#F4F4F4] h-full dark:bg-gray-900">
+            <h3 className="font-bold text-xl leading-[140%] pb-6">즐겨찾기 목록</h3>
             <div className="h-1/3 overflow-auto">
-              <ul className="mt-2 border">
-                {timeWish.map((lecture, index) => (
-                  <li key={index} className="p-2 border-b border-gray-200">
+              <ul className="flex flex-col gap-4">
+                {timeWish.map((lecture) => (
+                  <li key={lecture.lectureId} className="flex flex-col px-5 py-6 border bg-white">
                     <div className="flex items-center gap-2">
-                      <p className="bg-gray-200 w-fit px-2 dark:bg-gray-600">{lecture.location}</p>
-                      <span className="text-xs">
+                      <p className="w-fit border rounded-sm border-[#91CAFF] text-[#1677FF] px-2 py-[1px] font-semibold text-sm leading-[140%]">
+                        {lecture.location}
+                      </p>
+                      <span className="font-semibold text-sm leading-[140%]">
                         {new Date(lecture?.startTime).toLocaleTimeString('ko-KR', {
                           hour: '2-digit',
                           minute: '2-digit',
@@ -311,25 +330,36 @@ const TimetablePage = () => {
                         })}
                       </span>
                     </div>
-                    <span>{lecture?.title}</span>
-                    <div className="flex justify-between w-full">
-                      <p>{lecture.speakerName}</p>
-                      <button className="bg-gray-600 text-white p-1 text-xs dark:bg-gray-500 cursor-pointer">
-                        강의 신청
+                    <span className="pt-3 pb-2 font-bold text-lg leading-[140%]">
+                      {lecture?.title}
+                    </span>
+                    <p className="pb-4 font-medium text-base leading-[140%]">
+                      {lecture.speakerName}
+                    </p>
+                    <div className="flex justify-end items-center gap-2 w-full">
+                      <WishButton
+                        isWished={wishlist.has(lecture.lectureId)}
+                        itemId={lecture.lectureId}
+                        className="w-9 h-9"
+                      />
+                      <button className="bg-[#155DFC] rounded-lg text-white px-4 py-3 font-semibold text-sm leading-[140%] dark:bg-gray-500 cursor-pointer">
+                        강의 신청하기
                       </button>
                     </div>
                   </li>
                 ))}
               </ul>
             </div>
-            <h3 className="pt-10 text-md font-semibold">공석 추천 목록</h3>
+            <h3 className="pt-8 pb-6 font-bold text-xl leading-[140%]">공석 추천 목록</h3>
             <div className="h-1/2 overflow-auto">
-              <ul className="mt-2 border">
+              <ul className="flex flex-col gap-4">
                 {recommandLectures.map((lecture) => (
-                  <li key={lecture.id} className="p-2 border-b border-gray-200">
+                  <li key={lecture.id} className="flex flex-col px-5 py-6 border bg-white">
                     <div className="flex items-center gap-2">
-                      <p className="bg-gray-200 w-fit px-2 dark:bg-gray-600">{lecture.location}</p>
-                      <span className="text-xs">
+                      <p className="w-fit border rounded-sm border-[#91CAFF] text-[#1677FF] px-2 py-[1px] font-semibold text-sm leading-[140%]">
+                        {lecture.location}
+                      </p>
+                      <span className="font-semibold text-sm leading-[140%]">
                         {new Date(lecture?.startTime).toLocaleTimeString('ko-KR', {
                           hour: '2-digit',
                           minute: '2-digit',
@@ -343,11 +373,20 @@ const TimetablePage = () => {
                         })}
                       </span>
                     </div>
-                    <span>{lecture?.title}</span>
-                    <div className="flex justify-between w-full">
-                      <p>{lecture.speakerName}</p>
-                      <button className="bg-gray-600 text-white p-1 text-xs dark:bg-gray-500 cursor-pointer">
-                        강의 신청
+                    <span className="pt-3 pb-2 font-bold text-lg leading-[140%]">
+                      {lecture?.title}
+                    </span>
+                    <p className="pb-4 font-medium text-base leading-[140%]">
+                      {lecture.speakerName}
+                    </p>
+                    <div className="flex justify-end items-center gap-2 w-full">
+                      <WishButton
+                        isWished={wishlist.has(lecture.id)}
+                        itemId={lecture.id}
+                        className="w-9 h-9"
+                      />
+                      <button className="bg-[#155DFC] rounded-lg text-white px-4 py-3 font-semibold text-sm leading-[140%] dark:bg-gray-500 cursor-pointer">
+                        강의 신청하기
                       </button>
                     </div>
                   </li>
@@ -358,18 +397,21 @@ const TimetablePage = () => {
         )}
 
         {showWishlist && (
-          <div className="flex-1 p-4 bg-gray-50 h-screen dark:bg-gray-900">
-            <h3 className="text-md font-semibold">즐겨찾기 목록</h3>
+          <div className="flex-1 px-6 pt-11 bg-[#F4F4F4] h-full dark:bg-gray-900">
+            <h3 className="font-bold text-xl leading-[140%] pb-6">즐겨찾기 목록</h3>
             <div className="h-full overflow-auto">
-              <ul className="mt-2 border">
+              <ul className="flex flex-col gap-4">
                 {userLectures.wishlist.length > 0 ? (
                   userLectures.wishlist.map((lecture) => (
-                    <li key={lecture.wishlistId} className="p-2 border-b border-gray-200">
+                    <li
+                      key={lecture.wishlistId}
+                      className="flex flex-col px-5 py-6 border bg-white"
+                    >
                       <div className="flex items-center gap-2">
-                        <p className="bg-gray-200 text-sm w-fit px-2 dark:bg-gray-600">
+                        <p className="w-fit border rounded-sm border-[#91CAFF] text-[#1677FF] px-2 py-[1px] font-semibold text-sm leading-[140%]">
                           {lecture.location}
                         </p>
-                        <span className="text-xs">
+                        <span className="font-semibold text-sm leading-[140%]">
                           {new Date(lecture?.startTime).toLocaleTimeString('ko-KR', {
                             hour: '2-digit',
                             minute: '2-digit',
@@ -383,11 +425,20 @@ const TimetablePage = () => {
                           })}
                         </span>
                       </div>
-                      <span>{lecture?.title}</span>
-                      <div className="flex justify-between w-full">
-                        <p>{lecture.speakerName}</p>
-                        <button className="bg-gray-600 text-white p-1 text-xs dark:bg-gray-500 cursor-pointer">
-                          강의 신청
+                      <span className="pt-3 pb-2 font-bold text-lg leading-[140%]">
+                        {lecture?.title}
+                      </span>
+                      <p className="pb-4 font-medium text-base leading-[140%]">
+                        {lecture.speakerName}
+                      </p>
+                      <div className="flex justify-end items-center gap-2 w-full">
+                        <WishButton
+                          isWished={true}
+                          itemId={lecture.wishlistId}
+                          className="w-9 h-9"
+                        />
+                        <button className="bg-[#155DFC] rounded-lg text-white px-4 py-3 font-semibold text-sm leading-[140%] dark:bg-gray-500 cursor-pointer">
+                          강의 신청하기
                         </button>
                       </div>
                     </li>
