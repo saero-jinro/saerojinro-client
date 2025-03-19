@@ -40,6 +40,7 @@ const useAuth = () => {
 
   // 헤더에 보이는 이름 설정
   useEffect(() => {
+    console.log(accessToken);
     if (!accessToken) {
       setName((prev) => (prev !== '로그인' ? '로그인' : prev));
       return;

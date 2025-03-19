@@ -27,7 +27,7 @@ export async function POST(request: Request) {
 
     const tokenData = await kakaoTokenResponse.json();
     const idToken = tokenData.id_token;
-
+    console.log(idToken);
     if (!idToken) {
       console.error('idToken을 받지 못함:', tokenData);
       return NextResponse.json({ error: 'idToken 발급 실패' }, { status: 500 });
