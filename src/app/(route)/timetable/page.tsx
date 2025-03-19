@@ -9,56 +9,12 @@ import DayTab from '@/_components/DayTab/DayTab';
 import WishButton from '@/_components/Wish/WishButton';
 import { PiListStar } from 'react-icons/pi';
 import { useLectureStore } from '@/_store/LectureList/useLectureStore';
-
-interface LectureProps {
-  reservationId: number;
-  userId: number;
-  lectureId: number;
-  title: string;
-  startTime: string;
-  endTime: string;
-  currentReservation: number;
-  capacity: number;
-  location: string;
-  speakerName: string;
-  day?: number;
-}
-
-interface WishLectureProps {
-  wishlistId: number;
-  userId: number;
-  lectureId: number;
-  title: string;
-  startTime: string;
-  endTime: string;
-  currentReservation: number;
-  capacity: number;
-  location: string;
-  speakerName: string;
-}
-
-interface RecommandLectureProps {
-  id: number;
-  title: string;
-  category: string;
-  startTime: string;
-  endTime: string;
-  speakerName: string;
-  speakerImageUri: string;
-  location: string;
-}
-
-interface TimeWishProps {
-  lectureId: number;
-  category: string;
-  thumbnailUri: string;
-  title: string;
-  contents: string;
-  speakerName: string;
-  startTime: string;
-  endTime: string;
-  location: string;
-}
+import {
+  LectureProps,
+  WishLectureProps,
+  TimeWishProps,
+  RecommandLectureProps,
+} from '@/_types/Timetable/Lecture.type';
 
 const TimetablePage = () => {
   const [userLectures, setUserLectures] = useState<{
