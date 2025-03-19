@@ -8,6 +8,7 @@ import timeRecommandRes from '@/dummyData/timetable/getTimetableRecommand.json';
 import DayTab from '@/_components/DayTab/DayTab';
 import WishButton from '@/_components/Wish/WishButton';
 import { PiListStar } from 'react-icons/pi';
+import { useLectureStore } from '@/_store/LectureList/useLectureStore';
 
 interface LectureProps {
   reservationId: number;
@@ -44,10 +45,11 @@ interface RecommandLectureProps {
   endTime: string;
   speakerName: string;
   speakerImageUri: string;
-  location?: string;
+  location: string;
 }
 
 interface TimeWishProps {
+  lectureId: number;
   category: string;
   thumbnailUri: string;
   title: string;
@@ -75,6 +77,7 @@ const TimetablePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true); // 임시로 항상 true
 
   const router = useRouter();
+  const { wishlist } = useLectureStore();
 
   useEffect(() => {
     const fetchTimetable = async () => {
@@ -307,8 +310,8 @@ const TimetablePage = () => {
             <h3 className="font-bold text-xl leading-[140%] pb-6">즐겨찾기 목록</h3>
             <div className="h-1/3 overflow-auto">
               <ul className="flex flex-col gap-4">
-                {timeWish.map((lecture, index) => (
-                  <li key={index} className="flex flex-col px-5 py-6 border bg-white">
+                {timeWish.map((lecture) => (
+                  <li key={lecture.lectureId} className="flex flex-col px-5 py-6 border bg-white">
                     <div className="flex items-center gap-2">
                       <p className="w-fit border rounded-sm border-[#91CAFF] text-[#1677FF] px-2 py-[1px] font-semibold text-sm leading-[140%]">
                         {lecture.location}
@@ -335,8 +338,8 @@ const TimetablePage = () => {
                     </p>
                     <div className="flex justify-end items-center gap-2 w-full">
                       <WishButton
-                        isWished={true}
-                        itemId={index} // 강의 id로 수정 필요. lectureId 필드 추가 요청
+                        isWished={wishlist.has(lecture.lectureId)}
+                        itemId={lecture.lectureId}
                         className="w-9 h-9"
                       />
                       <button className="bg-[#155DFC] rounded-lg text-white px-4 py-3 font-semibold text-sm leading-[140%] dark:bg-gray-500 cursor-pointer">
@@ -377,7 +380,11 @@ const TimetablePage = () => {
                       {lecture.speakerName}
                     </p>
                     <div className="flex justify-end items-center gap-2 w-full">
-                      <WishButton isWished={true} itemId={lecture.id} className="w-9 h-9" />
+                      <WishButton
+                        isWished={wishlist.has(lecture.id)}
+                        itemId={lecture.id}
+                        className="w-9 h-9"
+                      />
                       <button className="bg-[#155DFC] rounded-lg text-white px-4 py-3 font-semibold text-sm leading-[140%] dark:bg-gray-500 cursor-pointer">
                         강의 신청하기
                       </button>
