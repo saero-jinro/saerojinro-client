@@ -1,5 +1,4 @@
-import LogoutButton from "./component/LogoutButton";
-
+import LogoutButton from './component/LogoutButton';
 
 // 초기값 server -> client(상태 초기값) -> update
 const Page = () => {
@@ -48,7 +47,7 @@ const Page = () => {
           </div>
         </div>
         {/* 로그아웃 */}
-        <LogoutButton/>
+        <LogoutButton />
 
         {/* 회원탈퇴 */}
         <div className="w-full mt-[40px]">

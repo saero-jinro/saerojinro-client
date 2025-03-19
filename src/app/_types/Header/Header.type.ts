@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
+import { UserRole } from '../Auth/auth.type';
 
 export type Theme = 'light' | 'dark';
 
 // 추후 권한에 따라 속성 수정 필요
-export type UserRole = 'no-login' | 'viewer' | 'admin';
 
 export type NavItem = {
   title: string;

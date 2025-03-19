@@ -1,19 +1,19 @@
 'use client';
 
 import { handleLogout } from '@/_utils/Auth/logout';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 // 임시 로그아웃 페이지
 const LogoutButton = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const onLogout = async () => {
     setLoading(true);
     const success = await handleLogout();
     if (success) {
-      router.push('/');
+      window.location.href = '/';
     } else {
       alert('로그아웃 실패. 다시 시도해주세요.');
     }

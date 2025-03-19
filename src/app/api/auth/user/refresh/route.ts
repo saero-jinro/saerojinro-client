@@ -52,7 +52,7 @@ export async function GET(req: Request) {
 
     try {
       backendData = await backendResponse.json();
-    } catch (error) {
+    } catch {
       return NextResponse.json<ApiResponse<AuthRefreshResponse>>(
         { ok: false, error: 'Invalid JSON response from backend' },
         { status: 500 },
@@ -83,7 +83,7 @@ export async function GET(req: Request) {
     });
 
     return response;
-  } catch (error) {
+  } catch {
     return NextResponse.json<ApiResponse<AuthRefreshResponse>>(
       { ok: false, error: 'Server error' },
       { status: 500 },

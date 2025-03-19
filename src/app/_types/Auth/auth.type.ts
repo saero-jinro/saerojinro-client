@@ -20,4 +20,10 @@ export type AuthAdminRequest = {
   password: string;
 };
 
+export type UserInfo = {
+  name: string;
+  email: string;
+};
+
 export type ApiAuthUserResponse = ApiResponse<AuthUserResponse>;
+export type ApiUserInfoResponse = ApiResponse<UserInfo>;

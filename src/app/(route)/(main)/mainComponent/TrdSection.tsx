@@ -3,10 +3,7 @@ import KakaoMap from './component/kakaoMap';
 
 const TrdSection = () => {
   return (
-    <SectionWrapper
-      aria-labelledby="conference-location"
-      className="max-w-[1280px] py-[120px] px-[40px]"
-    >
+    <SectionWrapper aria-labelledby="conference-location" className="py-[120px] px-[40px]">
       <div className="mb-[3rem]">
         <h2 id="conference-location" className="text-4xl font-bold">
           컨퍼런스 위치

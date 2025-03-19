@@ -55,44 +55,50 @@ const SecSection = () => {
   }, [BASE_URL, lectureOption]);
 
   return (
-    <SectionWrapper
-      role="region"
-      aria-labelledby="introduce-sections"
-      className="w-screen mx-auto bg-[#EBEBEB] select-none"
-    >
-      <div className="max-w-[1280px] mx-auto">
-        <div className="mx-auto flex flex-col gap-3 px-[40px] py-[120px]">
-          <h2 id="introduce-sections" className="text-[32px] font-bold">
-            세션소개
-          </h2>
+    <>
+      <SectionWrapper
+        role="region"
+        aria-labelledby="introduce-sections"
+        className="absolute mx-auto select-none left-1/2 -translate-x-1/2 bg-[#EBEBEB]"
+      >
+        <div className="relative left-1/2 -translate-x-1/2 min-w-[100vw]"></div>
+        <div className="max-w-[1280px] mx-auto">
+          <div className="mx-auto flex flex-col gap-3 px-[40px] py-[120px]">
+            <h2 id="introduce-sections" className="text-[32px] font-bold">
+              세션소개
+            </h2>
 
-          {/* 옵션 버튼 리스트 */}
-          <OptionList
-            className="mt-6"
-            option={lectureOption}
-            ChangeOption={(option: LectureOption) => setLectureOption(option)}
-          />
+            {/* 옵션 버튼 리스트 */}
+            <OptionList
+              className="mt-6"
+              option={lectureOption}
+              ChangeOption={(option: LectureOption) => setLectureOption(option)}
+            />
 
-          {/* 강의 카드 리스트 */}
-          <ScrollWrapper>
-            {lectures.length === 0 && <div className="h-[222px]">강의 리스트를 불러오는 중...</div>}
-            {lectures.map((lecture, idx) => (
-              <Card
-                key={idx}
-                id={lecture.id}
-                image={lecture.image}
-                title={lecture.title}
-                time={`${formatTime(lecture.start_time)} ~ ${formatTime(lecture.end_time)}`}
-                category={lecture.category}
-                speakerName={lecture.speakerName}
-                isWished={wishlist.has(lecture.id)}
-                isProfile={false}
-              />
-            ))}
-          </ScrollWrapper>
+            {/* 강의 카드 리스트 */}
+            <ScrollWrapper>
+              {lectures.length === 0 && (
+                <div className="h-[222px]">강의 리스트를 불러오는 중...</div>
+              )}
+              {lectures.map((lecture, idx) => (
+                <Card
+                  key={idx}
+                  id={lecture.id}
+                  image={lecture.image}
+                  title={lecture.title}
+                  time={`${formatTime(lecture.start_time)} ~ ${formatTime(lecture.end_time)}`}
+                  category={lecture.category}
+                  speakerName={lecture.speakerName}
+                  isWished={wishlist.has(lecture.id)}
+                  isProfile={false}
+                />
+              ))}
+            </ScrollWrapper>
+          </div>
         </div>
-      </div>
-    </SectionWrapper>
+      </SectionWrapper>
+      <div className="h-[737px]" />
+    </>
   );
 };
 

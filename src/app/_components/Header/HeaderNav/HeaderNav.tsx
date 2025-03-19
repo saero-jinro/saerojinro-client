@@ -4,14 +4,14 @@ import { MobileNavigation } from '@/_components/Nav/navigation/HeaderNav.mobile'
 import WebNavList from '@/_components/Nav/navigation/HeaderNav.web';
 import useHeaderStore from '@/_store/Header/useHeaderStore';
 // import useAlarmStore from '@/_store/Header/useAlarmStore';
-import { UserRole } from '@/_types/Header/Header.type';
-import { useHeaderRole } from '@/_hooks/nav/useNav';
+// import { useHeaderRole } from '@/_hooks/nav/useNav';
 // import { Alarm } from '@/_types/Header/Alarm.type';
 import ToggleModal from '@/_components/ToggleModal';
 import useResize from '@/_hooks/nav/useResize';
 import { ReactNode, useEffect } from 'react';
 import { MenuButton } from './ETC';
 import useAuth from '@/_hooks/auth/useAuth';
+// import { UserRole } from '@/_types/Auth/auth.type';
 
 interface Props {
   children?: ReactNode;
@@ -19,22 +19,21 @@ interface Props {
 
 // 헤더 네비게이션
 const HeaderNav = ({ children }: Props) => {
-  const headerRole = useHeaderRole();
-
+  // const headerRole = useHeaderRole();
   const viewmode = useHeaderStore((store) => store.viewport.state.mode);
   const isMobileNavOpen = useHeaderStore((store) => store.mobileNavOpen.state.isOpen);
   const openMobileNav = useHeaderStore((store) => store.mobileNavOpen.actions.setOpen);
   const closeMobileNav = useHeaderStore((store) => store.mobileNavOpen.actions.setClose);
+  const { name } = useAuth();
 
-  const nickname: Record<UserRole, string> = {
-    admin: 'admin',
-    viewer: '김철수',
-    'no-login': '로그인',
-  };
+  // const nickname: Record<UserRole, string> = {
+  //   admin: 'admin',
+  //   user: '김철수',
+  //   guest: '로그인',
+  // };
 
   // 리사이즈 훅
   useResize();
-  useAuth();
 
   // web이면 메뉴 닫음
   useEffect(() => {
@@ -81,9 +80,7 @@ const HeaderNav = ({ children }: Props) => {
   if (viewmode === 'web') {
     return (
       <>
-        <WebNavList {...headerRole} nickName={nickname[headerRole.role]}>
-          {children}
-        </WebNavList>
+        <WebNavList nickName={name}>{children}</WebNavList>
       </>
     );
   }
@@ -98,7 +95,7 @@ const HeaderNav = ({ children }: Props) => {
         onClose={closeMobileNav}
         isOpen={isMobileNavOpen}
       >
-        <MobileNavigation {...headerRole} nickName={nickname[headerRole.role]} />
+        <MobileNavigation nickName={name} />
       </ToggleModal>
 
       {!isMobileNavOpen && <MenuButton onClickHandler={openMobileNav} />}
