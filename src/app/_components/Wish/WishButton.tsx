@@ -17,6 +17,7 @@ const WishButton = ({ isWished, itemId, className }: WishButtonProps) => {
         e.stopPropagation();
         toggleWish(itemId);
       }}
+      aria-label="즐겨찾기"
     >
       {isWished ? <FaStar color="#000" /> : <FaRegStar color="#000" />}
     </button>

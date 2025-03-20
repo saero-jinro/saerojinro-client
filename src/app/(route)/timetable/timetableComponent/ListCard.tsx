@@ -11,12 +11,12 @@ interface ListCardProps {
   lectureList: (RecommandLectureProps | TimeWishProps | WishLectureProps)[];
 }
 
-const isWishLecture = (lecture: any): lecture is WishLectureProps => {
-  return 'wishlistId' in lecture;
+const isWishLecture = (lecture: unknown): lecture is WishLectureProps => {
+  return typeof lecture === 'object' && lecture !== null && 'wishlistId' in lecture;
 };
 
-const isRecommandLecture = (lecture: any): lecture is RecommandLectureProps => {
-  return 'id' in lecture;
+const isRecommandLecture = (lecture: unknown): lecture is RecommandLectureProps => {
+  return typeof lecture === 'object' && lecture !== null && 'id' in lecture;
 };
 
 const ListCard = ({ lectureList }: ListCardProps) => {
