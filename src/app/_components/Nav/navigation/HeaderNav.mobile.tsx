@@ -1,9 +1,11 @@
-import { NavItem, NavSectionProps, UserRole } from '@/_types/Header/Header.type';
-import { HeaderRoleState, useNav } from '@/_hooks/nav/useNav';
+import { NavItem, NavSectionProps } from '@/_types/Header/Header.type';
+import { useNav } from '@/_hooks/nav/useNav';
 import useHeaderStore from '@/_store/Header/useHeaderStore';
 import Right from '@/assets/Header/right.svg';
 import Link from 'next/link';
 import { Nav } from '../nav';
+import { UserRole } from '@/_types/Auth/auth.type';
+import useAuthStore from '@/_store/auth/useAuth';
 
 const MobileNavTop = ({ nickName, path }: { nickName: string; path: string }) => {
   const onClose = useHeaderStore((store) => store.mobileNavOpen.actions.setClose);
@@ -44,17 +46,18 @@ const MobileNavItem = ({ path, title }: NavItem) => {
 
 // -------------네비게이션--------------
 
-interface Props extends HeaderRoleState {
+interface Props {
   nickName: string;
 }
 
-export const MobileNavigation = ({ nickName, role }: Props) => {
+export const MobileNavigation = ({ nickName }: Props) => {
+  const role = useAuthStore((store) => store.state.role);
   const { mobile } = useNav(role);
 
   const path: Record<UserRole, string> = {
     admin: '/admin',
-    viewer: '/mypage',
-    'no-login': '/login',
+    user: '/mypage',
+    guest: '/login',
   };
 
   return (

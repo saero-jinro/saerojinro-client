@@ -6,8 +6,8 @@ import FourthSection from './mainComponent/FourthSection';
 
 const Page = () => {
   return (
-    <div className="w-screen">
-      <div className="w-screen flex flex-col mx-auto">
+    <div className="">
+      <div className="flex flex-col mx-auto">
         <main>
           <FstSection />
           <SecSection />

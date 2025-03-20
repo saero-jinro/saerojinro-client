@@ -1,8 +1,9 @@
 'use client';
-import { NavItem, UserRole } from '@/_types/Header/Header.type';
+import { NavItem } from '@/_types/Header/Header.type';
 import { navInfo } from './navDto';
 import { useEffect, useMemo, useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { UserRole } from '@/_types/Auth/auth.type';
 
 const filterAccessibleNavItems = (items: NavItem[], userRole: UserRole) =>
   items.filter((item) => item.roles?.includes(userRole));
@@ -37,7 +38,7 @@ export interface HeaderRoleState {
 }
 
 export const useHeaderRole = (): HeaderRoleState => {
-  const [role, setRole] = useState<UserRole>('no-login');
+  const [role, setRole] = useState<UserRole>('guest');
   const pathname = usePathname();
 
   const findToken = (tokenName: string): boolean => {
@@ -47,14 +48,14 @@ export const useHeaderRole = (): HeaderRoleState => {
   };
 
   useEffect(() => {
-    let newRole: UserRole = 'no-login';
+    let newRole: UserRole = 'guest';
 
     if (pathname.startsWith('/admin')) {
       newRole = 'admin';
     } else if (findToken('admin_token')) {
       newRole = 'admin';
     } else if (findToken('id_token')) {
-      newRole = 'viewer';
+      newRole = 'user';
     }
 
     setRole((prevRole) => (prevRole !== newRole ? newRole : prevRole));

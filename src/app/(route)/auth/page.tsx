@@ -1,41 +1,51 @@
 'use client';
-
-import { useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
+import { ApiAuthUserResponse } from '@/_types/Auth/auth.type';
+import { useSearchParams, useRouter } from 'next/navigation';
+import useAuthStore from '@/_store/auth/useAuth';
 import { useEffect } from 'react';
 
+// 로그인 리다이렉트 페이지
 const Page = () => {
-  const BASE_URL = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI || 'http://localhost:3000';
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
   const searchParams = useSearchParams();
   const code = searchParams.get('code');
   const router = useRouter();
+  const setAuth = useAuthStore((store) => store.actions.setAuth);
 
   useEffect(() => {
-    const prevUrl = sessionStorage.getItem('prevUrl');
-
     if (!code) return;
+
+    const prevUrl = sessionStorage.getItem('prevUrl');
+    const redirectPrevUrl = () => {
+      router.push(prevUrl ? prevUrl : '/');
+    };
 
     (async () => {
       try {
-        const res = await fetch(`${BASE_URL}/api/auth`, {
+        const res = await fetch(`${BASE_URL}/api/auth/user`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ code }),
         });
 
-        if (res.ok) {
-          console.log('로그인 성공! 아이디 토큰이 쿠키에 저장됨.');
-        } else {
-          console.error('카카오 로그인 실패:', await res.json());
+        if (!res.ok) throw new Error('응답 데이터 실패');
+
+        const response = (await res.json()) as ApiAuthUserResponse;
+
+        if (!response.ok || !response.data) {
+          alert('로그인 실패. 원래 페이지로 되돌아갑니다.');
+          return redirectPrevUrl();
         }
+        // console.log('로그인 성공:', response.data.accessToken);
+        setAuth(response.data.accessToken, 'user');
+        redirectPrevUrl();
       } catch (error) {
-        console.error('서버 오류', error);
+        console.error('서버 오류:', error);
+        alert('로그인 실패. 원래 페이지로 되돌아갑니다.');
+        redirectPrevUrl();
       }
-      router.push(prevUrl ? prevUrl : '/');
     })();
-  }, [code, router, BASE_URL]);
+  }, [code, router, setAuth]);
 
   return <></>;
 };

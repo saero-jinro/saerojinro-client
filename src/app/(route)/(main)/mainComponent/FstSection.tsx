@@ -6,7 +6,7 @@ const FstSection = () => {
     <SectionWrapper
       role="region"
       aria-labelledby="conference-title"
-      className="max-w-[1280px] w-full mx-auto mt-[60px] flex flex-col gap-8 px-[40px] py-[160px]"
+      className="w-full mx-auto mt-[60px] flex flex-col gap-8 px-[40px] py-[160px]"
     >
       {/* 제목과 소개 */}
       <article>

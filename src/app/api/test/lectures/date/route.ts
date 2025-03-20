@@ -1,10 +1,6 @@
 import { NextResponse } from 'next/server';
 import testJSON from '@/dummyData/lecture-list/getLectureList.json';
-export type ApiResponse<T> = {
-  ok: boolean;
-  data?: T;
-  error?: string;
-};
+import { ApiResponse } from '@/_types/Auth/auth.type';
 
 // 예시 텍스트 에디터 데이터 파일
 export const GET = async (): Promise<NextResponse> => {

@@ -1,22 +1,45 @@
-import type { ApiResponse, AuthAdminRequest } from '../../../_types/Auth/auth.type';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {
-    const { email, password }: AuthAdminRequest = await request.json();
-
-    if (!email || !password) {
-      return NextResponse.json<ApiResponse<null>>(
-        { ok: false, error: '이메일과 비밀번호를 입력하세요.' },
-        { status: 400 },
-      );
-    }
+    const { code } = await request.json();
     const BACK_URL = process.env.NEXT_PUBLIC_BACKEND_AUTH_API;
+    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const REDIRECT_URI = `${BASE_URL}/auth`;
 
-    const backendResponse = await fetch(`${BACK_URL}/api/auth/login`, {
+    if (!code) {
+      return NextResponse.json({ error: 'No authorization code' }, { status: 400 });
+    }
+
+    // 카카오 토큰 요청
+    const kakaoTokenResponse = await fetch('https://kauth.kakao.com/oauth/token', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        grant_type: 'authorization_code',
+        client_id: process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID!,
+        redirect_uri: REDIRECT_URI,
+        code,
+      }),
+    });
+
+    const tokenData = await kakaoTokenResponse.json();
+    const idToken = tokenData.id_token;
+    console.log(idToken);
+    if (!idToken) {
+      console.error('idToken을 받지 못함:', tokenData);
+      return NextResponse.json({ error: 'idToken 발급 실패' }, { status: 500 });
+    }
+
+    // 백엔드 로그인 요청
+    const backendResponse = await fetch(`${BACK_URL}/api/auth/kakao/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ idToken }),
     });
 
     if (!backendResponse.ok) {
@@ -47,13 +70,6 @@ export async function POST(request: Request) {
       },
     });
 
-    response.cookies.set('adminToken', 'admin', {
-      httpOnly: true,
-      // secure: true,
-      sameSite: 'strict',
-      path: '/',
-    });
-
     response.cookies.set('accessToken', userAccessToken, {
       httpOnly: true,
       // secure: true, // HTTPS 환경에서만 전송
@@ -70,7 +86,7 @@ export async function POST(request: Request) {
 
     return response;
   } catch (error) {
-    console.error('Admin 로그인 중 오류:', error);
-    return NextResponse.json<ApiResponse<null>>({ ok: false, error: '서버 오류' }, { status: 500 });
+    console.error('카카오 로그인 처리 중 오류:', error);
+    return NextResponse.json({ error: '서버 오류' }, { status: 500 });
   }
 }

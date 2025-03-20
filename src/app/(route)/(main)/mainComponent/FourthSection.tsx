@@ -6,22 +6,25 @@ import { useRef, useState } from 'react';
 
 // 추후 서버 사이드로 넘기는 부분
 const FourthSection = () => {
+  const ref = useRef<HTMLDivElement>(null);
   return (
-    <section aria-labelledby="FAQ" className="w-screen bg-[#343A40]">
-      <div className="px-[40px] py-[120px] max-w-[1280px] flex flex-col mx-auto">
-        <h2
-          id="FAQ"
-          className="text-[32px] mb-6 flex items-center justify-center font-bold text-white"
-        >
-          FAQ
-        </h2>
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-      </div>
-    </section>
+    <>
+      <section ref={ref} aria-labelledby="FAQ" className="bg-[#343A40]">
+        <div className="px-[40px] py-[120px] max-w-[1280px] flex flex-col mx-auto">
+          <h2
+            id="FAQ"
+            className="text-[32px] mb-6 flex items-center justify-center font-bold text-white"
+          >
+            FAQ
+          </h2>
+          <Item />
+          <Item />
+          <Item />
+          <Item />
+          <Item />
+        </div>
+      </section>
+    </>
   );
 };
 export default FourthSection;

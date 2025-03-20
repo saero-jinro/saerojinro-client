@@ -1,27 +1,32 @@
 'use client';
 
 import LoginComponent from '@/_components/Login/LoginComponent';
-import { HeaderRoleState, useNav } from '@/_hooks/nav/useNav';
-import { NavItem } from '@/_types/Header/Header.type';
-import Alarm from '@/_components/Header/Alarm/Alarm';
-import { ReactNode, useState } from 'react';
-import Link from 'next/link';
 import ToggleModal from '@/_components/ToggleModal';
 import ClickButton from '@/_components/ClickButton';
+import useAuthStore from '@/_store/auth/useAuth';
+import { usePathname } from 'next/navigation';
+import { NavItem } from '@/_types/Header/Header.type';
+import Alarm from '@/_components/Header/Alarm/Alarm';
+import { useNav } from '@/_hooks/nav/useNav';
+import { ReactNode, useState } from 'react';
+import Link from 'next/link';
 
-interface WebNavListProps extends HeaderRoleState {
+interface WebNavListProps {
   children?: ReactNode;
   nickName?: string;
 }
 
 // 웹
-const WebNavList = ({ children, role, pathname, nickName }: WebNavListProps) => {
+const WebNavList = ({ children, nickName }: WebNavListProps) => {
+  const role = useAuthStore((store) => store.state.role);
+  const pathname = usePathname();
   const { web } = useNav(role);
 
   const path = {
     admin: '/admin',
-    viewer: '/mypage',
+    user: '/mypage',
   };
+
   return (
     <div className="flex justify-center items-center gap-2 select-none text-[18px]">
       <nav>
@@ -34,11 +39,11 @@ const WebNavList = ({ children, role, pathname, nickName }: WebNavListProps) => 
         </ol>
       </nav>
 
-      {!pathname?.startsWith('/admin') && role !== 'no-login' && (
+      {!pathname?.startsWith('/admin') && role !== 'guest' && (
         <Link href={path[role]}>{nickName}</Link>
       )}
-      {role === 'no-login' && <LoginButton />}
-      {role === 'viewer' && <Alarm />}
+      {role === 'guest' && <LoginButton />}
+      {role === 'user' && <Alarm />}
     </div>
   );
 };

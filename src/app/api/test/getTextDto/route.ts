@@ -1,10 +1,5 @@
+import { ApiResponse } from '@/_types/Auth/auth.type';
 import { NextResponse } from 'next/server';
-
-export type ApiResponse<T> = {
-  ok: boolean;
-  data?: T;
-  error?: string;
-};
 
 // 예시 텍스트 에디터 데이터 파일
 const testJSON = `{
