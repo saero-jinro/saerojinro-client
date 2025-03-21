@@ -5,10 +5,10 @@ export interface LectureListProps {
   id: number;
   title: string;
   category: string;
-  start_time: string;
-  end_time: string;
+  startTime: string;
+  endTime: string;
   speakerName: string;
-  image: string;
+  thumbnailUri: string;
 }
 
 export interface WishlistProps {

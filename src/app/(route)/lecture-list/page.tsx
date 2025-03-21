@@ -47,6 +47,8 @@ const LectureListPage = () => {
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
   }
 
+  console.log('filteredLectures:', filteredLectures);
+
   const categories = Array.from(new Set(lectures.map((lecture) => lecture.category)));
 
   return (
@@ -129,10 +131,10 @@ const LectureListPage = () => {
                 <Card
                   key={lecture.id}
                   id={lecture.id}
-                  image={lecture.image}
+                  image={lecture.thumbnailUri}
                   title={lecture.title}
                   category={lecture.category}
-                  time={`${formatTime(lecture.start_time)} ~ ${formatTime(lecture.end_time)}`}
+                  time={`${formatTime(lecture.startTime)} ~ ${formatTime(lecture.endTime)}`}
                   speakerName={lecture.speakerName}
                   isWished={wishlist.has(lecture.id)}
                   isProfile={false}
