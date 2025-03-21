@@ -23,33 +23,29 @@ export interface WishlistProps {
 interface LectureStore {
   lecturelist: LectureListProps[];
   wishlist: Set<number>;
-  fetchLectures: () => void;
+  fetchLectures: (date: string) => void;
   fetchWishlist: () => void;
   toggleWish: (id: number) => void;
 }
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API;
-const date = '2025-03-01'; // 테스트용
 const wishlistData = wishlistDataResponse as { response: WishlistProps[] };
 
 export const useLectureStore = create<LectureStore>((set) => ({
   lecturelist: [] as LectureListProps[],
   wishlist: new Set<number>(),
 
-  fetchLectures: () => {
-    const fetchLectures = async () => {
-      try {
-        const response = await fetch(`${BASE_URL}/api/lectures/date?date=${date}`);
-        if (!response.ok) {
-          throw new Error('네트워크 응답 오류');
-        }
-        const data = await response.json();
-        set({ lecturelist: data.lectures });
-      } catch (error) {
-        console.error('데이터 불러오기 실패: ', error);
+  fetchLectures: async (date: string) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/lectures/date?date=${date}`);
+      if (!response.ok) {
+        throw new Error('네트워크 응답 오류');
       }
-    };
-    fetchLectures();
+      const data = await response.json();
+      set({ lecturelist: data.lectures });
+    } catch (error) {
+      console.error('데이터 불러오기 실패: ', error);
+    }
   },
 
   fetchWishlist: () => {

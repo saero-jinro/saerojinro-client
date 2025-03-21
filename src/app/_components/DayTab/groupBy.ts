@@ -8,12 +8,14 @@ export const groupByDay = (lectures: LectureListProps[]) => {
   );
 
   const uniqueDays = Array.from(
-    new Set(sortedLectures.map((lecture) => new Date(lecture.startTime).toDateString())),
+    new Set(
+      sortedLectures.map((lecture) => new Date(lecture.startTime).toISOString().split('T')[0]),
+    ),
   );
 
-  uniqueDays.forEach((day, index) => {
-    grouped[`Day${index + 1}`] = sortedLectures.filter(
-      (lecture) => new Date(lecture.startTime).toDateString() === day,
+  uniqueDays.forEach((date) => {
+    grouped[date] = sortedLectures.filter(
+      (lecture) => new Date(lecture.startTime).toISOString().split('T')[0] === date,
     );
   });
 
