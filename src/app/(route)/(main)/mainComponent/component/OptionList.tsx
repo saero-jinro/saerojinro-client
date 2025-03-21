@@ -1,16 +1,18 @@
 import ClickButton from '@/_components/ClickButton';
 import { HTMLAttributes, ReactNode } from 'react';
-import { LectureOption } from '../SecSection';
 
 interface Props {
-  option: LectureOption;
-  ChangeOption: (option: LectureOption) => void;
+  option: number;
+  startDay: number;
+  ChangeOption: (option: number) => void;
   className?: string;
+  limit?: number;
 }
 
-const OptionList = ({ option, ChangeOption, className }: Props) => {
-  const options: LectureOption[] = ['all', 12, 13, 14];
-  const getScript = (opt: LectureOption) => (opt === 'all' ? '전체' : `${opt}일`);
+const OptionList = ({ option, limit = 3, ChangeOption, className, startDay }: Props) => {
+  const options = [...Array(limit).keys()].map((idx) => startDay + idx);
+  const getScript = (opt: number) => `${opt}일`;
+
   return (
     <ul className={`flex gap-[0.5rem] select-none ${className}`}>
       {options.map((opt) => (
