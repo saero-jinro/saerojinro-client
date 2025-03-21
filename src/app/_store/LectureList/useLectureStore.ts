@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import lectureDataResponse from '@/dummyData/lecture-list/getLectureList.json';
 import wishlistDataResponse from '@/dummyData/wishlist/getWishlist.json';
 
 export interface LectureListProps {
@@ -29,7 +28,8 @@ interface LectureStore {
   toggleWish: (id: number) => void;
 }
 
-const lectureData = lectureDataResponse as { data: { lectures: LectureListProps[] } };
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API;
+const date = '2025-03-01'; // 테스트용
 const wishlistData = wishlistDataResponse as { response: WishlistProps[] };
 
 export const useLectureStore = create<LectureStore>((set) => ({
@@ -37,24 +37,19 @@ export const useLectureStore = create<LectureStore>((set) => ({
   wishlist: new Set<number>(),
 
   fetchLectures: () => {
-    // const fetchLectures = async () => {
-    //   try {
-    //     const response = await fetch('/api/lectures');
-    //     if (!response.ok) {
-    //       throw new Error('네트워크 응답 오류');
-    //     }
-    //     const data = await response.json();
-    //     set({ lectures: data.lectures });
-    //   } catch (error) {
-    //     console.error('데이터 불러오기 실패: ', error);
-    //   }
-    // };
-
-    if (lectureData?.data?.lectures && Array.isArray(lectureData.data.lectures)) {
-      set({ lecturelist: lectureData.data.lectures });
-    } else {
-      console.error('강의 목록 데이터 구조가 예상과 다릅니다:', lectureData);
-    }
+    const fetchLectures = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/api/lectures/date?date=${date}`);
+        if (!response.ok) {
+          throw new Error('네트워크 응답 오류');
+        }
+        const data = await response.json();
+        set({ lecturelist: data.lectures });
+      } catch (error) {
+        console.error('데이터 불러오기 실패: ', error);
+      }
+    };
+    fetchLectures();
   },
 
   fetchWishlist: () => {

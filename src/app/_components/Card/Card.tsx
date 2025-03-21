@@ -38,11 +38,11 @@ const Card = ({
     >
       <div className="relative">
         <Image
-          src={image}
+          src={image || 'https://dyns.co.kr/wp-content/uploads/2024/04/placeholder-304.png'}
           alt={title}
           width={282}
           height={170}
-          className="w-full h-[170] object-cover"
+          className="w-full h-[170px] object-cover"
           priority
         />
         <WishButton isWished={isWished} itemId={id} className="absolute top-2 right-2" />
