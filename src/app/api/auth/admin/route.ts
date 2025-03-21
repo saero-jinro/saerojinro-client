@@ -49,21 +49,21 @@ export async function POST(request: Request) {
 
     response.cookies.set('adminToken', 'admin', {
       httpOnly: true,
-      // secure: true,
+      secure: true,
       sameSite: 'strict',
       path: '/',
     });
 
     response.cookies.set('accessToken', userAccessToken, {
       httpOnly: true,
-      // secure: true, // HTTPS 환경에서만 전송
+      secure: true, // HTTPS 환경에서만 전송
       sameSite: 'strict',
       path: '/',
     });
 
     response.cookies.set('refreshToken', userRefreshToken, {
       httpOnly: true,
-      // secure: true,
+      secure: true,
       sameSite: 'strict',
       path: '/',
     });
