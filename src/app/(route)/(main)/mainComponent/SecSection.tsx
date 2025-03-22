@@ -12,6 +12,7 @@ const SecSection = async () => {
   try {
     const data = await getLectures(DATE, DAY);
     lectures = data;
+    console.log(lectures);
     isLecturesFetched = true;
   } catch (error) {
     console.error('강의 로드 실패: 테스트 데이터로 대체', error);

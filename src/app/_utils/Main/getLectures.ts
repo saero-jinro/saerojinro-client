@@ -2,6 +2,7 @@ import { Lectures } from '@/_types/Lectures/lectures.type';
 
 export const getLectures = async (date: string, day: number): Promise<Lectures> => {
   const BACK_URL = process.env.NEXT_PUBLIC_BACKEND_API;
+  console.log(BACK_URL);
   const formattedDay = day.toString().padStart(2, '0');
   const fullDate = `${date}-${formattedDay}`;
   const endpoint = `${BACK_URL}/api/lectures/date?date=${fullDate}`;
