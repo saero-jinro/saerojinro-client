@@ -2,11 +2,15 @@
 import type { Alarm } from '@/_types/Header/Alarm.type';
 import ToggleModal from '@/_components/ToggleModal';
 import AlramIcon from '@/assets/Header/alarm.svg';
-import { CSSProperties, useState } from 'react';
+import { CSSProperties } from 'react';
 import AlarmList from './AlarmList';
 
+import useAlarmStore from '@/_store/Header/useAlarmStore';
+
 const Alarm = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const setIsOpen = useAlarmStore((store) => store.isOpen.actions.setIsOpen);
+  const isOpen = useAlarmStore((store) => store.isOpen.state.isOpen);
+  // const [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
   const openModal = () => setIsOpen(true);
   const ICON_WIDTH = 24;

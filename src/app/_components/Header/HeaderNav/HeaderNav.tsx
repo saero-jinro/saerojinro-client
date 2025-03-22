@@ -11,6 +11,7 @@ import useResize from '@/_hooks/nav/useResize';
 import { ReactNode, useEffect } from 'react';
 import { MenuButton } from './ETC';
 import useAuth from '@/_hooks/auth/useAuth';
+import useAlarm from '@/_hooks/nav/useAlarm';
 // import { UserRole } from '@/_types/Auth/auth.type';
 
 interface Props {
@@ -34,6 +35,7 @@ const HeaderNav = ({ children }: Props) => {
 
   // 리사이즈 훅
   useResize();
+  useAlarm();
 
   // web이면 메뉴 닫음
   useEffect(() => {

@@ -1,53 +1,91 @@
-import { createJSONStorage, persist } from 'zustand/middleware';
 import { Alarm } from '@/_types/Header/Alarm.type';
 import { BaseSlice } from '@/_types/store';
 import { create } from 'zustand';
 import { produce } from 'immer';
 
-export type AlarmView = Alarm & { time: string };
-
-export interface AlarmState {
-  alarms: AlarmView[];
+interface AlarmState {
+  alarms: Alarm[];
 }
 
-export interface AlarmActions {
+interface AlarmActions {
   addAlarm: (alarm: Alarm) => void;
   resetAlarm: () => void;
+  loadInitAlarms: (alarms: Alarm[]) => void;
 }
 
-type AlarmSlice = BaseSlice<AlarmState, AlarmActions>;
+interface IsSubscribeState {
+  isSubscribe: boolean;
+}
 
-const useAlarmStore = create<AlarmSlice>()(
-  persist(
-    (set) => ({
-      state: {
-        alarms: [],
+interface IsSubscribeActions {
+  setSubscribe: (state: boolean) => void;
+}
+
+interface IsOpenState {
+  isOpen: boolean;
+}
+
+interface IsOpenActions {
+  setIsOpen: (state: boolean) => void;
+}
+
+type AlarmSlice = {
+  alarms: BaseSlice<AlarmState, AlarmActions>;
+  isOpen: BaseSlice<IsOpenState, IsOpenActions>;
+  isSubscribe: BaseSlice<IsSubscribeState, IsSubscribeActions>;
+};
+
+const useAlarmStore = create<AlarmSlice>()((set) => ({
+  alarms: {
+    state: { alarms: [] },
+    actions: {
+      addAlarm(alarm) {
+        set(
+          produce((store: AlarmSlice) => {
+            store.alarms.state.alarms.push({ ...alarm });
+          }),
+        );
       },
-      actions: {
-        addAlarm(alarm) {
-          set(
-            produce((store: AlarmSlice) => {
-              store.state.alarms.push({
-                ...alarm,
-                time: new Date().toISOString(),
-              });
-            }),
-          );
-        },
-        resetAlarm() {
-          set(
-            produce((store: AlarmSlice) => {
-              store.state.alarms = [];
-            }),
-          );
-        },
+      resetAlarm() {
+        set(
+          produce((store: AlarmSlice) => {
+            store.alarms.state.alarms = [];
+          }),
+        );
       },
-    }),
-    {
-      name: 'alarm-storage',
-      storage: createJSONStorage(() => localStorage),
+      loadInitAlarms(alarms) {
+        set(
+          produce((store: AlarmSlice) => {
+            store.alarms.state.alarms = [...alarms];
+          }),
+        );
+      },
     },
-  ),
-);
+  },
+  isOpen: {
+    state: { isOpen: false },
+    actions: {
+      setIsOpen(state) {
+        set(
+          produce((store: AlarmSlice) => {
+            store.isOpen.state.isOpen = state;
+          }),
+        );
+      },
+    },
+  },
+  isSubscribe: {
+    state: { isSubscribe: false },
+    actions: {
+      setSubscribe(state) {
+        set(
+          produce((store: AlarmSlice) => {
+            store.isSubscribe.state.isSubscribe = state;
+          }),
+        );
+      },
+    },
+  },
+}));
 
 export default useAlarmStore;
