@@ -1,29 +1,11 @@
 import { ApiResponse, AuthRefreshResponse, UserRole } from '@/_types/Auth/auth.type';
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-export async function GET(req: Request) {
-  const cookies = req.headers.get('cookie');
-
-  if (!cookies) {
-    return NextResponse.json<ApiResponse<AuthRefreshResponse>>(
-      { ok: false, error: 'No cookies found' },
-      { status: 401 },
-    );
-  }
-
-  const adminToken = cookies.includes('adminToken=')
-    ? cookies
-        .split('; ')
-        .find((row) => row.startsWith('adminToken='))
-        ?.split('=')[1]
-    : undefined;
-
-  const refreshToken = cookies.includes('refreshToken=')
-    ? cookies
-        .split('; ')
-        .find((row) => row.startsWith('refreshToken='))
-        ?.split('=')[1]
-    : undefined;
+export async function GET() {
+  const cookieStore = await cookies();
+  const refreshToken = cookieStore.get('refreshToken')?.value;
+  const adminToken = cookieStore.get('adminToken')?.value;
 
   if (!refreshToken) {
     return NextResponse.json<ApiResponse<AuthRefreshResponse>>(
@@ -70,14 +52,14 @@ export async function GET(req: Request) {
 
     response.cookies.set('accessToken', accessToken, {
       httpOnly: true,
-      // secure: true,
+      secure: true,
       sameSite: 'strict',
       path: '/',
     });
 
     response.cookies.set('refreshToken', newRefreshToken, {
       httpOnly: true,
-      // secure: true,
+      secure: true,
       sameSite: 'strict',
       path: '/',
     });

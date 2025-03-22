@@ -1,20 +1,21 @@
 'use client';
 
 import { useState } from 'react';
+import useUpload from './util/upload';
 import TextEditor from '@/_components/TextEditor/TextEditor';
 import useTextEditor from '@/_hooks/textEditor/useTextEditor';
-import { submitLecture, uploadFileAndGetId, uploadImgAndGetId } from './writeUtil';
-import { Category, InputLectureFormData, SendLectureFormData } from '@/_types/Write/write.type';
+import { Category, InputLectureFormData } from '@/_types/Write/write.type';
+import { compressToEncodedURIComponent } from 'lz-string';
 
 const LectureForm = () => {
   const [formData, setFormData] = useState<InputLectureFormData>({
     title: '',
     contents: '',
-    thumbnail: null,
+    thumbnailId: '',
     materialId: null,
     maxCapacity: 0,
-    start_time: '',
-    end_time: '',
+    startTime: '',
+    endTime: '',
     location: '',
     category: Category.BACKEND,
     speakerName: '',
@@ -22,20 +23,21 @@ const LectureForm = () => {
     speakerPosition: '',
     speakerIntroduction: '',
     speakerFilmography: [],
-    speakerPhotoId: null,
+    speakerPhotoId: '',
   });
 
+  const { submitLecture } = useUpload();
   const editor = useTextEditor('write');
 
   const isFormDataComplete = (data: InputLectureFormData): boolean => {
     return (
       data.title.trim().length > 0 &&
       data.contents.trim().length > 0 &&
-      data.thumbnail !== null &&
+      data.contents.trim().length > 0 &&
       data.materialId !== null &&
       data.maxCapacity > 0 &&
-      data.start_time.trim().length > 0 &&
-      data.end_time.trim().length > 0 &&
+      data.startTime.trim().length > 0 &&
+      data.endTime.trim().length > 0 &&
       data.location.trim().length > 0 &&
       data.speakerName.trim().length > 0 &&
       data.speakerEmail.trim().length > 0 &&
@@ -46,80 +48,36 @@ const LectureForm = () => {
     );
   };
 
-  // 강연자 파일
+  // // 강연자 파일
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    if (files && files[0]) {
-      try {
-        const id = await uploadFileAndGetId(files[0]);
-        if (!id) throw new Error();
-        setFormData((prev) => ({ ...prev, [name]: id }));
-      } catch (error: unknown) {
-        console.error('Failed to upload file:', error);
-        e.target.value = '';
-        setFormData((prev) => {
-          const newFormData = { ...prev };
-          return newFormData;
-        });
-      }
+    const file = e.target.files?.[0];
+
+    if (!file) {
+      alert('파일을 선택해주세요.');
+      return;
     }
+
+    if (!file.name.endsWith('.zip')) {
+      alert('zip 파일만 업로드 가능합니다.');
+      e.target.value = ''; // input 초기화
+      return;
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      materialId: file,
+    }));
   };
 
-  // 이미지
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-
-    if (files && files[0]) {
-      const file = files[0];
-
-      if (!file.type.startsWith('image/')) {
-        console.error('이미지 파일 아님');
-        alert('이미지 파일만 업로드 가능합니다.');
-        e.target.value = '';
-        return;
-      }
-
-      const reader = new FileReader();
-
-      reader.onloadend = async () => {
-        if (typeof reader.result === 'string') {
-          console.log(`Uploading image: ${name}`);
-
-          try {
-            const id = await uploadImgAndGetId(
-              reader.result,
-              name as 'thumbnail' | 'speakerPhotoId',
-            );
-
-            if (!id) {
-              throw new Error('API res nope');
-            }
-
-            setFormData((prev) => ({ ...prev, [name]: id }));
-          } catch (error: unknown) {
-            console.error('Failed to upload image:', error);
-            alert('이미지 업로드 실패');
-            e.target.value = '';
-            setFormData((prev) => {
-              const newFormData = { ...prev };
-              return newFormData;
-            });
-          }
-        }
-      };
-
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // 체인지 핸들러
-  const handleChange = (
+  // // 체인지 핸들러
+  const handleChange = async (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  //#region
   const handleFilmographyKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -141,28 +99,28 @@ const LectureForm = () => {
     }));
   };
 
+  // //#endregion
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!isFormDataComplete(formData)) {
-      alert('모든 데이터를 채워주세요');
-
+    if (!editor.editor) {
+      alert('내용을 입력하세요');
       return;
     }
 
-    const updatedFormData = {
+    const editorJson = editor.editor?.getJSON();
+    const compressed = compressToEncodedURIComponent(JSON.stringify(editorJson));
+    const formDto = {
       ...formData,
-      speakerFilmography: JSON.stringify(formData.speakerFilmography),
-    } as SendLectureFormData;
+      contents: compressed,
+    };
 
-    const result = await submitLecture(updatedFormData);
-
-    if (result) {
-      console.log('강의 생성 성공:', updatedFormData);
-      // 운영자 페이지로 리다이렉트나 강의리스트로 리다이렉트
-    } else {
-      alert('강의 생성 실패');
+    if (!isFormDataComplete(formDto)) {
+      console.log(formDto);
+      alert('내용을 전부 입력하세요');
+      return;
     }
+    submitLecture(formDto);
   };
 
   return (
@@ -191,13 +149,15 @@ const LectureForm = () => {
       </div>
 
       {/* 썸네일 파일 업로드 */}
-      <label className="block">
-        <span className="text-gray-700">강의 썸네일</span>
+      <label htmlFor="thumbnail" className="block">
+        <span className="text-gray-700">강의 썸네일 (URL)</span>
         <input
           aria-label="강의 썸네일"
-          type="file"
+          id="thumbnail"
+          type="text"
           name="thumbnail"
-          onChange={handleImageChange}
+          value={formData.thumbnailId}
+          onChange={handleChange}
           className="mt-1 block w-full p-2 border rounded"
         />
       </label>
@@ -234,8 +194,8 @@ const LectureForm = () => {
           <input
             aria-label="시작 시간"
             type="datetime-local"
-            name="start_time"
-            value={formData.start_time}
+            name="startTime"
+            value={formData.startTime}
             onChange={handleChange}
             className="mt-1 block w-full p-2 border rounded"
           />
@@ -245,8 +205,8 @@ const LectureForm = () => {
           <input
             aria-label="종료 시간"
             type="datetime-local"
-            name="end_time"
-            value={formData.end_time}
+            name="endTime"
+            value={formData.endTime}
             onChange={handleChange}
             className="mt-1 block w-full p-2 border rounded"
           />
@@ -367,13 +327,15 @@ const LectureForm = () => {
         </fieldset>
 
         {/* 강연자 사진 등록 */}
-        <label className="block">
-          <span className="text-gray-700">강연자 사진</span>
+        <label htmlFor="speakerPhotoId" className="block">
+          <span className="text-gray-700">강연자 프로필 사진 (URL)</span>
           <input
-            aria-label="강연자 사진"
-            type="file"
+            aria-label="강연자 프로필 사진"
+            id="speakerPhotoId"
+            type="text"
             name="speakerPhotoId"
-            onChange={handleImageChange}
+            value={formData.speakerPhotoId}
+            onChange={handleChange}
             className="mt-1 block w-full p-2 border rounded"
           />
         </label>
