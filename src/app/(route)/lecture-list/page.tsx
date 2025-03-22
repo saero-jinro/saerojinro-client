@@ -13,16 +13,32 @@ const LectureListPage = () => {
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(['ALL']);
 
+  const dateList = ['2025-03-01', '2025-03-02', '2025-03-03']; // 현재 데이터 들어있는 날짜로 임시
+  const dateToDayMap = dateList.reduce(
+    (acc, date, index) => {
+      acc[date] = `Day${index + 1}`;
+      return acc;
+    },
+    {} as Record<string, string>,
+  );
+
+  const dayToDateMap = Object.fromEntries(
+    Object.entries(dateToDayMap).map(([date, day]) => [day, date]),
+  );
+
   useEffect(() => {
-    fetchLectures();
+    fetchLectures(dayToDateMap[selectedDay]);
+  }, [selectedDay]);
+
+  useEffect(() => {
     fetchWishlist();
   }, []);
 
   const lectures: LectureListProps[] = lecturelist;
 
   const groupedByDay = groupByDay(lectures);
-  const days = Object.keys(groupedByDay);
-  const groupedByTime = selectedDay ? groupByTime(groupedByDay[selectedDay] || []) : {};
+  const selectedDate = dayToDateMap[selectedDay];
+  const groupedByTime = selectedDate ? groupByTime(groupedByDay[selectedDate] || []) : {};
 
   const filteredLectures: Record<string, LectureListProps[]> = selectedCategories.includes('ALL')
     ? groupedByTime
@@ -51,10 +67,14 @@ const LectureListPage = () => {
 
   return (
     <div className="px-10 py-16">
-      <DayTab days={days} selectedDay={selectedDay} onSelectDay={setSelectedDay} />
+      <DayTab
+        days={Object.values(dateToDayMap)}
+        selectedDay={selectedDay}
+        onSelectDay={setSelectedDay}
+      />
       <div className="relative flex justify-between items-center h-10 mt-10">
         <h1 className="text-lg font-medium leading-[140%]">
-          {groupedByDay[selectedDay]?.length || 0} Sessions
+          {groupedByDay[selectedDate]?.length || 0} Sessions
         </h1>
         <button
           onClick={() => setIsFilterOpen(true)}
@@ -121,26 +141,30 @@ const LectureListPage = () => {
       </div>
 
       <div className="space-y-8">
-        {sortedTime.map((time) => (
-          <div key={time}>
-            <h2 className="text-2xl font-bold mt-8 mb-6">{time}</h2>
-            <ul className="flex flex-wrap gap-6">
-              {filteredLectures[time].map((lecture) => (
-                <Card
-                  key={lecture.id}
-                  id={lecture.id}
-                  image={lecture.image}
-                  title={lecture.title}
-                  category={lecture.category}
-                  time={`${formatTime(lecture.start_time)} ~ ${formatTime(lecture.end_time)}`}
-                  speakerName={lecture.speakerName}
-                  isWished={wishlist.has(lecture.id)}
-                  isProfile={false}
-                />
-              ))}
-            </ul>
-          </div>
-        ))}
+        {sortedTime.length > 0 ? (
+          sortedTime.map((time) => (
+            <div key={time}>
+              <h2 className="text-2xl font-bold mt-8 mb-6">{time}</h2>
+              <ul className="flex flex-wrap gap-6">
+                {filteredLectures[time].map((lecture) => (
+                  <Card
+                    key={lecture.id}
+                    id={lecture.id}
+                    image={lecture.thumbnailUri}
+                    title={lecture.title}
+                    category={lecture.category}
+                    time={`${formatTime(lecture.startTime)} ~ ${formatTime(lecture.endTime)}`}
+                    speakerName={lecture.speakerName}
+                    isWished={wishlist.has(lecture.id)}
+                    isProfile={false}
+                  />
+                ))}
+              </ul>
+            </div>
+          ))
+        ) : (
+          <p className="text-center text-gray-500 text-lg py-12">선택한 날짜에 강의가 없습니다.</p>
+        )}
       </div>
     </div>
   );

@@ -38,11 +38,11 @@ const Card = ({
     >
       <div className="relative">
         <Image
-          src={image}
+          src={image || 'https://dyns.co.kr/wp-content/uploads/2024/04/placeholder-304.png'}
           alt={title}
           width={282}
           height={170}
-          className="w-full h-[170] object-cover"
+          className="w-full h-[170px] object-cover"
           priority
         />
         <WishButton isWished={isWished} itemId={id} className="absolute top-2 right-2" />
@@ -51,7 +51,7 @@ const Card = ({
         <div className="w-full bg-white text-sm font-semibold leading-[140%] dark:bg-black dark:text-white">
           {time}
         </div>
-        <h3 className="text-[20px] font-bold leading-[140%] pt-1">{title}</h3>
+        <h3 className="text-[20px] font-bold leading-[140%] pt-1 h-15 overflow-hidden">{title}</h3>
 
         {!isProfile && (
           <div className="flex items-center pt-1">
