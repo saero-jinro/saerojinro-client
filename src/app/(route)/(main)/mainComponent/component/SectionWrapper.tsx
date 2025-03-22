@@ -5,7 +5,7 @@ interface Props extends HTMLAttributes<HTMLElement> {
 }
 const SectionWrapper = ({ children, className, ...props }: Props) => {
   return (
-    <section {...props} className={`${className} 'w-full h-auto mx-auto`}>
+    <section {...props} className={`${className} 'w-full mx-auto`}>
       {children}
     </section>
   );

@@ -42,7 +42,7 @@
 html {
   overflow-x: hidden;
 }
-body {
+body, h1, p, div, li, ol, li {
   font-family: 'Pretendard', Arial, Helvetica, sans-serif;
   line-height: 140%;
 }
