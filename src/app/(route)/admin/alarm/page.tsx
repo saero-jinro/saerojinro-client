@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 interface Lecture {
   id: number;
@@ -8,28 +8,28 @@ interface Lecture {
 }
 
 const NotificationPage = () => {
-  const [category, setCategory] = useState("");
-  const [lecture, setLecture] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [room, setRoom] = useState("");
-  const [message, setMessage] = useState("");
-  const [placeholder, setPlaceholder] = useState("내용을 입력하세요");
+  const [category, setCategory] = useState('');
+  const [lecture, setLecture] = useState('');
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
+  const [room, setRoom] = useState('');
+  const [message, setMessage] = useState('');
+  const [placeholder, setPlaceholder] = useState('내용을 입력하세요');
   const [lectureList, setLectureList] = useState<Lecture[]>([]);
 
-  const isInit = category === "";
-  const isEmergency = category === "긴급 공지";
-  const isEdit = category === "강의 변경";
-  const isCancel = category === "강의 취소";
+  const isInit = category === '';
+  const isEmergency = category === '긴급 공지';
+  const isEdit = category === '강의 변경';
+  const isCancel = category === '강의 취소';
 
   useEffect(() => {
     const fetchLectures = async () => {
       try {
-        const res = await fetch(""); // 실제 API URI로 교체
+        const res = await fetch(''); // 실제 API URI로 교체
         const data = await res.json();
         setLectureList(data);
       } catch (error) {
-        console.error("강의 목록 불러오기 실패:", error);
+        console.error('강의 목록 불러오기 실패:', error);
       }
     };
 
@@ -44,7 +44,7 @@ const NotificationPage = () => {
         <div className="bg-white shadow rounded-md overflow-hidden">
           {[
             {
-              label: "카테고리",
+              label: '카테고리',
               element: (
                 <select
                   value={category}
@@ -61,25 +61,21 @@ const NotificationPage = () => {
               ),
             },
             {
-              label: "강의명",
+              label: '강의명',
               element: (
                 <select
                   value={lecture}
                   onChange={(e) => setLecture(e.target.value)}
-                  disabled={!isInit && (isEmergency)}
+                  disabled={!isInit && isEmergency}
                   className={`w-full border p-2 rounded-md ${
-                    !isInit && isEmergency ? "bg-gray-100 text-gray-400" : ""
+                    !isInit && isEmergency ? 'bg-gray-100 text-gray-400' : ''
                   }`}
                 >
                   <option disabled value="" className="text-gray-400">
                     강의를 선택하세요
                   </option>
                   {lectureList.map((lec) => (
-                    <option
-                      key={lec.id}
-                      value={lec.title}
-                      className="whitespace-nowrap"
-                    >
+                    <option key={lec.id} value={lec.title} className="whitespace-nowrap">
                       {lec.title}
                     </option>
                   ))}
@@ -87,14 +83,14 @@ const NotificationPage = () => {
               ),
             },
             {
-              label: "변경 날짜",
+              label: '변경 날짜',
               element: (
                 <select
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  disabled={!isInit && !(isEdit)}
+                  disabled={!isInit && !isEdit}
                   className={`w-full border p-2 rounded-md ${
-                    !isInit && !isEdit ? "bg-gray-100 text-gray-400" : ""
+                    !isInit && !isEdit ? 'bg-gray-100 text-gray-400' : ''
                   }`}
                 >
                   <option disabled value="" className="text-gray-400">
@@ -107,14 +103,14 @@ const NotificationPage = () => {
               ),
             },
             {
-              label: "변경 시간",
+              label: '변경 시간',
               element: (
                 <select
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
-                  disabled={!isInit && !(isEdit)}
+                  disabled={!isInit && !isEdit}
                   className={`w-full border p-2 rounded-md ${
-                    !isInit && !isEdit ? "bg-gray-100 text-gray-400" : ""
+                    !isInit && !isEdit ? 'bg-gray-100 text-gray-400' : ''
                   }`}
                 >
                   <option disabled value="" className="text-gray-400">
@@ -132,14 +128,14 @@ const NotificationPage = () => {
               ),
             },
             {
-              label: "변경 장소",
+              label: '변경 장소',
               element: (
                 <select
                   value={room}
                   onChange={(e) => setRoom(e.target.value)}
-                  disabled={!isInit && !(isEdit)}
+                  disabled={!isInit && !isEdit}
                   className={`w-full border p-2 rounded-md ${
-                    !isInit && !isEdit ? "bg-gray-100 text-gray-400" : ""
+                    !isInit && !isEdit ? 'bg-gray-100 text-gray-400' : ''
                   }`}
                 >
                   <option disabled value="" className="text-gray-400">
@@ -152,32 +148,27 @@ const NotificationPage = () => {
               ),
             },
             {
-              label: "내용",
+              label: '내용',
               element: (
                 <input
                   type="text"
                   placeholder={placeholder}
                   value={message}
                   disabled={!isInit && !isEmergency}
-                  onFocus={() =>
-                    (isInit || isEmergency) && setPlaceholder("")
-                  }
+                  onFocus={() => (isInit || isEmergency) && setPlaceholder('')}
                   onBlur={() =>
                     (isInit || isEmergency) &&
-                    setPlaceholder(message === "" ? "내용을 입력하세요" : "")
+                    setPlaceholder(message === '' ? '내용을 입력하세요' : '')
                   }
                   onChange={(e) => setMessage(e.target.value)}
                   className={`w-full border p-2 rounded-md ${
-                    !isInit && !isEmergency ? "bg-gray-100 text-gray-400" : ""
+                    !isInit && !isEmergency ? 'bg-gray-100 text-gray-400' : ''
                   }`}
                 />
               ),
             },
           ].map(({ label, element }, idx) => (
-            <div
-              key={idx}
-              className="grid grid-cols-[150px_1fr] border-b border-gray-200"
-            >
+            <div key={idx} className="grid grid-cols-[150px_1fr] border-b border-gray-200">
               <div className="bg-blue-600 text-white font-semibold flex items-center px-4 py-3">
                 {label}
               </div>
