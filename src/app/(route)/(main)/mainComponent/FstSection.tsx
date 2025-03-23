@@ -17,10 +17,14 @@ const FstSection = () => {
     >
       {/* 제목과 소개 */}
       <div className="max-w-7xl text-[#fff] h-full px-4 md:px-[40px] py-[64px] gap-8 mx-auto flex flex-col justify-center">
-        <article className="flex flex-col gap1">
+        <article className="flex flex-col gap-1">
           <h1
             id="conference-title"
-            className="text-[22px] md:text-[38px] lg:text-[52px] font-semibold transition-[font-size] duration-200 ease-in-out"
+            className="    
+            text-[22px]
+            sm:text-[28px]
+            md:text-[38px]
+            lg:text-[52px] font-semibold transition-[font-size] duration-200 ease-in-out"
           >
             혁신이 시작되는 곳, IT 컨퍼런스 2025
           </h1>
@@ -41,7 +45,7 @@ const FstSection = () => {
           </h2>
           <time
             dateTime="2025-03-05"
-            className="text-sm md:text-[19px] lg:text-2xl font-semibold transition-[font-size] duration-200 ease-in-ou"
+            className="text-sm md:text-[19px] lg:text-2xl font-semibold transition-[font-size] duration-200 ease-in-out"
           >
             <span className="mr-3">일정</span> <span>2025. 3. 5 ~ 3. 7 (3일간)</span>
           </time>
