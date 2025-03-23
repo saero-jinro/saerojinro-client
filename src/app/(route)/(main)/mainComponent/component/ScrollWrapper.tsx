@@ -1,96 +1,147 @@
-import React, { useState, useRef, useEffect, ReactNode } from 'react';
-import useHeaderStore from '@/_store/Header/useHeaderStore';
-import ClickButton from '@/_components/ClickButton';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  ReactNode,
+  HTMLAttributes,
+  forwardRef,
+  useCallback,
+} from 'react';
+import Card from '@/_components/Card/Card';
 
 interface ScrollWrapperProps {
-  scrollStep?: number;
   children: ReactNode;
-  gap?: number;
   className?: string;
+  gap?: number;
 }
 
-const ScrollWrapper = ({ children, gap = 10, scrollStep = 3, className }: ScrollWrapperProps) => {
-  const viewmode = useHeaderStore((store) => store.viewport.state.mode);
-  const [innerWidth, setInnerWidth] = useState(0);
-  const [outerWidth, setOuterWidth] = useState(0);
-  const [scroll, setScroll] = useState(0);
-
-  const InnerRef = useRef<HTMLUListElement>(null);
+const ScrollWrapper = ({ children, gap = 10, className }: ScrollWrapperProps) => {
+  const [page, setPage] = useState(0);
+  const [maxPage, setMaxPage] = useState(0);
+  const [maxItemNum, setMaxItemNum] = useState<number>(4);
   const OuterRef = useRef<HTMLDivElement>(null);
-  const ItemRef = useRef<HTMLLIElement>(null);
+  const ItemRef = useRef<HTMLDivElement>(null);
+  const getLen = useCallback(() => React.Children.count(children), [children]);
+
+  // 아이템 수에 따른 페이지 수 계산
+  useEffect(() => {
+    const max = Math.ceil(getLen() / maxItemNum);
+    setMaxPage(max);
+    setPage((prev) => (prev >= max ? max - 1 : prev));
+  }, [maxItemNum, getLen]);
 
   useEffect(() => {
-    if (!OuterRef.current) return;
-    setOuterWidth(OuterRef.current.clientWidth);
-  }, []);
+    setPage(0);
+  }, [children]);
 
+  // 리사이즈에 따른 아이템 개수 계산
   useEffect(() => {
-    const Item = ItemRef.current;
-    const Inner = InnerRef.current;
-    if (!Item || !Inner) return;
+    const handleResize = () => {
+      if (!ItemRef.current || !OuterRef.current) return;
+      const containerWidth = OuterRef.current.clientWidth;
+      const itemWidth = ItemRef.current.clientWidth + gap;
+      const newMaxItemNum = Math.floor(containerWidth / itemWidth);
+      if (newMaxItemNum && newMaxItemNum !== maxItemNum) {
+        setMaxItemNum(newMaxItemNum);
+      }
+    };
 
-    setInnerWidth((Item.clientWidth + gap) * React.Children.count(children) - gap);
-  }, [children, gap]);
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, [gap, maxItemNum]);
 
-  const scrollByCards = (direction: 1 | -1) => {
-    if (!OuterRef.current || !ItemRef.current) return;
-    const itemWidth = ItemRef.current.clientWidth + gap;
-    const scrollAmount = itemWidth * scrollStep * direction;
+  // 스크롤 시 페이지 계산
+  useEffect(() => {
+    const outer = OuterRef.current;
+    const item = ItemRef.current;
+    if (!outer || !item) return;
 
-    OuterRef.current.scrollTo({
-      left: OuterRef.current.scrollLeft + scrollAmount,
-      behavior: 'smooth',
-    });
+    const handleScroll = () => {
+      const itemWidth = item.clientWidth;
+      const totalItems = React.Children.count(children);
+      const totalWidth = itemWidth * totalItems;
+      const scrollLeft = outer.scrollLeft;
+      const containerWidth = outer.clientWidth;
+      const maxScrollLeft = totalWidth - containerWidth - itemWidth;
+
+      // 마지막 페이지로 스크롤 됐을 경우 확실히 체크
+      const isAtEnd = scrollLeft >= maxScrollLeft - 2;
+      if (isAtEnd) {
+        setPage(Math.ceil(totalItems / maxItemNum) - 1);
+      } else {
+        const currentPage = Math.round(scrollLeft / (itemWidth * maxItemNum));
+        setPage(currentPage);
+      }
+    };
+
+    outer.addEventListener('scroll', handleScroll);
+    return () => outer.removeEventListener('scroll', handleScroll);
+  }, [gap, maxItemNum, children]);
+
+  // 도트 클릭 시 해당 위치로 스크롤 이동
+  const scrollToPage = (targetPage: number) => {
+    const outer = OuterRef.current;
+    const item = ItemRef.current;
+    if (!outer || !item) return;
+    const itemWidth = item.clientWidth + gap;
+    const scrollAmount = itemWidth * targetPage * maxItemNum;
+    outer.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+    setPage(targetPage);
   };
-
-  useEffect(() => {
-    if (!OuterRef.current) return;
-
-    OuterRef.current.scrollTo({
-      left: 0,
-      behavior: 'smooth',
-    });
-    setScroll(0);
-  }, [children, OuterRef, setScroll]);
 
   return (
     <div className="relative">
-      {viewmode === 'web' && scroll > 0 && (
-        <ClickButton
-          actionDesc="left-scroll"
-          onClickAction={() => scrollByCards(-1)}
-          className="absolute w-[40px] h-[40px] flex items-center justify-center left-0 top-1/2 z-50 -translate-y-1/2 -translate-x-[calc(100%_+_10px)] bg-white p-3 border rounded-full shadow"
-        >
-          ◀
-        </ClickButton>
-      )}
+      {/* 카드 크기 측정용 */}
+      <HiddenCard ref={ItemRef} />
 
-      {viewmode === 'web' && scroll + outerWidth < innerWidth && (
-        <ClickButton
-          actionDesc="right-scroll"
-          onClickAction={() => scrollByCards(1)}
-          className="absolute w-[40px] h-[40px] flex items-center justify-center right-0 top-1/2 z-50 -translate-y-1/2 translate-x-[calc(100%_+_10px)] bg-white p-3 border rounded-full shadow"
-        >
-          ▶
-        </ClickButton>
-      )}
-
+      {/* 스크롤 영역 */}
       <div
         ref={OuterRef}
         aria-live="polite"
-        onScroll={(e) => setScroll(e.currentTarget.scrollLeft)}
-        className={`overflow-x-scroll hide-scrollbar ${className}`}
+        className={`overflow-x-scroll hide-scrollbar scroll-smooth ${className}`}
       >
-        <ul ref={InnerRef} className="flex gap-2.5">
+        <ul className="flex gap-2.5">
           {React.Children.toArray(children).map((child, idx) => (
-            <li key={idx} ref={idx === 0 ? ItemRef : undefined}>
-              {child}
-            </li>
+            <li key={idx}>{child}</li>
           ))}
         </ul>
+      </div>
+
+      {/* 페이지 점 */}
+      <div className="flex justify-center mt-4 gap-2">
+        {Array.from({ length: maxPage }).map((_, i) => (
+          <button
+            key={i}
+            onClick={() => scrollToPage(i)}
+            aria-label={`페이지 ${i + 1}`}
+            className={`w-2.5 h-2.5 rounded-full transition-colors outline-none ${
+              i === page ? 'bg-blue-600' : 'bg-gray-300'
+            }`}
+          />
+        ))}
       </div>
     </div>
   );
 };
 
 export default ScrollWrapper;
+
+// 카드 사이즈 측정용
+const HiddenCard = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>((props, ref) => {
+  return (
+    <div ref={ref} aria-hidden={true} className="invisible fixed z-[-5]" {...props}>
+      <Card
+        id={0}
+        image="/public/main/map"
+        title=""
+        time=""
+        category=""
+        speakerName=""
+        isWished={true}
+        isProfile={false}
+      />
+    </div>
+  );
+});
+HiddenCard.displayName = 'HiddenCard';

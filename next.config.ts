@@ -15,7 +15,8 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'dyns.co.kr',
-      },     {
+      },
+      {
         protocol: 'https',
         hostname: 'saerojinro-bucket.s3.ap-northeast-2.amazonaws.com',
       },

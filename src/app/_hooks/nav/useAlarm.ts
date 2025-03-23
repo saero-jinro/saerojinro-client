@@ -40,19 +40,15 @@ const useAlarm = () => {
   useEffect(() => {
     if (!isOpen) return;
     (async () => {
-      const res = await updateAlarm();
+      try {
+        const res = await updateAlarm();
 
-      if (!res.ok) {
-        if (res.error) console.error(res.error);
-        return;
+        if (!res.data) throw new Error();
+
+        loadInitAlarms(res.data);
+      } catch (err) {
+        console.error(err);
       }
-
-      if (!res.data) {
-        console.error('데이터 타입 불일치');
-        return;
-      }
-
-      loadInitAlarms(res.data);
     })();
   }, [isOpen, updateAlarm, loadInitAlarms]);
 };

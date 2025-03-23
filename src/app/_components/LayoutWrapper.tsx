@@ -7,7 +7,7 @@ const LayoutWrapper = ({ children }: { children: React.ReactNode }) => {
   const isMainPage = pathname === '/';
 
   return (
-    <div className={`${isMainPage ? 'w-full' : 'max-w-7xl mx-auto'} pt-[81px]`}>{children}</div>
+    <div className={`${isMainPage ? 'w-full' : 'max-w-7xl mx-auto'} pt-[78px]`}>{children}</div>
   );
 };
 

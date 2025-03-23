@@ -33,7 +33,7 @@ const LectureForm = () => {
     return (
       data.title.trim().length > 0 &&
       data.contents.trim().length > 0 &&
-      data.contents.trim().length > 0 &&
+      data.thumbnailId.trim().length > 0 &&
       data.materialId !== null &&
       data.maxCapacity > 0 &&
       data.startTime.trim().length > 0 &&
@@ -149,13 +149,13 @@ const LectureForm = () => {
       </div>
 
       {/* 썸네일 파일 업로드 */}
-      <label htmlFor="thumbnail" className="block">
+      <label htmlFor="thumbnailId" className="block">
         <span className="text-gray-700">강의 썸네일 (URL)</span>
         <input
           aria-label="강의 썸네일"
-          id="thumbnail"
+          id="thumbnailId"
           type="text"
-          name="thumbnail"
+          name="thumbnailId"
           value={formData.thumbnailId}
           onChange={handleChange}
           className="mt-1 block w-full p-2 border rounded"
