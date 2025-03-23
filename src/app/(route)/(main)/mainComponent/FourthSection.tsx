@@ -1,58 +1,42 @@
-'use client';
+import FAQItem from './component/FAQItem';
 
-import DownSvg from '@/assets/Main/down.svg';
-import UpSvg from '@/assets/Main/up.svg';
-import { useRef, useState } from 'react';
+export type FAQItemType = {
+  title: string;
+  contents: string;
+};
 
-// 추후 서버 사이드로 넘기는 부분
+//FAQ
 const FourthSection = () => {
-  const ref = useRef<HTMLDivElement>(null);
+  const FAQDtos: FAQItemType[] = [
+    {
+      title: '세션은 언제까지 예약할 수 있나요?',
+      contents: '세션 예약은 강의 시작 하루 전까지 가능합니다.',
+    },
+    {
+      title: '세션을 예약하지 않아도 강의를 들을 수 있나요?',
+      contents: '현장에서도 세션 신청이 가능합니다. 단, 현장 신청은 전체 인원의 20%로 제한됩니다.',
+    },
+    {
+      title: '세션을 예약했는데 어디서 볼 수 있나요?',
+      contents: '신청한 세션은 ‘시간표’ 페이지에서 확인할 수 있으며, 수정 및 관리도 가능합니다.',
+    },
+  ];
   return (
     <>
-      <section ref={ref} aria-labelledby="FAQ" className="bg-[#343A40]">
-        <div className="px-[40px] py-[120px] max-w-[1280px] flex flex-col mx-auto">
+      <section aria-labelledby="FAQ" className="bg-[#0F172B] w-screen">
+        <div className="px-4 md:px-[40px] py-[52px] md:py-[100px] w-full max-w-[1280px] flex flex-col mx-auto ">
           <h2
             id="FAQ"
-            className="text-[32px] mb-6 flex items-center justify-center font-bold text-white"
+            className="text-xl md:text-[32px] mb-6 flex items-center justify-center font-bold text-white"
           >
             FAQ
           </h2>
-          <Item />
-          <Item />
-          <Item />
-          <Item />
-          <Item />
+          {FAQDtos.map((item) => (
+            <FAQItem key={item.title} {...item} />
+          ))}
         </div>
       </section>
     </>
   );
 };
 export default FourthSection;
-
-// 컴포넌트 분리 필요함
-const Item = () => {
-  const [toggle, setToggle] = useState<boolean>(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const clickHandler = () => setToggle((prev) => !prev);
-  return (
-    <div>
-      <button
-        aria-expanded={toggle}
-        onClick={clickHandler}
-        aria-label="toggle-FAQ"
-        className="bg-white w-full flex flex-row items-start px-4 py-3 select-none"
-      >
-        <span className="font-bold text-lg w-full text-start">Q. .....하는 게 어떤가요?</span>
-        {toggle ? <UpSvg /> : <DownSvg />}
-      </button>
-      <div
-        style={{ display: toggle ? 'flex' : 'none' }}
-        ref={ref}
-        aria-hidden={!toggle}
-        className="flex flex-row gap-[2rem] p-4 pt-2 justify-between bg-[#DBEAFE]"
-      >
-        <span className="">내용</span>
-      </div>
-    </div>
-  );
-};

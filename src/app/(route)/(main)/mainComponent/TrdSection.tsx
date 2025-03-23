@@ -43,7 +43,7 @@ const TrdSection = () => {
     >
       {/* 제목 */}
       <div className="mb-6">
-        <h2 id="conference-location" className="text-[32px] font-bold">
+        <h2 id="conference-location" className="text-xl md:text-[32px] font-bold">
           컨퍼런스 위치
         </h2>
       </div>
@@ -58,7 +58,7 @@ const TrdSection = () => {
 
         {/* 지도 */}
         <div aria-label="location-map" className="w-auto mt-6 lg:mt-0">
-          <div className="ml-auto w-full lg:max-w-[720px] relative overflow-hidden h-[280px]">
+          <div className="ml-auto w-full lg:max-w-[720px] relative overflow-hidden h-[181px] md:h-[280px]">
             {/* <KakaoMap /> */}
             <div className="w-full h-full relative overflow-hidden">
               <LoadingMapImg />
@@ -83,12 +83,12 @@ const Icon = ({ name }: { name: svgName }) => {
 const LocationList = ({ content, title }: Info) => {
   return (
     <article className="flex flex-col gap-4">
-      <h3 className="text-xl font-bold">{title}</h3>
+      <h3 className="text-base md:text-xl font-bold">{title}</h3>
       <ul>
         {content.map(({ info, icon }, idx) => (
           <li key={idx + info} className="flex items-center">
             <Icon name={icon} />
-            <p className="ml-2 text-lg font-medium">{info}</p>
+            <p className="ml-2 text-sm md:text-lg font-medium">{info}</p>
           </li>
         ))}
       </ul>
