@@ -1,4 +1,5 @@
 'use client';
+import { decompressFromEncodedURIComponent } from 'lz-string';
 import { ContentType } from '@/_types/TextEditor/textEditor.type';
 import useTextEditor from '@/_hooks/textEditor/useTextEditor';
 import { HTMLAttributes, useEffect } from 'react';
@@ -14,7 +15,8 @@ const TextViewer = ({ desc, content, ...props }: Props) => {
   const { editor, setEditorContent } = useTextEditor('view');
 
   useEffect(() => {
-    setEditorContent(editor, content);
+    if (typeof content !== 'string') return;
+    setEditorContent(editor, decompressFromEncodedURIComponent(content)); // 복호화 해제
   }, [content, editor, setEditorContent]);
 
   return (
