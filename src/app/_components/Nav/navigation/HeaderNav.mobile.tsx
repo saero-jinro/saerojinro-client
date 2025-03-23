@@ -46,13 +46,12 @@ const MobileNavItem = ({ path, title }: NavItem) => {
 
 // -------------네비게이션--------------
 
-interface Props {
-  nickName: string;
-}
-
-export const MobileNavigation = ({ nickName }: Props) => {
+export const MobileNavigation = () => {
   const role = useAuthStore((store) => store.state.role);
+  const name = useAuthStore((store) => store.state.name);
   const { mobile } = useNav(role);
+
+  const nickName = role === 'admin' ? 'admin' : name || '';
 
   const path: Record<UserRole, string> = {
     admin: '/admin',

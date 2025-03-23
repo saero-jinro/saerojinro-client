@@ -51,5 +51,34 @@ const useAlarm = () => {
       }
     })();
   }, [isOpen, updateAlarm, loadInitAlarms]);
+
+  // useEffect(() => {
+  //   if (!accessToken || role !== 'guest') return;
+
+  //   const eventSource = new EventSourcePolyfill(`${URL.subscribeToAlarms}`, {
+  //     headers: {
+  //       Authorization: `Bearer ${accessToken}`,
+  //     },
+  //   });
+
+  //   eventSource.onopen = () => {
+  //     console.log('SSE 연결 성공');
+  //   };
+
+  //   eventSource.onmessage = (e: MessageEvent) => {
+  //     console.log('서버에서 온 메시지:', e.data);
+  //     // 여기서 JSON.parse(event.data) 해서 처리해도 됨
+  //   };
+
+  //   eventSource.onerror = (e: MessageEvent) => {
+  //     console.error('SSE 에러:', e);
+  //     // 연결 에러 시 재연결 처리를 여기에 넣을 수도 있음
+  //   };
+
+  //   return () => {
+  //     console.log('SSE 연결 해제');
+  //     eventSource.close();
+  //   };
+  // }, [accessToken, role]);
 };
 export default useAlarm;

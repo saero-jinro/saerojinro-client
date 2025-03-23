@@ -13,12 +13,13 @@ import Link from 'next/link';
 
 interface WebNavListProps {
   children?: ReactNode;
-  nickName?: string;
 }
 
 // 웹
-const WebNavList = ({ children, nickName }: WebNavListProps) => {
+const WebNavList = ({ children }: WebNavListProps) => {
   const role = useAuthStore((store) => store.state.role);
+  const name = useAuthStore((store) => store.state.name);
+  const nickName = role === 'admin' ? 'admin' : name || '';
   const pathname = usePathname();
   const { web } = useNav(role);
 
