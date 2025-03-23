@@ -11,12 +11,10 @@ const Page = () => {
         <main>
           <FstSection />
           <SecSection />
-          {/* <TrdSection /> */}
+          <TrdSection />
           <FourthSection />
-          {/* <Footer /> */}
         </main>
       </div>
-
       <Footer />
     </div>
   );
