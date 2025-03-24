@@ -6,6 +6,7 @@ import {
   WishLectureProps,
 } from '@/_types/Timetable/Lecture.type';
 import { useLectureStore } from '@/_store/LectureList/useLectureStore';
+import LectureReserveButton from '@/_components/LectureReserveButton/LectureReserveButton';
 
 interface ListCardProps {
   lectureList: (RecommandLectureProps | TimeWishProps | WishLectureProps)[];
@@ -73,9 +74,19 @@ const ListCard = ({ lectureList }: ListCardProps) => {
               }
               className="w-9 h-9"
             />
-            <button className="bg-[#155DFC] rounded-lg text-white px-4 py-3 font-semibold text-sm leading-[140%] dark:bg-gray-500 cursor-pointer">
-              강의 신청하기
-            </button>
+            <LectureReserveButton
+              className="bg-[#00249C] px-[66px] py-[11px]"
+              onClick={(e) => {
+                e.stopPropagation();
+
+                if (!accessToken) {
+                  alert('로그인 필요');
+                  return;
+                }
+
+                reserveLecture(getLectureId(lecture), accessToken);
+              }}
+            />
           </div>
         </li>
       ))}
