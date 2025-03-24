@@ -2,7 +2,6 @@
 
 import { useEffect, useState, Fragment } from 'react';
 import { useRouter } from 'next/navigation';
-import timetableRes from '@/dummyData/timetable/getTimetable.json';
 import timeWishRes from '@/dummyData/timetable/getTimeWish.json';
 import timeRecommandRes from '@/dummyData/timetable/getTimetableRecommand.json';
 import DayTab from '@/_components/DayTab/DayTab';
@@ -32,16 +31,17 @@ const TimetablePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true); // 임시로 항상 true
 
   const router = useRouter();
+  const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API;
 
   useEffect(() => {
     const fetchTimetable = async () => {
       try {
-        // const response = await fetch('/api/timetables/me');
-        // if (!response.ok) {
-        //   throw new Error('네트워크 응답 오류');
-        // }
-        // const data = await response.json();
-        const data = timetableRes;
+        const response = await fetch(`${BASE_URL}/api/timetables/me`);
+        if (!response.ok) {
+          throw new Error('네트워크 응답 오류');
+        }
+        const data = await response.json();
+        console.log('@@@@@시간표 조회@@@@@@', data);
         setUserLectures({ reservation: data.reservation, wishlist: data.wishlist });
 
         if (data.reservation.length > 0) {
