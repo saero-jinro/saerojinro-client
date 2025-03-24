@@ -20,7 +20,7 @@ const NotificationPage = () => {
   const isInit = category === '';
   const isEmergency = category === '긴급 공지';
   const isEdit = category === '강의 변경';
-  const isCancel = category === '강의 취소';
+  // const isCancel = category === '강의 취소';
 
   useEffect(() => {
     const fetchLectures = async () => {
