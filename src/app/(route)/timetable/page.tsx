@@ -2,7 +2,6 @@
 
 import { useEffect, useState, Fragment } from 'react';
 import { useRouter } from 'next/navigation';
-import timeRecommandRes from '@/dummyData/timetable/getTimetableRecommand.json';
 import DayTab from '@/_components/DayTab/DayTab';
 import { PiListStar } from 'react-icons/pi';
 import { TimeWishProps, RecommandLectureProps } from '@/_types/Timetable/Lecture.type';
@@ -41,12 +40,12 @@ const TimetablePage = () => {
 
   const fetchTimeRecommand = async (startTime: string) => {
     try {
-      // const response = await fetch(`/api/lectures/recommendations?startTime=${startTime}`);
-      // if (!response.ok) throw new Error('추천 강의 데이터를 불러오는 데 실패했습니다.');
+      const response = await fetch(
+        `${BASE_URL}/api/lectures/recommendations?startTime=${startTime}`,
+      );
+      if (!response.ok) throw new Error('추천 강의 데이터를 불러오는 데 실패했습니다.');
 
-      // const data = await response.json();
-      console.log(startTime);
-      const data = timeRecommandRes;
+      const data = await response.json();
       setRecommandLectures(data.lectures);
     } catch (error) {
       console.error(error);
