@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import WishButton from '../Wish/WishButton';
+import LectureReserveButton from '../LectureReserveButton/LectureReserveButton';
 
 interface CardProps {
   id: number;
@@ -64,12 +65,23 @@ const Card = ({
         </div>
 
         {!isProfile && (
-          <button
-            className="w-full text-[16px] font-semibold leading-[140%] bg-[#155DFC] text-white p-3 mt-3 rounded-sm"
-            onClick={(e) => e.stopPropagation()}
-          >
-            강의 신청하기
-          </button>
+          <LectureReserveButton
+            className="w-full bg-[#155DFC] px-[94px] py-[13px] mt-3"
+            onClick={async (e) => {
+              e.stopPropagation();
+
+              if (!accessToken) {
+                alert('로그인 필요');
+                return;
+              }
+              try {
+                await reserveLecture(id, accessToken);
+                await fetchTimetable();
+              } catch (err) {
+                console.error('신청 실패:', err);
+              }
+            }}
+          />
         )}
       </div>
     </div>
