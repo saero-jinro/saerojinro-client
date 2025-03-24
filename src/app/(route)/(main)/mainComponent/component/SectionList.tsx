@@ -10,6 +10,7 @@ import OptionList from './OptionList';
 import { Lectures, ResponseLectures } from '../type/lectures.type';
 import { wrapApiResponse } from '@/_utils/api/response';
 import { ApiResponse } from '@/_types/Auth/auth.type';
+import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
 
 export interface LectureList {
   id: number;
@@ -46,7 +47,7 @@ const SectionList = ({ startDay, startDate }: Props) => {
   const [lectures, setLectures] = useState<Lectures>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [prevNum, setPrevNum] = useState<number>(5);
-  const { wishlist } = useLectureStore();
+  const { wishlist } = useTimetableStore();
 
   // 캐싱
   const cacheRef = useRef<Map<string, Lectures>>(new Map());
@@ -106,7 +107,7 @@ const SectionList = ({ startDay, startDate }: Props) => {
             time={`${formatTime(lecture.startTime)} ~ ${formatTime(lecture.endTime)}`}
             category={lecture.category}
             speakerName={lecture.speakerName}
-            isWished={wishlist.has(lecture.id)}
+            isWished={wishlist.some((w) => w.lectureId === lecture.id)}
             isProfile={false}
           />
         ))}

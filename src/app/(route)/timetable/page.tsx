@@ -6,69 +6,24 @@ import timeWishRes from '@/dummyData/timetable/getTimeWish.json';
 import timeRecommandRes from '@/dummyData/timetable/getTimetableRecommand.json';
 import DayTab from '@/_components/DayTab/DayTab';
 import { PiListStar } from 'react-icons/pi';
-import {
-  LectureProps,
-  WishLectureProps,
-  TimeWishProps,
-  RecommandLectureProps,
-} from '@/_types/Timetable/Lecture.type';
+import { TimeWishProps, RecommandLectureProps } from '@/_types/Timetable/Lecture.type';
 import ListCard from './timetableComponent/ListCard';
+import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
 
 const TimetablePage = () => {
-  const [userLectures, setUserLectures] = useState<{
-    reservation: LectureProps[];
-    wishlist: WishLectureProps[];
-  }>({
-    reservation: [],
-    wishlist: [],
-  });
   const [selectedDay, setSelectedDay] = useState<string>('Day1');
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [recommandLectures, setRecommandLectures] = useState<RecommandLectureProps[]>([]);
-  const [baseDate, setBaseDate] = useState<Date | null>(null);
   const [timeWish, setTimeWish] = useState<TimeWishProps[]>([]);
   const [showWishlist, setShowWishlist] = useState<boolean>(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true); // 임시로 항상 true
+
+  const { reservation, wishlist, fetchTimetable, baseDate } = useTimetableStore();
 
   const router = useRouter();
   const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API;
 
   useEffect(() => {
-    const fetchTimetable = async () => {
-      try {
-        const response = await fetch(`${BASE_URL}/api/timetables/me`);
-        if (!response.ok) {
-          throw new Error('네트워크 응답 오류');
-        }
-        const data = await response.json();
-        console.log('@@@@@시간표 조회@@@@@@', data);
-        setUserLectures({ reservation: data.reservation, wishlist: data.wishlist });
-
-        if (data.reservation.length > 0) {
-          const minStartTime = Math.min(
-            ...data.reservation.map((lec: LectureProps) => new Date(lec.startTime).getTime()),
-          );
-          const calculatedBaseDate = new Date(minStartTime);
-          calculatedBaseDate.setHours(0, 0, 0, 0);
-          setBaseDate(calculatedBaseDate);
-
-          // Day n 매핑
-          const updatedReservations = data.reservation.map((lec: LectureProps) => {
-            const lectureDate = new Date(lec.startTime);
-            lectureDate.setHours(0, 0, 0, 0);
-
-            const dayDiff = Math.floor(
-              (lectureDate.getTime() - calculatedBaseDate.getTime()) / (1000 * 60 * 60 * 24),
-            );
-
-            return { ...lec, day: dayDiff + 1 };
-          });
-          setUserLectures({ reservation: updatedReservations, wishlist: data.wishlist });
-        }
-      } catch (error) {
-        console.error('데이터 불러오기 실패: ', error);
-      }
-    };
     fetchTimetable();
     setIsLoggedIn(true);
   }, []);
@@ -111,14 +66,18 @@ const TimetablePage = () => {
     selectedDate.setDate(baseDate.getDate() + (day - 1));
     selectedDate.setHours(Number(start.split(':')[0]), 0, 0, 0);
 
-    const startTimeISO = selectedDate.toISOString();
+    const pad = (n: number) => String(n).padStart(2, '0');
+
+    const startTimeISO = `${selectedDate.getFullYear()}-${pad(selectedDate.getMonth() + 1)}-${pad(
+      selectedDate.getDate(),
+    )}T${pad(selectedDate.getHours())}:${pad(selectedDate.getMinutes())}:${pad(
+      selectedDate.getSeconds(),
+    )}`;
     fetchTimeWish(startTimeISO);
     fetchTimeRecommand(startTimeISO);
   };
 
-  const filteredLectures = userLectures.reservation.filter(
-    (lecture) => `Day${lecture.day}` === selectedDay,
-  );
+  const filteredLectures = reservation.filter((lecture) => `Day${lecture.day}` === selectedDay);
 
   const timeSlots = Array.from({ length: 9 }, (_, i) => {
     const hour = i + 9;

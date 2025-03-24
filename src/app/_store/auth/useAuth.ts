@@ -33,4 +33,6 @@ const useAuthStore = create<AuthStore>((set) => ({
   },
 }));
 
+export const authStoreGetState = useAuthStore.getState;
+
 export default useAuthStore;

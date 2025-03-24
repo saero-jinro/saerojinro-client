@@ -1,5 +1,5 @@
 import { FaRegStar, FaStar } from 'react-icons/fa';
-import { useLectureStore } from '@/_store/LectureList/useLectureStore';
+import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
 
 interface WishButtonProps {
   isWished: boolean;
@@ -8,7 +8,7 @@ interface WishButtonProps {
 }
 
 const WishButton = ({ isWished, itemId, className }: WishButtonProps) => {
-  const { toggleWish } = useLectureStore();
+  const { toggleWish } = useTimetableStore();
 
   return (
     <button

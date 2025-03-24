@@ -4,6 +4,9 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import WishButton from '../Wish/WishButton';
 import LectureReserveButton from '../LectureReserveButton/LectureReserveButton';
+import { reserveLecture } from '@/_utils/LectureReserveButton/reserveLecture';
+import useAuthStore from '@/_store/auth/useAuth';
+import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
 
 interface CardProps {
   id: number;
@@ -27,6 +30,8 @@ const Card = ({
   isProfile = false,
 }: CardProps) => {
   const router = useRouter();
+  const accessToken = useAuthStore((store) => store.state.accessToken);
+  const { fetchTimetable } = useTimetableStore();
 
   const handleClick = () => {
     router.push(`/lecture/${id}`);
