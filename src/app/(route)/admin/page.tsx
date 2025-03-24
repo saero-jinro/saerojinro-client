@@ -1,9 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import priorityData from '@/dummyData/priority/getPriortiy.json'; // JSON 데이터 import
+import { useState, useEffect } from 'react';
 
-// 데이터 타입 정의
 interface Lecture {
   lectureId: number;
   rank: number;
@@ -21,79 +19,72 @@ interface TimeRank {
 }
 
 const AdminDashboard = () => {
-  const [showLowRank, setShowLowRank] = useState(false); // 낮은 순 정렬 토글
-  /* const [lectures, setLectures] = useState<Lecture[]>([]);
+  const [showLowRank, setShowLowRank] = useState(false);
+  const [highRankLectures, setHighRankLectures] = useState<Lecture[]>([]);
   const [lowRankLectures, setLowRankLectures] = useState<Lecture[]>([]);
-  const [timeRank, setTimeRank] = useState<TimeRank[]>([]);*/
+  const [timeRank, setTimeRank] = useState<TimeRank[]>([]);
 
-  // 강의 데이터 (상위 10개 또는 하위 10개)
-  const highRankLectures: Lecture[] = priorityData.lectureHighRank.slice(0, 10); // 상위 10개
-  const lowRankLectures: Lecture[] = priorityData.lectureLowRank.slice(0, 10); // 하위 10개
-
-  //API 연동해서 데이터 불러오기
-  /*useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://ittime.site/api/priority'); // API 호출
+        const response = await fetch('https://admin.saerojinro.site/api/dashboard');
+        if (!response.ok) throw new Error('API 호출 실패');
         const data = await response.json();
 
-        setLectures(data.lectureHighRank.slice(0, 10)); // 상위 10개 강의
-        setLowRankLectures(data.lectureLowRank.slice(0, 10)); // 하위 10개 강의
-        setTimeRank(data.timeRank.slice(0, 10)); // 참가자 많은 날짜 10개
+        setHighRankLectures(data.lectureHighRank.slice(0, 10));
+        setLowRankLectures(data.lectureLowRank.slice(0, 10));
+        setTimeRank(data.timeRank.slice(0, 10));
       } catch (error) {
         console.error('데이터 로딩 실패:', error);
       }
     };
 
     fetchData();
-  }, []);*/
+  }, []);
 
   const lectures = showLowRank ? lowRankLectures : highRankLectures;
 
-  // 참가자가 많은 날짜 10개
-  const timeRank: TimeRank[] = priorityData.timeRank.slice(0, 10);
-
-  // 낮은 순 정렬 토글
   const toggleRank = () => {
     setShowLowRank((prev) => !prev);
   };
 
+  const formatTime = (timeString: string) => {
+    const date = new Date(timeString);
+    return date.toTimeString().slice(0, 5);
+  };
+
   return (
-    <div className="p-6 space-y-8">
-      <div className="grid grid-cols-2 gap-[24px]">
-        {' '}
-        {/* 두 박스 간 간격 24px */}
-        {/* 참가자가 많은 날짜 (Crowd Forecast) */}
-        <div className="border border-gray-300 rounded-md">
-          <h2 className="text-lg font-bold mb-[20px]">Crowd Forecast</h2>{' '}
-          {/* 제목과 테이블 간 간격 20px */}
-          <table className="w-full border-collapse">
+    <div className="w-[1200px] mx-auto pt-[64px] pb-[64px]">
+      <div className="flex gap-[24px]">
+        {/* Crowd Forecast */}
+        <div className="border border-gray-300 rounded-md w-[384px] bg-white">
+          <h1 className="text-lg font-bold mb-[20px] px-[24px] pt-[24px]">Crowd Forecast</h1>
+          <table className="w-full table-auto border-collapse">
             <thead>
-              <tr className="bg-gray-100 text-left">
-                <th className="px-[24px] py-[12px]">순위</th>
-                <th className="px-[24px] py-[12px]">날짜</th>
-                <th className="px-[24px] py-[12px]">시간</th>
-                <th className="px-[24px] py-[12px]">예상 인원</th>
+              <tr className="bg-blue-600 text-white text-left">
+                <th className="px-[16px] py-[12px]">순위</th>
+                <th className="px-[16px] py-[12px]">날짜</th>
+                <th className="px-[16px] py-[12px]">시간</th>
+                <th className="px-[16px] py-[12px] text-right">예상 인원</th>
               </tr>
             </thead>
             <tbody>
               {timeRank.map((time, index) => (
-                <tr key={index} className="text-left">
-                  <td className="px-[24px] py-[4px]">{time.rank}</td>
-                  <td className="px-[24px] py-[4px]">{time.day}</td>
-                  <td className="px-[24px] py-[4px]">{time.startTime}</td>
-                  <td className="px-[24px] py-[4px]">{time.reservation}</td>
+                <tr key={index} className="border-b border-b-gray-200">
+                  <td className="px-[16px] py-[8px]">{time.rank}</td>
+                  <td className="px-[16px] py-[8px]">{time.day}</td>
+                  <td className="px-[16px] py-[8px]">{formatTime(time.startTime)}</td>
+                  <td className="px-[16px] py-[8px] text-right">{time.reservation}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        {/* 강의 순위 (Lecture Tracker) */}
-        <div className="border border-gray-300 rounded-md">
-          <div className="flex justify-between items-center mb-[20px]">
-            {' '}
-            {/* 제목과 버튼 간 간격 20px */}
-            <h2 className="text-lg font-bold">Lecture Tracker</h2>
+
+        {/* Lecture Tracker */}
+        <div className="border border-gray-300 rounded-md w-[792px] bg-white">
+          <div className="flex justify-between items-center mb-[20px] px-[24px] pt-[24px]">
+            <h1 className="text-lg font-bold">Lecture Tracker</h1>
             <button
               onClick={toggleRank}
               className="border border-blue-500 text-blue-500 px-[12px] py-[4px] rounded text-sm hover:bg-blue-100"
@@ -101,24 +92,24 @@ const AdminDashboard = () => {
               {showLowRank ? '높은 순 🔼' : '낮은 순 🔽'}
             </button>
           </div>
-          <table className="w-full border-collapse">
+          <table className="w-full table-auto border-collapse">
             <thead>
-              <tr className="bg-gray-100 text-left">
-                <th className="px-[24px] py-[12px]">순위</th>
-                <th className="px-[24px] py-[12px]">강의명</th>
-                <th className="px-[24px] py-[12px]">강연자</th>
-                <th className="px-[24px] py-[12px]">신청한 수</th>
-                <th className="px-[24px] py-[12px]">즐겨찾기 수</th>
+              <tr className="bg-blue-600 text-white text-left">
+                <th className="px-[16px] py-[12px]">순위</th>
+                <th className="px-[16px] py-[12px]">강의명</th>
+                <th className="px-[16px] py-[12px] whitespace-nowrap">강연자</th>
+                <th className="px-[16px] py-[12px] text-right">신청한 수</th>
+                <th className="px-[16px] py-[12px] text-right">즐겨찾기 수</th>
               </tr>
             </thead>
             <tbody>
               {lectures.map((lecture, index) => (
-                <tr key={lecture.lectureId} className="text-left">
-                  <td className="px-[24px] py-[4px]">{index + 1}</td>
-                  <td className="px-[24px] py-[4px]">{lecture.title}</td>
-                  <td className="px-[24px] py-[4px]">{lecture.speaker}</td>
-                  <td className="px-[24px] py-[4px]">{lecture.reservation}</td>
-                  <td className="px-[24px] py-[4px]">{lecture.wishlist}</td>
+                <tr key={lecture.lectureId} className="border-b border-b-gray-200">
+                  <td className="px-[16px] py-[8px]">{index + 1}</td>
+                  <td className="px-[16px] py-[8px]">{lecture.title}</td>
+                  <td className="px-[16px] py-[8px] whitespace-nowrap">{lecture.speaker}</td>
+                  <td className="px-[16px] py-[8px] text-right">{lecture.reservation}</td>
+                  <td className="px-[16px] py-[8px] text-right">{lecture.wishlist}</td>
                 </tr>
               ))}
             </tbody>
