@@ -2,7 +2,6 @@
 
 import { useEffect, useState, Fragment } from 'react';
 import { useRouter } from 'next/navigation';
-import timeWishRes from '@/dummyData/timetable/getTimeWish.json';
 import timeRecommandRes from '@/dummyData/timetable/getTimetableRecommand.json';
 import DayTab from '@/_components/DayTab/DayTab';
 import { PiListStar } from 'react-icons/pi';
@@ -30,12 +29,10 @@ const TimetablePage = () => {
 
   const fetchTimeWish = async (startTime: string) => {
     try {
-      // const response = await fetch(`/api/wishlist/lectures?startTime=${startTime}`);
-      // if (!response.ok) throw new Error('즐겨찾기 강의 데이터를 불러오는 데 실패했습니다.');
+      const response = await fetch(`${BASE_URL}/api/wishlist/lectures?startTime=${startTime}`);
+      if (!response.ok) throw new Error('즐겨찾기 강의 데이터를 불러오는 데 실패했습니다.');
 
-      // const data = await response.json();
-      console.log(startTime); // never used build error 방지용
-      const data = timeWishRes;
+      const data = await response.json();
       setTimeWish(data.responses);
     } catch (error) {
       console.error(error);
