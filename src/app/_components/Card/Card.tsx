@@ -7,6 +7,7 @@ import LectureReserveButton from '../LectureReserveButton/LectureReserveButton';
 import { reserveLecture } from '@/_utils/LectureReserveButton/reserveLecture';
 import useAuthStore from '@/_store/auth/useAuth';
 import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
+import useLoginModalStore from '@/_store/modal/useLoginModalStore';
 
 interface CardProps {
   id: number;
@@ -31,6 +32,7 @@ const Card = ({
 }: CardProps) => {
   const router = useRouter();
   const accessToken = useAuthStore((store) => store.state.accessToken);
+  const { open: openLoginModal } = useLoginModalStore();
   const { fetchTimetable } = useTimetableStore();
 
   const handleClick = () => {
@@ -51,7 +53,18 @@ const Card = ({
           className="w-full h-[170px] object-cover"
           priority
         />
-        <WishButton isWished={isWished} itemId={id} className="absolute top-2 right-2" />
+        <WishButton
+          isWished={isWished}
+          itemId={id}
+          className="absolute top-2 right-2"
+          onBeforeToggle={() => {
+            if (!accessToken) {
+              openLoginModal();
+              return false;
+            }
+            return true;
+          }}
+        />
       </div>
       <div className="px-4 py-5">
         <div className="w-full bg-white text-sm font-semibold leading-[140%] dark:bg-black dark:text-white">
@@ -76,7 +89,7 @@ const Card = ({
               e.stopPropagation();
 
               if (!accessToken) {
-                alert('로그인 필요');
+                openLoginModal();
                 return;
               }
               try {

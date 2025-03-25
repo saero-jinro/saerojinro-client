@@ -7,6 +7,7 @@ import { PiListStar } from 'react-icons/pi';
 import { TimeWishProps, RecommandLectureProps } from '@/_types/Timetable/Lecture.type';
 import ListCard from './timetableComponent/ListCard';
 import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
+import useAuthStore from '@/_store/auth/useAuth';
 
 const TimetablePage = () => {
   const [selectedDay, setSelectedDay] = useState<string>('Day1');
@@ -14,17 +15,18 @@ const TimetablePage = () => {
   const [recommandLectures, setRecommandLectures] = useState<RecommandLectureProps[]>([]);
   const [timeWish, setTimeWish] = useState<TimeWishProps[]>([]);
   const [showWishlist, setShowWishlist] = useState<boolean>(false);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true); // 임시로 항상 true
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   const { reservation, wishlist, fetchTimetable, baseDate } = useTimetableStore();
+  const accessToken = useAuthStore((store) => store.state.accessToken);
 
   const router = useRouter();
   const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API;
 
   useEffect(() => {
     fetchTimetable();
-    setIsLoggedIn(true);
-  }, []);
+    setIsLoggedIn(!!accessToken);
+  }, [accessToken]);
 
   const fetchTimeWish = async (startTime: string) => {
     try {

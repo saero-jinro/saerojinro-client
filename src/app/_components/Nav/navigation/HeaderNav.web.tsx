@@ -8,8 +8,9 @@ import { usePathname } from 'next/navigation';
 import { NavItem } from '@/_types/Header/Header.type';
 import Alarm from '@/_components/Header/Alarm/Alarm';
 import { useNav } from '@/_hooks/nav/useNav';
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import Link from 'next/link';
+import useLoginModalStore from '@/_store/modal/useLoginModalStore';
 
 interface WebNavListProps {
   children?: ReactNode;
@@ -59,27 +60,25 @@ const WebNavItem = ({ path, title }: NavItem) => {
 };
 
 const LoginButton = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const onClose = () => setIsOpen(false);
-  const onOpen = () => setIsOpen(true);
+  const { isOpen, open, close } = useLoginModalStore();
 
   return (
     <>
       <div>
-        <ClickButton actionDesc="open-login-modal" onClickAction={onOpen}>
+        <ClickButton actionDesc="open-login-modal" onClickAction={open}>
           로그인
         </ClickButton>
-        <ToggleModal desc="login-modal" isOpen={isOpen} onClose={onClose} hasOverlay={true}>
+        <ToggleModal desc="login-modal" isOpen={isOpen} onClose={close} hasOverlay={true}>
           <div className="relative">
             <div className="fixed z-[1000] top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
               <div className="text-black dark:text-white bg-white dark:bg-black w-[768px] h-[720px] px-[83px] flex flex-col justify-center scale-80">
                 <button
-                  onClick={onClose}
+                  onClick={close}
                   className="text-2xl absolute top-[0.5rem] right-[1rem] cursor-pointer"
                 >
                   x
                 </button>
-                <LoginComponent onClose={onClose} />
+                <LoginComponent onClose={close} />
               </div>
             </div>
           </div>

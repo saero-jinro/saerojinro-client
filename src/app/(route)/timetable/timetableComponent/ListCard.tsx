@@ -9,6 +9,7 @@ import LectureReserveButton from '@/_components/LectureReserveButton/LectureRese
 import { reserveLecture } from '@/_utils/LectureReserveButton/reserveLecture';
 import useAuthStore from '@/_store/auth/useAuth';
 import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
+import useLoginModalStore from '@/_store/modal/useLoginModalStore';
 
 interface ListCardProps {
   lectureList: (RecommandLectureProps | TimeWishProps | WishLectureProps)[];
@@ -23,6 +24,7 @@ const getLectureId = (lecture: RecommandLectureProps | TimeWishProps | WishLectu
 const ListCard = ({ lectureList }: ListCardProps) => {
   const { wishlist } = useTimetableStore();
   const accessToken = useAuthStore((store) => store.state.accessToken);
+  const { open: openLoginModal } = useLoginModalStore();
 
   return (
     <ul className="flex flex-col gap-4">
@@ -53,6 +55,13 @@ const ListCard = ({ lectureList }: ListCardProps) => {
               isWished={wishlist.some((w) => w.lectureId === getLectureId(lecture))}
               itemId={getLectureId(lecture)}
               className="w-9 h-9"
+              onBeforeToggle={() => {
+                if (!accessToken) {
+                  openLoginModal();
+                  return false;
+                }
+                return true;
+              }}
             />
             <LectureReserveButton
               className="bg-[#00249C] px-[66px] py-[11px]"
@@ -60,7 +69,7 @@ const ListCard = ({ lectureList }: ListCardProps) => {
                 e.stopPropagation();
 
                 if (!accessToken) {
-                  alert('로그인 필요');
+                  openLoginModal();
                   return;
                 }
 
