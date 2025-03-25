@@ -47,9 +47,8 @@ export async function POST(request: Request) {
       console.error('idToken을 받지 못함:', tokenData);
       return NextResponse.json({ error: 'idToken 발급 실패' }, { status: 500 });
     }
-
     const decodeDto = decodeJWT(idToken);
-
+    console.log(idToken);
     // 백엔드 로그인 요청
     const backendResponse = await fetch(`${BACK_URL}/api/auth/kakao/login`, {
       method: 'POST',
