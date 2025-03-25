@@ -10,7 +10,7 @@ import TestSVG from '@/assets/test/test.svg';
 import TestSVG2 from '@/assets/test/test2.svg';
 import UserSVG from '@/assets/test/user.svg';
 import { TextareaHTMLAttributes, useEffect, useRef, useState } from 'react';
-import contents from '@/dummyData/lecture/getLectureContents.json';
+import { contents } from '@/dummyData/lecture/getContents';
 import useHeaderStore from '@/_store/Header/useHeaderStore';
 
 // 크기 자동 조절 textArea
@@ -117,7 +117,7 @@ const LectureDetailPage = () => {
 
       {/* 컨텐츠 */}
       <article>
-        <TextViewer content={JSON.stringify(contents)} />
+        <TextViewer content={contents} />
       </article>
 
       {/* 강사 소개 */}
