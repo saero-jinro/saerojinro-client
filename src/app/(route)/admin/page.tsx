@@ -104,7 +104,7 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {sortedLectures.map((lecture, index) => (
+                {sortedLectures.map((lecture) => (
                   <tr key={lecture.lectureId} className="border-b border-b-gray-200">
                     <td className="px-[16px] py-[8px]">{lecture.rank}</td>
                     <td className="px-[16px] py-[8px]">{lecture.title}</td>
