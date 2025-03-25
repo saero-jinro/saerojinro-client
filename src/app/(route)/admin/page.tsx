@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 interface Lecture {
   lectureId: number;
@@ -15,13 +15,12 @@ interface TimeRank {
   rank: number;
   day: string;
   startTime: string;
-  reservation: number;
+  expectation: number;
 }
 
 const AdminDashboard = () => {
-  const [showLowRank, setShowLowRank] = useState(false);
-  const [highRankLectures, setHighRankLectures] = useState<Lecture[]>([]);
-  const [lowRankLectures, setLowRankLectures] = useState<Lecture[]>([]);
+  const [isLowToHigh, setIsLowToHigh] = useState(false); // 낮은순 정렬 여부
+  const [lecturesRaw, setLecturesRaw] = useState<Lecture[]>([]);
   const [timeRank, setTimeRank] = useState<TimeRank[]>([]);
 
   useEffect(() => {
@@ -31,8 +30,7 @@ const AdminDashboard = () => {
         if (!response.ok) throw new Error('API 호출 실패');
         const data = await response.json();
 
-        setHighRankLectures(data.lectureHighRank.slice(0, 10));
-        setLowRankLectures(data.lectureLowRank.slice(0, 10));
+        setLecturesRaw(data.lectureHighRank.concat(data.lectureLowRank)); // 전체 데이터를 한번에 받는다고 가정
         setTimeRank(data.timeRank.slice(0, 10));
       } catch (error) {
         console.error('데이터 로딩 실패:', error);
@@ -42,11 +40,16 @@ const AdminDashboard = () => {
     fetchData();
   }, []);
 
-  const lectures = showLowRank ? lowRankLectures : highRankLectures;
-
-  const toggleRank = () => {
-    setShowLowRank((prev) => !prev);
+  const toggleSort = () => {
+    setIsLowToHigh((prev) => !prev);
   };
+
+  const sortedLectures = useMemo(() => {
+    const sorted = [...lecturesRaw].sort((a, b) =>
+      isLowToHigh ? a.rank - b.rank : b.rank - a.rank,
+    );
+    return sorted.slice(0, 10); // 상위 10개만
+  }, [lecturesRaw, isLowToHigh]);
 
   const formatTime = (timeString: string) => {
     const date = new Date(timeString);
@@ -57,63 +60,62 @@ const AdminDashboard = () => {
     <div className="w-[1200px] mx-auto pt-[64px] pb-[64px]">
       <div className="flex gap-[24px]">
         {/* Crowd Forecast */}
-        <div className="border border-gray-300 rounded-md w-[384px] bg-white">
-          <h1 className="text-lg font-bold mb-[20px] px-[24px] pt-[24px]">Crowd Forecast</h1>
-          <table className="w-full table-auto border-collapse">
-            <thead>
-              <tr className="bg-blue-600 text-white text-left">
-                <th className="px-[16px] py-[12px]">순위</th>
-                <th className="px-[16px] py-[12px]">날짜</th>
-                <th className="px-[16px] py-[12px]">시간</th>
-                <th className="px-[16px] py-[12px] text-right">예상 인원</th>
-              </tr>
-            </thead>
-            <tbody>
-              {timeRank.map((time, index) => (
-                <tr key={index} className="border-b border-b-gray-200">
-                  <td className="px-[16px] py-[8px]">{time.rank}</td>
-                  <td className="px-[16px] py-[8px]">{time.day}</td>
-                  <td className="px-[16px] py-[8px]">{formatTime(time.startTime)}</td>
-                  <td className="px-[16px] py-[8px] text-right">{time.reservation}</td>
+        <div className="w-[384px]">
+          <h1 className="text-lg font-bold mb-[12px]">Crowd Forecast</h1>
+          <div className="border border-gray-300 rounded-md bg-white">
+            <table className="w-full table-auto border-collapse">
+              <thead>
+                <tr className="bg-blue-600 text-white text-left">
+                  <th className="px-[16px] py-[12px]">순위</th>
+                  <th className="px-[16px] py-[12px]">날짜</th>
+                  <th className="px-[16px] py-[12px]">시간</th>
+                  <th className="px-[16px] py-[12px] text-right">예상 인원</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {timeRank.map((time, index) => (
+                  <tr key={index} className="border-b border-b-gray-200">
+                    <td className="px-[16px] py-[8px]">{time.rank}</td>
+                    <td className="px-[16px] py-[8px]">{time.day}</td>
+                    <td className="px-[16px] py-[8px]">{formatTime(time.startTime)}</td>
+                    <td className="px-[16px] py-[8px] text-right">{time.expectation}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* Lecture Tracker */}
-        <div className="border border-gray-300 rounded-md w-[792px] bg-white">
-          <div className="flex justify-between items-center mb-[20px] px-[24px] pt-[24px]">
+        <div className="w-[792px]">
+          <div className="flex justify-between items-center mb-[12px]">
             <h1 className="text-lg font-bold">Lecture Tracker</h1>
-            <button
-              onClick={toggleRank}
-              className="border border-blue-500 text-blue-500 px-[12px] py-[4px] rounded text-sm hover:bg-blue-100"
-            >
-              {showLowRank ? '높은 순 🔼' : '낮은 순 🔽'}
-            </button>
           </div>
-          <table className="w-full table-auto border-collapse">
-            <thead>
-              <tr className="bg-blue-600 text-white text-left">
-                <th className="px-[16px] py-[12px]">순위</th>
-                <th className="px-[16px] py-[12px]">강의명</th>
-                <th className="px-[16px] py-[12px] whitespace-nowrap">강연자</th>
-                <th className="px-[16px] py-[12px] text-right">신청한 수</th>
-                <th className="px-[16px] py-[12px] text-right">즐겨찾기 수</th>
-              </tr>
-            </thead>
-            <tbody>
-              {lectures.map((lecture, index) => (
-                <tr key={lecture.lectureId} className="border-b border-b-gray-200">
-                  <td className="px-[16px] py-[8px]">{index + 1}</td>
-                  <td className="px-[16px] py-[8px]">{lecture.title}</td>
-                  <td className="px-[16px] py-[8px] whitespace-nowrap">{lecture.speaker}</td>
-                  <td className="px-[16px] py-[8px] text-right">{lecture.reservation}</td>
-                  <td className="px-[16px] py-[8px] text-right">{lecture.wishlist}</td>
+          <div className="border border-gray-300 rounded-md bg-white">
+            <table className="w-full table-auto border-collapse">
+              <thead>
+                <tr className="bg-blue-600 text-white text-left">
+                  <th onClick={toggleSort}>{isLowToHigh ? '높은 순▲' : '낮은 순▼'}</th>
+
+                  <th className="px-[16px] py-[12px]">강의명</th>
+                  <th className="px-[16px] py-[12px] whitespace-nowrap">강연자</th>
+                  <th className="px-[16px] py-[12px] text-right">신청한 수</th>
+                  <th className="px-[16px] py-[12px] text-right">즐겨찾기 수</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {sortedLectures.map((lecture) => (
+                  <tr key={lecture.lectureId} className="border-b border-b-gray-200">
+                    <td className="px-[16px] py-[8px]">{lecture.rank}</td>
+                    <td className="px-[16px] py-[8px]">{lecture.title}</td>
+                    <td className="px-[16px] py-[8px] whitespace-nowrap">{lecture.speaker}</td>
+                    <td className="px-[16px] py-[8px] text-right">{lecture.reservation}</td>
+                    <td className="px-[16px] py-[8px] text-right">{lecture.wishlist}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
