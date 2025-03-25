@@ -28,7 +28,7 @@ const ColorPickerView = ({ colors, unsetColor, setColor, ...props }: Props) => {
 const ColorButton = ({ color, onClick }: ColorButtonProps) => {
   return (
     <li>
-      <ClickButton type="button" actionDesc={`set-color-${color}`} onClickAction={onClick}>
+      <ClickButton type="button" actionDesc={`set-color-${color}`} onClick={onClick}>
         <div
           style={{ backgroundColor: color }}
           className="w-8 h-8 rounded-md border cursor-pointer border-solid border-[#6e6e6e6b]"

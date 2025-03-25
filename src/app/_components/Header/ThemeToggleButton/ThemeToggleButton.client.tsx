@@ -13,7 +13,7 @@ const ThemeToggleButton = (props: Props) => {
   const { toggleTheme } = useTheme(props.theme);
 
   return (
-    <ClickButton actionDesc="toggle-theme" onClickAction={toggleTheme}>
+    <ClickButton actionDesc="toggle-theme" onClick={toggleTheme}>
       <ThemeToggleView />
     </ClickButton>
   );

@@ -31,7 +31,7 @@ const LoginComponent = ({ onClose, ...props }: Props) => {
       <div className="flex flex-col mt-11 gap-[14px]">
         <ClickButton
           actionDesc="user-kakao-login"
-          onClickAction={onClickhandler}
+          onClick={onClickhandler}
           className="px-7 h-[90px] flex justify-center items-center gap-4 rounded-[12px] bg-[#FEE500] cursor-pointer"
         >
           <KaKaoLogoSvg width="36px" height="36px" />

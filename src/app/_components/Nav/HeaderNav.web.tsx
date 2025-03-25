@@ -62,7 +62,7 @@ const WebNavItem = ({ path, title }: NavItem) => {
 const LoginButton = () => {
   const { open } = useLoginModalStore();
   return (
-    <ClickButton actionDesc="open-login-modal" onClickAction={open}>
+    <ClickButton actionDesc="open-login-modal" onClick={open}>
       로그인
     </ClickButton>
   );

@@ -6,6 +6,7 @@ import useAuthStore from '@/_store/auth/useAuth';
 import { usePopup } from '@/_hooks/popup/popup';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import ClickButton from '@/_components/ClickButton';
 
 const updateUserInfo = async (
   name: string,
@@ -77,9 +78,13 @@ export const EditableField = ({ id, label, value, onSave }: EditableFieldProps) 
           placeholder={`${label}을 입력하세요`}
           className="h-12 w-full px-4 border border-[#90A1B9] rounded-[2px]"
         />
-        <button onClick={onOpen} className="btn h-12 px-4 py-1 font-semibold whitespace-nowrap">
+        <ClickButton
+          actionDesc={`${id}-change`}
+          onClick={onOpen}
+          className="btn h-12 px-4 py-1 font-semibold whitespace-nowrap"
+        >
           변경
-        </button>
+        </ClickButton>
       </div>
       <Popup />
     </div>

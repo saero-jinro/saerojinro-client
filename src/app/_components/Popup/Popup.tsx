@@ -1,6 +1,7 @@
 'use client';
 
 import { HTMLAttributes } from 'react';
+import ClickButton from '../ClickButton';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   contents: string;
@@ -20,10 +21,15 @@ export const PopupComponent = ({ contents, onClose, onClick, ...props }: Props) 
       <div className="self-stretch flex items-center h-12 w-full">
         {onClick && (
           <>
-            <button onClick={onClose} className="bg-[#9E9E9E] h-full text-white flex-[1_0_0]">
+            <ClickButton
+              actionDesc="cancle"
+              onClick={onClose}
+              className="bg-[#9E9E9E] h-full text-white flex-[1_0_0]"
+            >
               취소
-            </button>
-            <button
+            </ClickButton>
+            <ClickButton
+              actionDesc="cancle"
               onClick={() => {
                 onClick();
                 onClose();
@@ -31,7 +37,7 @@ export const PopupComponent = ({ contents, onClose, onClick, ...props }: Props) 
               className="btn flex-[1_0_0] h-full"
             >
               동의
-            </button>
+            </ClickButton>
           </>
         )}
 

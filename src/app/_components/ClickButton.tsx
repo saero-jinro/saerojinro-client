@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes, useState } from 'react';
 
 interface Props extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onClick'> {
   children?: React.ReactNode;
-  onClickAction: () => void;
+  onClick: () => void;
   actionDesc: string;
   delay?: number;
 }
@@ -11,7 +11,7 @@ interface Props extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onClick'>
  * 기본 디바운싱 0.3s
  * 버튼 기능 라벨링 강제
  */
-const ClickButton = ({ children, onClickAction, actionDesc, delay, ...props }: Props) => {
+const ClickButton = ({ children, onClick, actionDesc, delay, className, ...props }: Props) => {
   const DEFAULT_DELAY = 0.3;
   const SEC = (delay ?? DEFAULT_DELAY) * 1000;
   const [disabled, setDisabled] = useState(false);
@@ -19,7 +19,7 @@ const ClickButton = ({ children, onClickAction, actionDesc, delay, ...props }: P
   const onClickHandler = () => {
     if (disabled) return;
     setDisabled(true);
-    onClickAction();
+    onClick();
     setTimeout(() => setDisabled(false), SEC);
   };
 
@@ -28,6 +28,7 @@ const ClickButton = ({ children, onClickAction, actionDesc, delay, ...props }: P
       style={{ cursor: 'pointer' }}
       aria-label={actionDesc}
       onClick={onClickHandler}
+      className={`hover:brightness-90 ${className}`}
       {...props}
     >
       {children}
