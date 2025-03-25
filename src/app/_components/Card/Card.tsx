@@ -3,6 +3,10 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import WishButton from '../Wish/WishButton';
+import LectureReserveButton from '../LectureReserveButton/LectureReserveButton';
+import useAuthStore from '@/_store/auth/useAuth';
+import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
+import useLoginModalStore from '@/_store/modal/useLoginModalStore';
 
 interface CardProps {
   id: number;
@@ -13,6 +17,7 @@ interface CardProps {
   speakerName?: string;
   isWished: boolean;
   isProfile?: boolean;
+  isReserved?: boolean;
 }
 
 const Card = ({
@@ -24,8 +29,12 @@ const Card = ({
   speakerName,
   isWished,
   isProfile = false,
+  isReserved,
 }: CardProps) => {
   const router = useRouter();
+  const accessToken = useAuthStore((store) => store.state.accessToken);
+  const { open: openLoginModal } = useLoginModalStore();
+  const { fetchTimetable, toggleReservation } = useTimetableStore();
 
   const handleClick = () => {
     router.push(`/lecture/${id}`);
@@ -45,7 +54,18 @@ const Card = ({
           className="w-full h-[170px] object-cover"
           priority
         />
-        <WishButton isWished={isWished} itemId={id} className="absolute top-2 right-2" />
+        <WishButton
+          isWished={isWished}
+          itemId={id}
+          className="absolute top-2 right-2"
+          onBeforeToggle={() => {
+            if (!accessToken) {
+              openLoginModal();
+              return false;
+            }
+            return true;
+          }}
+        />
       </div>
       <div className="px-4 py-5">
         <div className="w-full bg-white text-sm font-semibold leading-[140%] dark:bg-black dark:text-white">
@@ -64,12 +84,24 @@ const Card = ({
         </div>
 
         {!isProfile && (
-          <button
-            className="w-full text-[16px] font-semibold leading-[140%] bg-[#155DFC] text-white p-3 mt-3 rounded-sm"
-            onClick={(e) => e.stopPropagation()}
-          >
-            강의 신청하기
-          </button>
+          <LectureReserveButton
+            isReserved={isReserved}
+            className="w-full bg-[#155DFC] px-[94px] py-[13px] mt-3"
+            onClick={async (e) => {
+              e.stopPropagation();
+
+              if (!accessToken) {
+                openLoginModal();
+                return;
+              }
+              try {
+                await toggleReservation(id, isReserved ?? false);
+                await fetchTimetable();
+              } catch (err) {
+                console.error('신청 실패:', err);
+              }
+            }}
+          />
         )}
       </div>
     </div>

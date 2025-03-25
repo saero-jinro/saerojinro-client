@@ -6,14 +6,16 @@ import Card from '@/_components/Card/Card';
 import DayTab from '@/_components/DayTab/DayTab';
 import { groupByDay, groupByTime } from '@/_components/DayTab/groupBy';
 import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2';
+import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
 
 const LectureListPage = () => {
-  const { lecturelist, wishlist, fetchLectures, fetchWishlist } = useLectureStore();
+  const { lecturelist, fetchLectures } = useLectureStore();
+  const { wishlist, reservation } = useTimetableStore();
   const [selectedDay, setSelectedDay] = useState<string>('Day1');
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(['ALL']);
 
-  const dateList = ['2025-03-01', '2025-03-02', '2025-03-03']; // 현재 데이터 들어있는 날짜로 임시
+  const dateList = ['2025-04-01', '2025-04-02', '2025-04-03'];
   const dateToDayMap = dateList.reduce(
     (acc, date, index) => {
       acc[date] = `Day${index + 1}`;
@@ -29,10 +31,6 @@ const LectureListPage = () => {
   useEffect(() => {
     fetchLectures(dayToDateMap[selectedDay]);
   }, [selectedDay]);
-
-  useEffect(() => {
-    fetchWishlist();
-  }, []);
 
   const lectures: LectureListProps[] = lecturelist;
 
@@ -155,8 +153,9 @@ const LectureListPage = () => {
                     category={lecture.category}
                     time={`${formatTime(lecture.startTime)} ~ ${formatTime(lecture.endTime)}`}
                     speakerName={lecture.speakerName}
-                    isWished={wishlist.has(lecture.id)}
+                    isWished={wishlist.some((w) => w.lectureId === lecture.id)}
                     isProfile={false}
+                    isReserved={reservation.some((r) => r.lectureId === lecture.id)}
                   />
                 ))}
               </ul>

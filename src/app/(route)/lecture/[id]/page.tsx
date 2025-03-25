@@ -12,6 +12,10 @@ import UserSVG from '@/assets/test/user.svg';
 import { TextareaHTMLAttributes, useEffect, useRef, useState } from 'react';
 import { contents } from '@/dummyData/lecture/getContents';
 import useHeaderStore from '@/_store/Header/useHeaderStore';
+import LectureReserveButton from '@/_components/LectureReserveButton/LectureReserveButton';
+import useAuthStore from '@/_store/auth/useAuth';
+import useLoginModalStore from '@/_store/modal/useLoginModalStore';
+import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
 
 // 크기 자동 조절 textArea
 const Textarea = ({
@@ -70,6 +74,11 @@ const LectureDetailPage = () => {
   // 테스트 용이에요
   const [text, setText] = useState('');
   const [review, setReview] = useState('소프트웨어 엔지니어가 강연하는 디자이너?? 이거 진짜예요?');
+
+  const accessToken = useAuthStore((store) => store.state.accessToken);
+  const { open: openLoginModal } = useLoginModalStore();
+  const { toggleReservation, reservation } = useTimetableStore();
+  const isReserved = reservation.some((lec) => lec.lectureId === Number(lectureId));
 
   useEffect(() => {
     // const fetchLectureDetail = async () => {
@@ -231,10 +240,26 @@ const LectureDetailPage = () => {
 
         {/* 버튼 */}
         <div className="flex flex-row gap-2 items-center">
-          <button className="btn flex-1 rounded-[4px] py-3 px-4 cursor-pointer">예약</button>
           <button className="bg-[#EFF6FF] p-2 rounded-[4px] h-10">
             <TestSVG2 />
           </button>
+          <LectureReserveButton
+            isReserved={isReserved}
+            className="w-full bg-[#155DFC] py-[23px] mt-3"
+            onClick={async (e) => {
+              e.stopPropagation();
+
+              if (!accessToken) {
+                openLoginModal();
+                return;
+              }
+              try {
+                await toggleReservation(Number(lectureId), isReserved);
+              } catch (err) {
+                console.error('신청 실패:', err);
+              }
+            }}
+          />
         </div>
       </div>
     </div>

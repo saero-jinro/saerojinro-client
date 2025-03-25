@@ -3,6 +3,7 @@
 import HeaderNav from './HeaderNav/HeaderNav';
 import Link from 'next/link';
 import Alarm from './Alarm/AlarmWindow';
+import LoginModal from '../Login/LoginModal';
 
 const Header = async () => {
   // const theme = await getTheme();
@@ -15,8 +16,10 @@ const Header = async () => {
             <span>IT TIME</span>
           </Link>
           {/* <HeaderNav><ThemeToggleButton theme={theme} /></HeaderNav> */}
+
           <HeaderNav />
           <Alarm />
+          <LoginModal />
         </nav>
       </header>
     </>

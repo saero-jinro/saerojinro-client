@@ -64,7 +64,7 @@ const ToggleModal = ({
 
 const Overlay = ({ zIndex }: { zIndex: number }) => {
   return (
-    <div style={{ zIndex }} className="fixed w-screen bottom-0 bg-[#8181815e] left-0 h-screen" />
+    <div style={{ zIndex }} className="fixed w-screen bottom-0 bg-[#000000b3] left-0 h-screen" />
   );
 };
 // h-[calc(100vh-64px)] md:h-[calc(100vh-80px)]

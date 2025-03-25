@@ -1,13 +1,14 @@
 'use client';
 
 import AlarmButton from '@/_components/Header/Alarm/AlarmButton';
-import LoginModal from '@/_components/Login/LoginModal';
 import { NavItem } from '@/_types/Header/Header.type';
 import useAuthStore from '@/_store/auth/useAuth';
 import { usePathname } from 'next/navigation';
 import { useNav } from '@/_hooks/nav/useNav';
 import { ReactNode } from 'react';
 import Link from 'next/link';
+import useLoginModalStore from '@/_store/modal/useLoginModalStore';
+import ClickButton from '../ClickButton';
 
 interface WebNavListProps {
   children?: ReactNode;
@@ -41,7 +42,7 @@ const WebNavList = ({ children }: WebNavListProps) => {
       {!pathname?.startsWith('/admin') && role !== 'guest' && (
         <Link href={path[role]}>{nickName}</Link>
       )}
-      {role === 'guest' && <LoginModal />}
+      {role === 'guest' && <LoginButton />}
       {role === 'user' && <AlarmButton scale={24} />}
     </div>
   );
@@ -55,5 +56,14 @@ const WebNavItem = ({ path, title }: NavItem) => {
     <li className="cursor-pointer px-2 py-3 text-lg text-nowrap" key={title}>
       <Link href={path}>{title}</Link>
     </li>
+  );
+};
+
+const LoginButton = () => {
+  const { open } = useLoginModalStore();
+  return (
+    <ClickButton actionDesc="open-login-modal" onClickAction={open}>
+      로그인
+    </ClickButton>
   );
 };

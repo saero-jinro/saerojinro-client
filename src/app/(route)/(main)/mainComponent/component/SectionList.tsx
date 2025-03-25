@@ -1,6 +1,5 @@
 'use client';
 
-import { useLectureStore } from '@/_store/LectureList/useLectureStore';
 import SkeletonCard from '@/_components/Card/SkeletonCard';
 import { formatTime } from '@/_utils/Card/formatTime';
 import { startTransition, useCallback, useEffect, useRef, useState } from 'react';
@@ -11,6 +10,7 @@ import { Lectures, ResponseLectures } from '../type/lectures.type';
 import { wrapApiResponse } from '@/_utils/api/response';
 import { ApiResponse } from '@/_types/Auth/auth.type';
 import { Category } from '@/_types/Write/write.type';
+import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
 
 export interface LectureList {
   id: number;
@@ -66,7 +66,7 @@ const SectionList = ({ startDay, startDate }: Props) => {
   const [prevNum, setPrevNum] = useState<number>(5);
   const limitRef = useRef<boolean>(false);
   const prevOptionRef = useRef<CategoryWithAll | null>(null);
-  const { wishlist } = useLectureStore();
+  const { wishlist } = useTimetableStore();
 
   const initialCategoryState = (Object.keys(CategoryLabel) as CategoryWithAll[]).reduce(
     (acc, key) => {
@@ -178,7 +178,7 @@ const SectionList = ({ startDay, startDate }: Props) => {
                 time={`${formatTime(lecture.startTime)} ~ ${formatTime(lecture.endTime)}`}
                 category={lecture.category}
                 speakerName={lecture.speakerName}
-                isWished={wishlist.has(lecture.id)}
+                isWished={wishlist.some((w) => w.lectureId === lecture.id)}
                 isProfile={false}
               />
             ))}
