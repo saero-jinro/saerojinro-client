@@ -39,7 +39,7 @@ const OptionItem = ({ desc, onClickAction, children, className, ...props }: Opti
   return (
     <li
       {...props}
-      className={`text-sm h-8 py-[6px] px-4 rounded-[8px] flex items-center justify-center whitespace-nowrap ${className}`}
+      className={`select-none outline-none text-sm h-8 py-[6px] px-4 rounded-[8px] flex items-center justify-center whitespace-nowrap ${className}`}
     >
       <ClickButton actionDesc={desc} onClickAction={onClickAction}>
         {children}
