@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import WishButton from '../Wish/WishButton';
 import LectureReserveButton from '../LectureReserveButton/LectureReserveButton';
-import { reserveLecture } from '@/_utils/LectureReserveButton/reserveLecture';
 import useAuthStore from '@/_store/auth/useAuth';
 import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
 import useLoginModalStore from '@/_store/modal/useLoginModalStore';
@@ -18,6 +17,7 @@ interface CardProps {
   speakerName?: string;
   isWished: boolean;
   isProfile?: boolean;
+  isReserved?: boolean;
 }
 
 const Card = ({
@@ -29,11 +29,12 @@ const Card = ({
   speakerName,
   isWished,
   isProfile = false,
+  isReserved,
 }: CardProps) => {
   const router = useRouter();
   const accessToken = useAuthStore((store) => store.state.accessToken);
   const { open: openLoginModal } = useLoginModalStore();
-  const { fetchTimetable } = useTimetableStore();
+  const { fetchTimetable, toggleReservation } = useTimetableStore();
 
   const handleClick = () => {
     router.push(`/lecture/${id}`);
@@ -84,6 +85,7 @@ const Card = ({
 
         {!isProfile && (
           <LectureReserveButton
+            isReserved={isReserved}
             className="w-full bg-[#155DFC] px-[94px] py-[13px] mt-3"
             onClick={async (e) => {
               e.stopPropagation();
@@ -93,7 +95,7 @@ const Card = ({
                 return;
               }
               try {
-                await reserveLecture(id, accessToken);
+                await toggleReservation(id, isReserved ?? false);
                 await fetchTimetable();
               } catch (err) {
                 console.error('신청 실패:', err);

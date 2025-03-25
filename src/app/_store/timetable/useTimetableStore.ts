@@ -8,6 +8,7 @@ interface TimetableState {
   baseDate: Date | null;
   fetchTimetable: () => Promise<void>;
   toggleWish: (lectureId: number) => Promise<void>;
+  toggleReservation: (lectureId: number, isReserved: boolean) => Promise<void>;
 }
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API;
@@ -95,6 +96,34 @@ export const useTimetableStore = create<TimetableState>((set, get) => ({
       }
     } catch (err) {
       console.error(`위시 ${isWished ? '삭제' : '추가'} 실패:`, err);
+    }
+  },
+
+  toggleReservation: async (lectureId: number, isReserved: boolean) => {
+    try {
+      const accessToken = authStoreGetState().state.accessToken;
+      const method = isReserved ? 'DELETE' : 'POST';
+      const reservation = get().reservation;
+
+      let url = `${BASE_URL}/api/reservations/lectures/${lectureId}`;
+      if (isReserved) {
+        const target = reservation.find((r) => r.lectureId === lectureId);
+        if (!target) throw new Error('예약 정보 없음');
+        url = `${BASE_URL}/api/reservations/lectures/${target.reservationId}`;
+      }
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (!response.ok) throw new Error('신청/취소 실패');
+
+      await get().fetchTimetable();
+    } catch (err) {
+      console.error('신청/취소 실패:', err);
     }
   },
 }));

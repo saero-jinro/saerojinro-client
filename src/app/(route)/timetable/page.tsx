@@ -244,7 +244,7 @@ const TimetablePage = () => {
           <div className="flex-1 px-6 pt-11 bg-[#F4F4F4] h-full dark:bg-gray-900">
             <h3 className="font-bold text-xl leading-[140%] pb-6">즐겨찾기 목록</h3>
             <div className="h-full overflow-auto">
-              <ListCard lectureList={userLectures.wishlist} />
+              <ListCard lectureList={wishlist} />
             </div>
           </div>
         )}

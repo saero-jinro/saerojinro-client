@@ -10,7 +10,7 @@ import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
 
 const LectureListPage = () => {
   const { lecturelist, fetchLectures } = useLectureStore();
-  const { wishlist } = useTimetableStore();
+  const { wishlist, reservation } = useTimetableStore();
   const [selectedDay, setSelectedDay] = useState<string>('Day1');
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(['ALL']);
@@ -155,6 +155,7 @@ const LectureListPage = () => {
                     speakerName={lecture.speakerName}
                     isWished={wishlist.some((w) => w.lectureId === lecture.id)}
                     isProfile={false}
+                    isReserved={reservation.some((r) => r.lectureId === lecture.id)}
                   />
                 ))}
               </ul>
