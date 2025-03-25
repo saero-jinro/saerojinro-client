@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 
 // 로그인 리다이렉트 페이지
 const Page = () => {
-  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
   const searchParams = useSearchParams();
   const code = searchParams.get('code');
   const router = useRouter();
@@ -36,7 +36,7 @@ const Page = () => {
           alert('로그인 실패. 원래 페이지로 되돌아갑니다.');
           return redirectPrevUrl();
         }
-        // console.log('로그인 성공:', response.data.accessToken);
+
         setAuth(response.data.accessToken, 'user');
         redirectPrevUrl();
       } catch (error) {
@@ -45,7 +45,7 @@ const Page = () => {
         redirectPrevUrl();
       }
     })();
-  }, [code, router, setAuth]);
+  }, [code, router, setAuth, BASE_URL]);
 
   return <></>;
 };

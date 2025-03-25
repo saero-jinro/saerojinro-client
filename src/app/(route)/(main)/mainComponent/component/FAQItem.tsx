@@ -1,8 +1,8 @@
 'use client';
 import { useRef, useState, useEffect } from 'react';
+import { FAQItemType } from '../FourthSection';
 import DownSvg from '@/assets/Main/down.svg';
 import UpSvg from '@/assets/Main/up.svg';
-import { FAQItemType } from '../FourthSection';
 
 const FAQItem = ({ title, contents }: FAQItemType) => {
   const [toggle, setToggle] = useState(false);
@@ -51,7 +51,7 @@ const FAQItem = ({ title, contents }: FAQItemType) => {
         aria-expanded={toggle}
         onClick={clickHandler}
         aria-label="toggle-FAQ"
-        className="bg-[#F8FAFC] w-full flex flex-row items-start p-6 select-none"
+        className="bg-[#F8FAFC] w-full flex flex-row items-start p-4 md:p-6 select-none"
       >
         <div className="font-semibold text-base md:text-xl w-full text-start">
           <span className="mr-2">Q.</span>
@@ -71,7 +71,7 @@ const FAQItem = ({ title, contents }: FAQItemType) => {
         className="bg-[#E2E8F0]"
       >
         <div
-          className={`block transition-opacity p-6 pt-5 text-sm md: text-lg font-medium duration-100 ${
+          className={`block transition-opacity p-4 pt-3 md:p-6 md:pt-5 text-sm md:text-lg font-medium duration-100 ${
             showText ? 'opacity-100' : 'opacity-0'
           }`}
         >

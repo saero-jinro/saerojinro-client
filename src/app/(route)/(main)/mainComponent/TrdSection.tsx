@@ -76,7 +76,11 @@ export default TrdSection;
 type svgName = 'pin' | 'bus' | 'subway';
 // 아이콘
 const Icon = ({ name }: { name: svgName }) => {
-  return <Image alt={`img-${name}`} width={24} height={24} src={`/main/${name}.webp`} />;
+  return (
+    <div className="w-4 md:w-6 aspect-square relative">
+      <Image alt={`img-${name}`} fill src={`/main/${name}.webp`} />
+    </div>
+  );
 };
 
 // 장소 리스트

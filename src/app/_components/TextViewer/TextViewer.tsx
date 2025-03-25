@@ -16,6 +16,7 @@ const TextViewer = ({ desc, content, ...props }: Props) => {
 
   useEffect(() => {
     if (typeof content !== 'string') return;
+
     setEditorContent(editor, decompressFromEncodedURIComponent(content)); // 복호화 해제
   }, [content, editor, setEditorContent]);
 

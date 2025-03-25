@@ -1,5 +1,20 @@
 import { NextResponse } from 'next/server';
 
+const decodeJWT = (token: string) => {
+  try {
+    const base64Payload = token.split('.')[1];
+    const jsonPayload = decodeURIComponent(
+      atob(base64Payload)
+        .split('')
+        .map((c) => `%${('00' + c.charCodeAt(0).toString(16)).slice(-2)}`)
+        .join(''),
+    );
+    return JSON.parse(jsonPayload);
+  } catch {
+    return null;
+  }
+};
+
 export async function POST(request: Request) {
   try {
     const { code } = await request.json();
@@ -27,12 +42,13 @@ export async function POST(request: Request) {
 
     const tokenData = await kakaoTokenResponse.json();
     const idToken = tokenData.id_token;
-    console.log(idToken);
+    // console.log(idToken);
     if (!idToken) {
       console.error('idToken을 받지 못함:', tokenData);
       return NextResponse.json({ error: 'idToken 발급 실패' }, { status: 500 });
     }
-
+    const decodeDto = decodeJWT(idToken);
+    console.log(idToken);
     // 백엔드 로그인 요청
     const backendResponse = await fetch(`${BACK_URL}/api/auth/kakao/login`, {
       method: 'POST',
@@ -69,6 +85,13 @@ export async function POST(request: Request) {
         accessToken: userAccessToken,
       },
     });
+
+    if (decodeDto && decodeDto.picture) {
+      response.cookies.set('pictrue', decodeDto.picture, {
+        sameSite: 'strict',
+        path: '/',
+      });
+    }
 
     response.cookies.set('accessToken', userAccessToken, {
       httpOnly: true,

@@ -7,6 +7,8 @@ import React, {
   forwardRef,
   useCallback,
 } from 'react';
+import LeftSvg from '@/assets/Main/left.svg';
+import RightSvg from '@/assets/Main/right.svg';
 import Card from '@/_components/Card/Card';
 
 interface ScrollWrapperProps {
@@ -90,6 +92,16 @@ const ScrollWrapper = ({ children, gap = 10, className }: ScrollWrapperProps) =>
     setPage(targetPage);
   };
 
+  const scrollToButton = (type: 'left' | 'right') => {
+    if (type === 'left') {
+      if (page <= 0) return;
+      scrollToPage(page - 1);
+    } else {
+      if (page >= maxPage - 1) return;
+      scrollToPage(page + 1);
+    }
+  };
+
   return (
     <div className="relative">
       {/* 카드 크기 측정용 */}
@@ -120,12 +132,44 @@ const ScrollWrapper = ({ children, gap = 10, className }: ScrollWrapperProps) =>
             }`}
           />
         ))}
+        <HandleButton
+          type="left"
+          onClick={() => {
+            scrollToButton('left');
+          }}
+        />
+        <HandleButton
+          type="right"
+          onClick={() => {
+            scrollToButton('right');
+          }}
+        />
       </div>
     </div>
   );
 };
 
 export default ScrollWrapper;
+
+interface HandleButtonProps extends HTMLAttributes<HTMLButtonElement> {
+  type: 'left' | 'right';
+}
+
+const HandleButton = ({ type, ...props }: HandleButtonProps) => {
+  const style = {
+    right: 'translate-y-1/2 translate-x-[calc(100%)] right-0',
+    left: 'translate-y-1/2 -translate-x-[calc(100%)] left-0',
+  };
+  return (
+    <button
+      aria-label="controll-card-scroll"
+      {...props}
+      className={`hidden md:block absolute top-1/2 cursor-pointer ${style[type]}`}
+    >
+      {type === 'left' ? <LeftSvg /> : <RightSvg />}
+    </button>
+  );
+};
 
 // 카드 사이즈 측정용
 const HiddenCard = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>((props, ref) => {

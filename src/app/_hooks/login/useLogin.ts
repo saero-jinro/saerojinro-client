@@ -2,9 +2,9 @@
 
 // 로그인 훅
 const useLogin = () => {
-  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-  const loginWithKakao = () => {
+  const loginWithKakao = (prevPath: string) => {
     if (typeof window === 'undefined' || !window.Kakao) {
       console.error('Kakao SDK 로드 실패');
 
@@ -13,11 +13,8 @@ const useLogin = () => {
       return;
     }
 
-    const curURL = window.location.href;
     const redirectUri = `${BASE_URL}/auth`;
-    const curPath = window.location.pathname;
-    // 모달에서 로그인 할시 현재 경로 기억
-    if (curPath === '/login') sessionStorage.setItem('prevUrl', curURL);
+    sessionStorage.setItem('prevUrl', prevPath);
 
     window.Kakao.Auth.authorize({
       redirectUri,

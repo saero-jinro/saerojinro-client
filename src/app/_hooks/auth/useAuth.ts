@@ -1,25 +1,45 @@
 import { ApiResponse, AuthRefreshResponse } from '@/_types/Auth/auth.type';
+import { useCallback, useEffect, useState } from 'react';
+import { wrapApiResponse } from '@/_utils/api/response';
 import useAuthStore from '@/_store/auth/useAuth';
-import { useEffect, useState } from 'react';
-// import getUserInfo from '@/_utils/Auth/userinfo';
 
 type ApiAuthRefreshResponse = ApiResponse<AuthRefreshResponse>;
 
 const useAuth = () => {
   const accessToken = useAuthStore((store) => store.state.accessToken);
   const setAuth = useAuthStore((store) => store.actions.setAuth);
+  const setUserInfo = useAuthStore((store) => store.actions.setUserInfo);
   const role = useAuthStore((store) => store.state.role);
   const [name, setName] = useState<string>('로그인');
 
-  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const URL = {
+    refresh: process.env.NEXT_PUBLIC_BASE_URL + `/api/auth/user/refresh`,
+    mypage: process.env.NEXT_PUBLIC_BACKEND_API + `/api/users/me`,
+  };
+
+  const getUserInfo = useCallback(() => {
+    if (role !== 'user' || !accessToken) {
+      return Promise.resolve({ ok: false, error: '토큰 없음' } as ApiResponse<{
+        name: string;
+        email: string;
+      }>);
+    }
+
+    return wrapApiResponse(
+      () =>
+        fetch(`${URL.mypage}`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }),
+      (res) => res.json().then((dto: { name: string; email: string }) => dto),
+    );
+  }, [role, accessToken, URL.mypage]);
 
   //  토큰 재발급 및 역할 설정
   useEffect(() => {
     if (accessToken !== null) return;
-
     (async () => {
       try {
-        const res = await fetch(`${BASE_URL}/api/auth/user/refresh`, {
+        const res = await fetch(`${URL.refresh}`, {
           method: 'GET',
           credentials: 'include',
         });
@@ -31,6 +51,7 @@ const useAuth = () => {
         if (!dto.ok || !dto.data) return;
 
         const { accessToken, role } = dto.data;
+        console.log(accessToken);
         setAuth(accessToken, role);
       } catch (err: unknown) {
         console.error('Refresh Token 요청 중 오류 발생:', err);
@@ -40,35 +61,35 @@ const useAuth = () => {
 
   // 헤더에 보이는 이름 설정
   useEffect(() => {
-    console.log(accessToken);
-    if (!accessToken) {
-      setName((prev) => (prev !== '로그인' ? '로그인' : prev));
+    const getCookie = (name: string): string | null => {
+      const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+      return match ? decodeURIComponent(match[1]) : null;
+    };
+
+    if (role === 'guest') {
+      setUserInfo('로그인', null, null);
       return;
     }
 
     if (role === 'admin') {
-      setName((prev) => (prev !== 'admin' ? 'admin' : prev));
+      setUserInfo('admin', null, null);
       return;
     }
 
-    setName('김지훈');
+    (async () => {
+      try {
+        const res = await getUserInfo();
 
-    // (async () => {
-    //   const a = await getUserInfo();
-    //   console.log(a)
-    //   // try {
-    //   //   const res = await getUserInfo(accessToken);
+        if (!res.data) throw new Error('유효하지 않는 데이터 입니다.');
 
-    //   //   if (res.ok && res.data) {
-    //   //     setName(res.data.name);
-    //   //   } else {
-    //   //     console.error("유저 정보 가져오기 실패:", res.error);
-    //   //   }
-    //   // } catch (error) {
-    //   //   console.error("유저 정보 요청 중 오류 발생:", error);
-    //   // }
-    // })();
-  }, [accessToken, role, setName]);
+        const dto = res.data;
+        const image = getCookie('pictrue');
+        setUserInfo(dto.name, dto.email, image);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, [role, setName, getUserInfo, setUserInfo]);
 
   return { accessToken, name };
 };

@@ -9,21 +9,22 @@ import { compressToEncodedURIComponent } from 'lz-string';
 
 const LectureForm = () => {
   const [formData, setFormData] = useState<InputLectureFormData>({
-    title: '',
+    title: '배워라 디자인!',
     contents: '',
-    thumbnailId: '',
+    thumbnailId: 'https://i.ibb.co/yFft6mCr/webD.jpg',
     materialId: null,
-    maxCapacity: 0,
-    startTime: '',
-    endTime: '',
-    location: '',
+    maxCapacity: 50,
+    startTime: '2025-03-06T11:00',
+    endTime: '2025-03-06T12:00',
+    location: 'A-16',
     category: Category.BACKEND,
-    speakerName: '',
-    speakerEmail: '',
-    speakerPosition: '',
-    speakerIntroduction: '',
-    speakerFilmography: [],
-    speakerPhotoId: '',
+    speakerName: '강지수',
+    speakerEmail: 'gangjisu@gmail.com',
+    speakerPosition: '디자이너',
+    speakerIntroduction:
+      '강지수 강사는 10년 이상의 개발 경험을 보유한 소프트웨어 엔지니어로, 현재 ABC 테크놀로지에서 개발팀장을 맡고 있습니다. Vue.js와 Spring Boot를 활용한 풀스택 개발을 전문으로 하며, 실무에서의 경험을 바탕으로 쉽고 실용적인 개발 강의를 제공합니다. 다수의 컨퍼런스 발표 및 기술 블로그 운영을 통해 최신 개발 트렌드를 공유하고 있습니다.',
+    speakerFilmography: ['디자이너 10년'],
+    speakerPhotoId: 'https://i.ibb.co/q33dktBm/speaker-Image.png',
   });
 
   const { submitLecture } = useUpload();
