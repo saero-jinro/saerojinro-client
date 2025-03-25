@@ -4,7 +4,6 @@ import useAlarmStore from '@/_store/Header/useAlarmStore';
 import { wrapApiResponse } from '@/_utils/api/response';
 import { ApiResponse } from '@/_types/Auth/auth.type';
 import useAuthStore from '@/_store/auth/useAuth';
-// import { EventSourcePolyfill } from 'event-source-polyfill';
 
 const useAlarm = () => {
   const loadInitAlarms = useAlarmStore((store) => store.alarms.actions.loadInitAlarms);
@@ -63,6 +62,9 @@ const useAlarm = () => {
 
   //   eventSource.onopen = () => {
   //     console.log('SSE 연결 성공');
+  //   };
+  //   eventSource.onerror = (e: MessageEvent) => {
+  //     console.error('SSE 연결 오류 발생!', e);
   //   };
 
   //   eventSource.onmessage = (e: MessageEvent) => {

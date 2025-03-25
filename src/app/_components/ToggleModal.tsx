@@ -6,7 +6,7 @@ export interface ToggleModalProps extends HTMLAttributes<HTMLDivElement> {
   hasOverlay?: boolean; // 오버레이 유무
   children: React.ReactNode; // 자식 노드
   onClose: () => void; // 모달 off 함수
-  isMobile?: boolean;
+  zIndex?: number;
 }
 
 // 모달 내부를 제외한 어디를 클릭을 하던 모달은 닫힘
@@ -14,9 +14,9 @@ const ToggleModal = ({
   desc,
   isOpen,
   children,
-  isMobile = false,
   hasOverlay = false,
   onClose,
+  zIndex = 100,
   ...props
 }: ToggleModalProps) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -43,7 +43,8 @@ const ToggleModal = ({
 
   return (
     <>
-      {hasOverlay && <Overlay isMobile={isMobile} />}
+      {hasOverlay && <Overlay zIndex={zIndex} />}
+
       <div
         id={`modal-${desc}`}
         role="dialog"
@@ -61,14 +62,10 @@ const ToggleModal = ({
   );
 };
 
-const Overlay = ({ isMobile }: { isMobile: boolean }) => {
-  const TOP_GAP = 78.32;
+const Overlay = ({ zIndex }: { zIndex: number }) => {
   return (
-    <div
-      style={{ height: isMobile === false ? `calc(100vh - ${TOP_GAP}px )` : '100vh' }}
-      className="fixed z-100 w-screen bottom-0 bg-[#8181815e] left-0"
-    />
+    <div style={{ zIndex }} className="fixed w-screen bottom-0 bg-[#8181815e] left-0 h-screen" />
   );
 };
-
+// h-[calc(100vh-64px)] md:h-[calc(100vh-80px)]
 export default ToggleModal;
