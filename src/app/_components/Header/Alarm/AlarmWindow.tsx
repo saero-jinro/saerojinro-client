@@ -24,7 +24,7 @@ const Alarm = () => {
         onClose={closeModal}
         className="fixed z-[1001] top-0 text-black flex-[1_0] flex-col bg-white h-screen right-0"
       >
-        <div className="w-[375px] md:w-[448px] right-0 h-16 md:h-[80px] p-4 flex justify-between items-center font-bold text-2xl bg-black text-white">
+        <div className="w-screen xs:w-[375px] md:w-[448px] right-0 h-16 md:h-[80px] p-4 flex justify-between items-center font-bold text-2xl bg-black text-white">
           <ClickButton actionDesc="modal-close" onClickAction={closeModal}>
             <Image alt="left-icon" src="/main/left.webp" width={32} height={32} />
           </ClickButton>
