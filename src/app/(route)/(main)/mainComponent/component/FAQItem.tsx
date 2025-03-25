@@ -51,7 +51,7 @@ const FAQItem = ({ title, contents }: FAQItemType) => {
         aria-expanded={toggle}
         onClick={clickHandler}
         aria-label="toggle-FAQ"
-        className="bg-[#F8FAFC] w-full flex flex-row items-start p-4 md:p-6 select-none"
+        className="bg-[#F8FAFC] w-full flex flex-row items-start p-4 md:p-6 select-none cursor-pointer"
       >
         <div className="font-semibold text-base md:text-xl w-full text-start">
           <span className="mr-2">Q.</span>

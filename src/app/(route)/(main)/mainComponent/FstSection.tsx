@@ -55,7 +55,7 @@ const FstSection = () => {
         <div>
           <Link
             href="/lecture-list"
-            className="bg-[#00249C] w-[160px] md:w-[300px] text-sm md:text-base flex justify-center items-center h-12 px-4 py-1 rounded-[2px] font-semibold"
+            className="bg-[#00249C] w-[160px] md:w-[300px] text-sm md:text-base flex justify-center items-center h-12 px-4 py-1 rounded-[2px] font-semibold brightness-90"
             aria-label="컨퍼런스 신청하기"
           >
             컨퍼런스 신청하기

@@ -2,8 +2,8 @@
 import KaKaoLogoSvg from '@/assets/Header/kakaologo.svg';
 import useLogin from '@/_hooks/login/useLogin';
 import ClickButton from '../ClickButton';
-import { HTMLAttributes } from 'react';
 import Link from 'next/link';
+import { HTMLAttributes } from 'react';
 import { usePathname } from 'next/navigation';
 
 interface Props extends HTMLAttributes<HTMLElement> {
@@ -19,9 +19,9 @@ const LoginComponent = ({ onClose, ...props }: Props) => {
     if (onClose) onClose();
     const cachePath = sessionStorage.getItem('prevUrl');
     const prevPath = pathname === '/login' ? (cachePath ?? '/') : pathname;
-
     loginWithKakao(prevPath);
   };
+
   return (
     <div {...props}>
       <div className="flex flex-col justify-center items-center gap-6">
