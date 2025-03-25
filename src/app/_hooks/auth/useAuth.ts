@@ -37,7 +37,6 @@ const useAuth = () => {
   //  토큰 재발급 및 역할 설정
   useEffect(() => {
     if (accessToken !== null) return;
-
     (async () => {
       try {
         const res = await fetch(`${URL.refresh}`, {
@@ -52,6 +51,7 @@ const useAuth = () => {
         if (!dto.ok || !dto.data) return;
 
         const { accessToken, role } = dto.data;
+        console.log(accessToken);
         setAuth(accessToken, role);
       } catch (err: unknown) {
         console.error('Refresh Token 요청 중 오류 발생:', err);
@@ -66,7 +66,7 @@ const useAuth = () => {
       return match ? decodeURIComponent(match[1]) : null;
     };
 
-    if (!accessToken) {
+    if (role === 'guest') {
       setUserInfo('로그인', null, null);
       return;
     }
@@ -84,13 +84,12 @@ const useAuth = () => {
 
         const dto = res.data;
         const image = getCookie('pictrue');
-
         setUserInfo(dto.name, dto.email, image);
       } catch (err) {
         console.error(err);
       }
     })();
-  }, [accessToken, role, setName, getUserInfo, setUserInfo]);
+  }, [role, setName, getUserInfo, setUserInfo]);
 
   return { accessToken, name };
 };

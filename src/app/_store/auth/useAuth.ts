@@ -17,6 +17,7 @@ interface AuthActions {
   setAuth: (token: string | null, role: UserRole) => void;
   setUserInfo: (name: string, email: string | null, pictrue: string | null) => void;
   resetUserInfo: () => void;
+  updateUserInfo: (payload: Partial<Pick<AuthState, 'name' | 'email' | 'pictrue'>>) => void;
 }
 
 type AuthStore = BaseSlice<AuthState, AuthActions>;
@@ -53,6 +54,18 @@ const useAuthStore = create<AuthStore>((set) => ({
           store.state.name = null;
           store.state.email = null;
           store.state.pictrue = null;
+        }),
+      );
+    },
+    updateUserInfo(payload) {
+      set(
+        produce<AuthStore>((store) => {
+          Object.entries(payload).forEach(([key, value]) => {
+            const typedKey = key as keyof Pick<AuthState, 'name' | 'email' | 'pictrue'>;
+            if (value !== undefined) {
+              store.state[typedKey] = value!;
+            }
+          });
         }),
       );
     },
