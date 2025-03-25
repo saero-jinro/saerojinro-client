@@ -41,12 +41,12 @@ const AdminDashboard = () => {
   }, []);
 
   const toggleSort = () => {
-    setIsLowToHigh(prev => !prev);
+    setIsLowToHigh((prev) => !prev);
   };
 
   const sortedLectures = useMemo(() => {
     const sorted = [...lecturesRaw].sort((a, b) =>
-      isLowToHigh ? a.rank - b.rank : b.rank - a.rank
+      isLowToHigh ? a.rank - b.rank : b.rank - a.rank,
     );
     return sorted.slice(0, 10); // 상위 10개만
   }, [lecturesRaw, isLowToHigh]);
@@ -95,9 +95,7 @@ const AdminDashboard = () => {
             <table className="w-full table-auto border-collapse">
               <thead>
                 <tr className="bg-blue-600 text-white text-left">
-                  <th onClick={toggleSort}>
-                    {isLowToHigh ? '높은 순▲' : '낮은 순▼'}
-                  </th>
+                  <th onClick={toggleSort}>{isLowToHigh ? '높은 순▲' : '낮은 순▼'}</th>
 
                   <th className="px-[16px] py-[12px]">강의명</th>
                   <th className="px-[16px] py-[12px] whitespace-nowrap">강연자</th>
