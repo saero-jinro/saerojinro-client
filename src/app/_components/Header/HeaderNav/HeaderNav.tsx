@@ -1,11 +1,11 @@
 'use client';
 
-import { MobileNavigation } from '@/_components/Nav/navigation/HeaderNav.mobile';
-import WebNavList from '@/_components/Nav/navigation/HeaderNav.web';
+import { MobileNavigation } from '@/_components/Nav/HeaderNav.mobile';
+import WebNavList from '@/_components/Nav/HeaderNav.web';
 import useHeaderStore from '@/_store/Header/useHeaderStore';
 import ToggleModal from '@/_components/ToggleModal';
 import useResize from '@/_hooks/nav/useResize';
-import { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { MenuButton } from './ETC';
 import useAlarm from '@/_hooks/nav/useAlarm';
 import useAuth from '@/_hooks/auth/useAuth';
@@ -43,16 +43,16 @@ const HeaderNav = ({ children }: Props) => {
   return (
     <>
       <ToggleModal
-        isMobile={true}
         desc="mobile-nav"
         hasOverlay={true}
         onClose={closeMobileNav}
         isOpen={isMobileNavOpen}
       >
         <MobileNavigation />
+        {/* <MobileNavigation /> */}
       </ToggleModal>
-
       {!isMobileNavOpen && <MenuButton onClickHandler={openMobileNav} />}
+      {/* Toggle */}
     </>
   );
 };
