@@ -15,7 +15,7 @@ const LectureListPage = () => {
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(['ALL']);
 
-  const dateList = ['2025-03-01', '2025-03-02', '2025-03-03']; // 현재 데이터 들어있는 날짜로 임시
+  const dateList = ['2025-04-01', '2025-04-02', '2025-04-03'];
   const dateToDayMap = dateList.reduce(
     (acc, date, index) => {
       acc[date] = `Day${index + 1}`;

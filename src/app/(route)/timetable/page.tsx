@@ -30,11 +30,17 @@ const TimetablePage = () => {
 
   const fetchTimeWish = async (startTime: string) => {
     try {
-      const response = await fetch(`${BASE_URL}/api/wishlist/lectures?startTime=${startTime}`);
+      const url = `${BASE_URL}/api/wishlist/lectures?startTime=${startTime}`;
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
       if (!response.ok) throw new Error('즐겨찾기 강의 데이터를 불러오는 데 실패했습니다.');
 
       const data = await response.json();
-      setTimeWish(data.responses);
+      setTimeWish(data?.responses || []);
     } catch (error) {
       console.error(error);
     }
@@ -42,13 +48,18 @@ const TimetablePage = () => {
 
   const fetchTimeRecommand = async (startTime: string) => {
     try {
-      const response = await fetch(
-        `${BASE_URL}/api/lectures/recommendations?startTime=${startTime}`,
-      );
+      const url = `${BASE_URL}/api/lectures/recommendations?startTime=${startTime}`;
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
       if (!response.ok) throw new Error('추천 강의 데이터를 불러오는 데 실패했습니다.');
 
       const data = await response.json();
-      setRecommandLectures(data.lectures);
+      setRecommandLectures(data?.responses || []);
     } catch (error) {
       console.error(error);
     }

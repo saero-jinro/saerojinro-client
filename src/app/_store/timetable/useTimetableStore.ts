@@ -11,7 +11,6 @@ interface TimetableState {
 }
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API;
-const accessToken = authStoreGetState().state.accessToken;
 
 export const useTimetableStore = create<TimetableState>((set, get) => ({
   reservation: [],
@@ -20,11 +19,19 @@ export const useTimetableStore = create<TimetableState>((set, get) => ({
 
   fetchTimetable: async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/timetables/me`);
+      const accessToken = authStoreGetState().state.accessToken;
+
+      const url = `${BASE_URL}/api/timetables/me`;
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
       if (!response.ok) throw new Error('시간표 조회 실패');
 
       const data = await response.json();
-      console.log('시간표 조회', data);
+
       const { reservation, wishlist } = data;
 
       if (reservation.length === 0) {
@@ -65,11 +72,11 @@ export const useTimetableStore = create<TimetableState>((set, get) => ({
   toggleWish: async (lectureId: number) => {
     const { wishlist } = get();
     const isWished = wishlist.some((w) => w.lectureId === lectureId);
+    const accessToken = authStoreGetState().state.accessToken;
 
     try {
       const method = isWished ? 'DELETE' : 'POST';
       const url = `${BASE_URL}/api/wishlist/lectures/${lectureId}`;
-
       const response = await fetch(url, {
         method,
         headers: {

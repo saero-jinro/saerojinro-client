@@ -1,6 +1,5 @@
 'use client';
 
-import { useLectureStore } from '@/_store/LectureList/useLectureStore';
 import SkeletonCard from '@/_components/Card/SkeletonCard';
 import { formatTime } from '@/_utils/Card/formatTime';
 import { useEffect, useRef, useState } from 'react';
