@@ -3,11 +3,12 @@
 import { useEffect, useState, Fragment } from 'react';
 import { useRouter } from 'next/navigation';
 import DayTab from '@/_components/DayTab/DayTab';
-import { PiListStar } from 'react-icons/pi';
 import { TimeWishProps, RecommandLectureProps } from '@/_types/Timetable/Lecture.type';
 import ListCard from './timetableComponent/ListCard';
 import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
 import useAuthStore from '@/_store/auth/useAuth';
+import WishlistCloseSvg from '@/assets/Timetable/bookmarkDouble-stroke.svg';
+import WishlistOpenSvg from '@/assets/Timetable/bookmarkDouble-fill.svg';
 
 const TimetablePage = () => {
   const [selectedDay, setSelectedDay] = useState<string>('Day1');
@@ -106,17 +107,17 @@ const TimetablePage = () => {
   return (
     <div className="pt-16 px-10">
       <div className="w-full flex justify-between items-center pb-10">
-        <h1 className="text-[32px] font-bold">컴퍼런스 시간표</h1>
+        <h1 className="text-[32px] font-bold">컨퍼런스 시간표</h1>
         {isLoggedIn ? (
           <button className="cursor-pointer" onClick={handleWishlistClick}>
-            <PiListStar size={32} />
+            {showWishlist || selectedTime ? <WishlistOpenSvg /> : <WishlistCloseSvg />}
           </button>
         ) : (
           <div></div>
         )}
       </div>
       <div className="flex gap-8 w-full ">
-        <div className="flex-2">
+        <div className="flex-grow">
           <div className="pb-8">
             <DayTab
               days={['Day1', 'Day2', 'Day3']}
@@ -126,18 +127,21 @@ const TimetablePage = () => {
           </div>
           {isLoggedIn ? (
             <div
-              className="grid border border-gray-300"
+              className="grid border border-[#E2E8F0]"
               style={{ gridTemplateColumns: '100px 1fr' }}
             >
               {timeSlots.map(({ start, end }) => {
-                if (occupiedSlots.has(start)) {
+                const currentSlotKey = `${selectedDay} ${start}`;
+                const isSelected = selectedTime === currentSlotKey;
+
+                if (occupiedSlots.has(start) && !isSelected) {
                   return (
                     <div
                       key={`empty-${start}`}
-                      className="flex justify-center items-center border border-gray-300 px-5 py-6 h-full text-center font-semibold text-base leading-[140%]"
+                      className="flex justify-center items-center border border-[#E2E8F0] px-5 py-6 h-full text-center font-semibold text-base leading-[140%] text-[#757575]"
                     >
                       {start}
-                      <br />~<br />
+                      <br />-<br />
                       {end}
                     </div>
                   );
@@ -170,51 +174,67 @@ const TimetablePage = () => {
                   }
                 }
 
+                const bgColor = (() => {
+                  if (lecture) return 'bg-white';
+                  if (isSelected) return 'bg-[#E6EFFF]';
+                  return 'bg-[#F1F5F9]';
+                })();
+
                 return (
                   <Fragment key={`time-${start}-${end}`}>
-                    <div className="flex justify-center items-center border border-gray-300 px-5 py-6 h-full text-center font-semibold text-base leading-[140%]">
+                    <div
+                      className={`flex justify-center items-center border px-5 py-6 h-full text-center font-semibold text-base leading-[140%] ${bgColor} 
+                        ${isSelected ? 'border-r-0 border-[#015AFF] text-[#2F78FF]' : 'border-[#E2E8F0] text-[#757575]'}`}
+                    >
                       {start}
-                      <br />~<br />
+                      <br />-<br />
                       {end}
                     </div>
 
                     {lecture ? (
                       <div
                         key={lecture.reservationId}
-                        className="p-6 text-left cursor-pointer"
+                        className="flex flex-col justify-center p-6 cursor-pointer"
                         style={{
                           gridRow: `span ${rowSpan}`,
                           backgroundColor: '#fff',
-                          border: '1px solid #ccc',
-                          borderBottom: rowSpan > 1 ? 'none' : '1px solid #ccc',
+                          border: '1px solid #E2E8F0',
+                          borderBottom: rowSpan > 1 ? 'none' : '1px solid #E2E8F0',
                         }}
                         onClick={() => router.push(`/lecture/${lecture.lectureId}`)}
                       >
-                        <p className="w-fit border rounded-sm border-[#91CAFF] text-[#1677FF] px-2 py-[1px] font-semibold text-sm leading-[140%]">
+                        <p className="w-fit rounded-sm bg-[#F1F5F9] text-[#015AFF] px-2 py-1 font-semibold text-sm leading-[140%]">
                           {lecture.location}
                         </p>
-                        <p className="font-bold text-xl leading-[140%] pt-3 pb-2">
+                        <p className="font-semibold text-xl leading-[140%] pt-2 pb-3">
                           {lecture.title}
                         </p>
                         <div className="flex justify-between items-center">
                           <p className="font-medium text-lg leading-[140%]">
                             {lecture.speakerName}
                           </p>
-                          <p className="bg-[#F4F4F4] px-3 py-[9px]">
-                            인원수 {lecture.currentReservation} / {lecture.capacity}
+                          <p className="px-3 py-[9px] text-[#757575] font-medium text-sm">
+                            인원수{' '}
+                            <span className="text-[#FF6467]">{lecture.currentReservation}</span> /{' '}
+                            {lecture.capacity}
                           </p>
                         </div>
                       </div>
                     ) : (
                       <div
-                        className="border border-gray-300 bg-[#F5F8FA] cursor-pointer"
+                        className={`flex justify-center items-center border font-medium text-lg cursor-pointer 
+                        ${isSelected ? 'border-[#015AFF] text-[#2F78FF] bg-[#E6EFFF]' : 'border-[#E2E8F0] text-[#BDBDBD] bg-[#F1F5F9]'}
+                        hover:text-[#2F78FF] hover:bg-[#E6EFFF]
+                        `}
                         style={{
                           gridRow: 'span 1',
                         }}
                         onClick={() =>
                           handleEmptySlotClick(Number(selectedDay.replace('Day', '')), start)
                         }
-                      />
+                      >
+                        빈 시간 클릭 시 추천 일정이 나타납니다.
+                      </div>
                     )}
                   </Fragment>
                 );
@@ -228,23 +248,35 @@ const TimetablePage = () => {
         </div>
 
         {selectedTime && (
-          <div className="flex-1 px-6 pt-11 bg-[#F4F4F4] h-full dark:bg-gray-900">
+          <div className="w-[280px] flex-shrink-0 px-6 pt-11 h-full">
             <h3 className="font-bold text-xl leading-[140%] pb-6">즐겨찾기 목록</h3>
             <div className="h-1/3 overflow-auto">
-              <ListCard lectureList={timeWish} />
+              {timeWish.length > 0 ? (
+                <ListCard lectureList={timeWish} />
+              ) : (
+                <p className="text-gray-500 text-sm">해당 시간에 즐겨찾기한 강의가 없습니다.</p>
+              )}
             </div>
             <h3 className="pt-8 pb-6 font-bold text-xl leading-[140%]">공석 추천 목록</h3>
             <div className="h-1/2 overflow-auto">
-              <ListCard lectureList={recommandLectures} />
+              {recommandLectures.length > 0 ? (
+                <ListCard lectureList={recommandLectures} />
+              ) : (
+                <p className="text-gray-500 text-sm mb-3">해당 시간에 추천 강의가 없습니다.</p>
+              )}
             </div>
           </div>
         )}
 
         {showWishlist && (
-          <div className="flex-1 px-6 pt-11 bg-[#F4F4F4] h-full dark:bg-gray-900">
+          <div className="w-[280px] flex-shrink-0 px-6 pt-11 h-full">
             <h3 className="font-bold text-xl leading-[140%] pb-6">즐겨찾기 목록</h3>
             <div className="h-full overflow-auto">
-              <ListCard lectureList={wishlist} />
+              {wishlist.length > 0 ? (
+                <ListCard lectureList={wishlist} />
+              ) : (
+                <p className="text-gray-500 text-sm mb-3">즐겨찾기한 강의가 없습니다.</p>
+              )}
             </div>
           </div>
         )}

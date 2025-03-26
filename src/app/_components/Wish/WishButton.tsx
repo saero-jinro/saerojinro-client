@@ -1,5 +1,6 @@
-import { FaRegStar, FaStar } from 'react-icons/fa';
 import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
+import WishFillSvg from '@/assets/Timetable/bookmarkSingle-fill.svg';
+import WishEmptySvg from '@/assets/Timetable/bookmarkSingle-stroke.svg';
 
 interface WishButtonProps {
   isWished: boolean;
@@ -13,7 +14,7 @@ const WishButton = ({ isWished, itemId, className, onBeforeToggle }: WishButtonP
 
   return (
     <button
-      className={`px-2 py-1 w-8 h-8 bg-gray-200 text-white cursor-pointer ${className}`}
+      className={`rounded-xs flex justify-center items-center text-white cursor-pointer ${className}`}
       onClick={(e) => {
         e.stopPropagation();
         if (onBeforeToggle && onBeforeToggle() === false) return;
@@ -21,7 +22,11 @@ const WishButton = ({ isWished, itemId, className, onBeforeToggle }: WishButtonP
       }}
       aria-label="즐겨찾기"
     >
-      {isWished ? <FaStar color="#000" /> : <FaRegStar color="#000" />}
+      {isWished ? (
+        <WishFillSvg className="text-[#00249C]" />
+      ) : (
+        <WishEmptySvg className="text-[#015AFF]" />
+      )}
     </button>
   );
 };

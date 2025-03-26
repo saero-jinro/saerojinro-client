@@ -9,6 +9,7 @@ import LectureReserveButton from '@/_components/LectureReserveButton/LectureRese
 import useAuthStore from '@/_store/auth/useAuth';
 import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
 import useLoginModalStore from '@/_store/modal/useLoginModalStore';
+import BarSvg from '@/assets/Timetable/Vector 3.svg';
 
 interface ListCardProps {
   lectureList: (RecommandLectureProps | TimeWishProps | WishLectureProps)[];
@@ -32,12 +33,16 @@ const ListCard = ({ lectureList }: ListCardProps) => {
         const isReserved = reservation.some((r) => r.lectureId === lectureId);
 
         return (
-          <li key={getLectureId(lecture)} className="flex flex-col px-5 py-6 border bg-white">
+          <li
+            key={getLectureId(lecture)}
+            className="flex flex-col px-5 py-5 border border-[#E2E8F0] rounded-sm bg-white"
+          >
             <div className="flex items-center gap-2">
-              <p className="w-fit border rounded-sm border-[#91CAFF] text-[#1677FF] px-2 py-[1px] font-semibold text-sm leading-[140%]">
+              <p className="w-fit text-[#001F85] py-[1px] font-semibold text-sm leading-[140%]">
                 {lecture.location}
               </p>
-              <span className="font-semibold text-sm leading-[140%]">
+              <BarSvg />
+              <span className="font-semibold text-sm leading-[140%] text-[#001F85]">
                 {new Date(lecture?.startTime).toLocaleTimeString('ko-KR', {
                   hour: '2-digit',
                   minute: '2-digit',
@@ -51,13 +56,17 @@ const ListCard = ({ lectureList }: ListCardProps) => {
                 })}
               </span>
             </div>
-            <span className="pt-3 pb-2 font-bold text-lg leading-[140%]">{lecture?.title}</span>
-            <p className="pb-4 font-medium text-base leading-[140%]">{lecture.speakerName}</p>
-            <div className="flex justify-end items-center gap-2 w-full">
+            <span className="pt-3 pb-2 font-semibold text-base leading-[140%]">
+              {lecture?.title}
+            </span>
+            <p className="pb-4 text-[#757575] font-medium text-sm leading-[140%]">
+              {lecture.speakerName}
+            </p>
+            <div className="flex w-full items-center gap-2">
               <WishButton
                 isWished={wishlist.some((w) => w.lectureId === getLectureId(lecture))}
                 itemId={getLectureId(lecture)}
-                className="w-9 h-9"
+                className="w-11 h-11 bg-[#F1F5F9]"
                 onBeforeToggle={() => {
                   if (!accessToken) {
                     openLoginModal();
@@ -68,7 +77,7 @@ const ListCard = ({ lectureList }: ListCardProps) => {
               />
               <LectureReserveButton
                 isReserved={isReserved}
-                className="bg-[#00249C] px-[66px] py-[11px]"
+                className="bg-[#00249C] w-full py-[11px]"
                 onClick={async (e) => {
                   e.stopPropagation();
 
