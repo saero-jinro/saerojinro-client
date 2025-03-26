@@ -1,27 +1,35 @@
-import { useCallback, useEffect } from 'react';
 import { Alarm, ResponseAlarm } from '@/_types/Header/Alarm.type';
-import useAlarmStore from '@/_store/Header/useAlarmStore';
 import { wrapApiResponse } from '@/_utils/api/response';
+import { useCallback, useEffect, useRef } from 'react';
 import { ApiResponse } from '@/_types/Auth/auth.type';
+import useAlarmStore from '@/_store/Header/useAlarmStore';
 import useAuthStore from '@/_store/auth/useAuth';
 
 const useAlarm = () => {
-  const loadInitAlarms = useAlarmStore((store) => store.alarms.actions.loadInitAlarms);
-  const isOpen = useAlarmStore((store) => store.isOpen.state.isOpen);
-  const accessToken = useAuthStore((store) => store.state.accessToken);
-  const role = useAuthStore((store) => store.state.role);
-
-  // 이벤트 스트림을 담기위함
-  // const [isInitialLoaded, setIsInitialLoaded] = useState(false); // 초기 데이터 상태 업뎃
-  // const eventRef = useRef<EventSource | null>(null);
-
+  const POLLING_SEC = 1000 * 7;
   const BACK_URL = process.env.NEXT_PUBLIC_BACKEND_API;
+
   const URL = {
-    subscribeToAlarms: BACK_URL + '/api/notifications/subscribe',
-    fetchUserAlarms: BACK_URL + '/api/notifications/me',
+    fetchUserAlarms: `${BACK_URL}/api/notifications/me`,
   };
 
-  const updateAlarm = useCallback(() => {
+  const accessToken = useAuthStore((store) => store.state.accessToken);
+  const role = useAuthStore((store) => store.state.role);
+  const isOpen = useAlarmStore((store) => store.isOpen.state.isOpen);
+  const isNewMessage = useAlarmStore((store) => store.isNewMessage.state.isNewMessage);
+  const loadInitAlarms = useAlarmStore((store) => store.alarms.actions.loadInitAlarms);
+  const setNewMessageState = useAlarmStore(
+    (store) => store.isNewMessage.actions.setNewMessageState,
+  );
+
+  const prevAlarmCountRef = useRef(0); // 이전 알림 개수
+  const hasInitializedRef = useRef(false); // 초기 로딩 여부
+
+  /** 함수 **/
+  //#region
+
+  // API 호출
+  const getNotifications = useCallback(() => {
     if (role !== 'user' || !accessToken) {
       return Promise.resolve({ ok: false, error: '토큰 없음' } as ApiResponse<Alarm[]>);
     }
@@ -35,52 +43,85 @@ const useAlarm = () => {
     );
   }, [role, accessToken, URL.fetchUserAlarms]);
 
-  // 알림창을 열면 데이터 업데이트
+  // 데이터 패치
+  const fetchNotifications = useCallback(async () => {
+    if (!accessToken || role !== 'user') return;
+
+    try {
+      const res = await getNotifications();
+      if (!res.data) throw new Error('데이터가 존재하지 않습니다');
+
+      const data = res.data;
+      const len = data.length;
+      loadInitAlarms(data);
+
+      if (!hasInitializedRef.current) {
+        hasInitializedRef.current = true; // 최초 실행 ㅇㅇ
+        prevAlarmCountRef.current = len; // 알림 수 저장
+        return;
+      }
+
+      // 이전 알림 수와 개수가 같다면 return
+      if (prevAlarmCountRef.current === len) return;
+
+      // 상태 업뎃
+      prevAlarmCountRef.current = len;
+
+      // 알림 창이 닫힌 상태에서만 새 메시지 상태 초기화
+      if (!isOpen) setNewMessageState(true);
+    } catch (err) {
+      console.error(err);
+    }
+  }, [accessToken, role, isOpen, loadInitAlarms, getNotifications, setNewMessageState]);
+
+  //#endregion
+
+  /** useEffect **/
+  //#region
+
+  // 알림 창 open시 새 메시지 상태 초기화
   useEffect(() => {
     if (!isOpen) return;
-    (async () => {
-      try {
-        const res = await updateAlarm();
+    setNewMessageState(false);
+  }, [isOpen, setNewMessageState, isNewMessage]);
 
-        if (!res.data) throw new Error();
+  // 폴링 실행 useEffect
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
 
-        loadInitAlarms(res.data);
-      } catch (err) {
-        console.error(err);
+    const startPolling = () => {
+      fetchNotifications();
+      interval = setInterval(() => {
+        fetchNotifications();
+      }, POLLING_SEC);
+    };
+
+    const stopPolling = () => {
+      clearInterval(interval);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        startPolling();
+      } else {
+        stopPolling();
       }
-    })();
-  }, [isOpen, updateAlarm, loadInitAlarms]);
+    };
 
-  // useEffect(() => {
-  //   if (!accessToken || role !== 'guest') return;
+    if (role !== 'user' || !accessToken) {
+      stopPolling();
+      return;
+    }
 
-  //   const eventSource = new EventSourcePolyfill(`${URL.subscribeToAlarms}`, {
-  //     headers: {
-  //       Authorization: `Bearer ${accessToken}`,
-  //     },
-  //   });
+    startPolling();
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
-  //   eventSource.onopen = () => {
-  //     console.log('SSE 연결 성공');
-  //   };
-  //   eventSource.onerror = (e: MessageEvent) => {
-  //     console.error('SSE 연결 오류 발생!', e);
-  //   };
+    return () => {
+      stopPolling();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [role, POLLING_SEC, fetchNotifications, accessToken]);
 
-  //   eventSource.onmessage = (e: MessageEvent) => {
-  //     console.log('서버에서 온 메시지:', e.data);
-  //     // 여기서 JSON.parse(event.data) 해서 처리해도 됨
-  //   };
-
-  //   eventSource.onerror = (e: MessageEvent) => {
-  //     console.error('SSE 에러:', e);
-  //     // 연결 에러 시 재연결 처리를 여기에 넣을 수도 있음
-  //   };
-
-  //   return () => {
-  //     console.log('SSE 연결 해제');
-  //     eventSource.close();
-  //   };
-  // }, [accessToken, role]);
+  //#endregion
 };
 export default useAlarm;

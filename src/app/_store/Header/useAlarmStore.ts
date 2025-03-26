@@ -13,12 +13,12 @@ interface AlarmActions {
   loadInitAlarms: (alarms: Alarm[]) => void;
 }
 
-interface IsSubscribeState {
-  isSubscribe: boolean;
+interface IsNewMessageState {
+  isNewMessage: boolean;
 }
 
-interface IsSubscribeActions {
-  setSubscribe: (state: boolean) => void;
+interface IsNewMessageActions {
+  setNewMessageState: (state: boolean) => void;
 }
 
 interface IsOpenState {
@@ -32,7 +32,7 @@ interface IsOpenActions {
 type AlarmSlice = {
   alarms: BaseSlice<AlarmState, AlarmActions>;
   isOpen: BaseSlice<IsOpenState, IsOpenActions>;
-  isSubscribe: BaseSlice<IsSubscribeState, IsSubscribeActions>;
+  isNewMessage: BaseSlice<IsNewMessageState, IsNewMessageActions>;
 };
 
 const useAlarmStore = create<AlarmSlice>()((set) => ({
@@ -74,13 +74,13 @@ const useAlarmStore = create<AlarmSlice>()((set) => ({
       },
     },
   },
-  isSubscribe: {
-    state: { isSubscribe: false },
+  isNewMessage: {
+    state: { isNewMessage: false },
     actions: {
-      setSubscribe(state) {
+      setNewMessageState(state: boolean) {
         set(
           produce((store: AlarmSlice) => {
-            store.isSubscribe.state.isSubscribe = state;
+            store.isNewMessage.state.isNewMessage = state;
           }),
         );
       },

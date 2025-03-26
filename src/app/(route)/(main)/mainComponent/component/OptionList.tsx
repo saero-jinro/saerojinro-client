@@ -18,7 +18,7 @@ export const OptionList = ({ option, ChangeOption, className }: Props) => {
         <OptionItem
           key={category}
           desc={`item-change-${category}`}
-          onClickAction={() => ChangeOption(category)}
+          onClick={() => ChangeOption(category)}
           className={`${option === category ? 'bg-[#000000] text-white' : 'bg-[#9A9A9A] text-[#49454f]'}`}
         >
           {title}
@@ -31,20 +31,16 @@ export const OptionList = ({ option, ChangeOption, className }: Props) => {
 interface OptionItemProps extends HTMLAttributes<HTMLElement> {
   children?: ReactNode;
   desc: string;
-  onClickAction: () => void;
+  onClick: () => void;
 }
 
-const OptionItem = ({ desc, onClickAction, children, className, ...props }: OptionItemProps) => {
+const OptionItem = ({ desc, onClick, children, className, ...props }: OptionItemProps) => {
   return (
     <li
       {...props}
       className={`select-none outline-none text-sm h-8 rounded-[8px] flex items-center justify-center whitespace-nowrap ${className}`}
     >
-      <ClickButton
-        className="w-full h-full py-[6px] px-4"
-        actionDesc={desc}
-        onClickAction={onClickAction}
-      >
+      <ClickButton className="w-full h-full py-[6px] px-4" actionDesc={desc} onClick={onClick}>
         {children}
       </ClickButton>
     </li>
