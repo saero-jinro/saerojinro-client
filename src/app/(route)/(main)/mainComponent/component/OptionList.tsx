@@ -19,7 +19,7 @@ export const OptionList = ({ option, ChangeOption, className }: Props) => {
           key={category}
           desc={`item-change-${category}`}
           onClick={() => ChangeOption(category)}
-          className={`${option === category ? 'bg-[#000000] text-white' : 'bg-[#9A9A9A] text-[#49454f]'}`}
+          className={`${option === category ? 'bg-[#000000] dark:bg-[#fff] text-white dark:text-black' : 'bg-[#9A9A9A] dark:bg-[#000] text-[#49454f] dark:text-[#fff] shadow-[0_0_0_1px_#ffffff30]'}`}
         >
           {title}
         </OptionItem>
@@ -38,7 +38,7 @@ const OptionItem = ({ desc, onClick, children, className, ...props }: OptionItem
   return (
     <li
       {...props}
-      className={`select-none outline-none text-sm h-8 rounded-[8px] flex items-center justify-center whitespace-nowrap ${className}`}
+      className={`select-none outline-none text-sm h-8 rounded-full flex items-center justify-center whitespace-nowrap ${className}`}
     >
       <ClickButton className="w-full h-full py-[6px] px-4" actionDesc={desc} onClick={onClick}>
         {children}

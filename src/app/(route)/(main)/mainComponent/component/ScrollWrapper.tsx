@@ -111,7 +111,7 @@ const ScrollWrapper = ({ children, gap = 10, className }: ScrollWrapperProps) =>
       <div
         ref={OuterRef}
         aria-live="polite"
-        className={`overflow-x-scroll hide-scrollbar scroll-smooth ${className}`}
+        className={`overflow-x-scroll h-[410px] hide-scrollbar scroll-smooth ${className}`}
       >
         <ul className="flex gap-2.5">
           {React.Children.toArray(children).map((child, idx) => (
@@ -121,7 +121,7 @@ const ScrollWrapper = ({ children, gap = 10, className }: ScrollWrapperProps) =>
       </div>
 
       {/* 페이지 점 */}
-      <div className="flex justify-center mt-4 gap-2">
+      <div className="flex justify-center mt-4 gap-2 h-[10px]">
         {Array.from({ length: maxPage }).map((_, i) => (
           <button
             key={i}
