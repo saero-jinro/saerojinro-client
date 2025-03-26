@@ -6,10 +6,17 @@ interface WishButtonProps {
   isWished: boolean;
   itemId: number;
   className?: string;
+  iconClassName?: string;
   onBeforeToggle?: () => boolean;
 }
 
-const WishButton = ({ isWished, itemId, className, onBeforeToggle }: WishButtonProps) => {
+const WishButton = ({
+  isWished,
+  itemId,
+  className,
+  iconClassName,
+  onBeforeToggle,
+}: WishButtonProps) => {
   const { toggleWish } = useTimetableStore();
 
   return (
@@ -23,9 +30,9 @@ const WishButton = ({ isWished, itemId, className, onBeforeToggle }: WishButtonP
       aria-label="즐겨찾기"
     >
       {isWished ? (
-        <WishFillSvg className="text-[#00249C]" />
+        <WishFillSvg className={iconClassName || 'text-[#00249C]'} />
       ) : (
-        <WishEmptySvg className="text-[#015AFF]" />
+        <WishEmptySvg className={iconClassName || 'text-[#015AFF]'} />
       )}
     </button>
   );
