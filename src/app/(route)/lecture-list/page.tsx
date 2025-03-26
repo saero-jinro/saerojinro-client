@@ -5,8 +5,10 @@ import { LectureListProps, useLectureStore } from '@/_store/LectureList/useLectu
 import Card from '@/_components/Card/Card';
 import DayTab from '@/_components/DayTab/DayTab';
 import { groupByDay, groupByTime } from '@/_components/DayTab/groupBy';
-import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2';
 import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
+import FilterSvg from '@/assets/LectureList/filter.svg';
+import XSvg from '@/assets/LectureList/X.svg';
+import ResetSvg from '@/assets/LectureList/arrow.svg';
 
 const LectureListPage = () => {
   const { lecturelist, fetchLectures } = useLectureStore();
@@ -72,44 +74,35 @@ const LectureListPage = () => {
       />
       <div className="relative flex justify-between items-center h-10 mt-10">
         <h1 className="text-lg font-medium leading-[140%]">
-          {groupedByDay[selectedDate]?.length || 0} Sessions
+          <span className="text-[#015AFF]">{groupedByDay[selectedDate]?.length || 0}</span> lecture
         </h1>
-        <button
-          onClick={() => setIsFilterOpen(true)}
-          className="text-lg font-medium leading-[140%] border-1 border-gray-300 rounded-lg dark:bg-neutral-800"
-        >
-          <HiOutlineAdjustmentsHorizontal size={40} />
+        <button onClick={() => setIsFilterOpen((prev) => !prev)} className="cursor-pointer">
+          <FilterSvg />
         </button>
 
         {isFilterOpen && (
           <div className="absolute top-10 right-0 z-10">
-            <div className="bg-[#eee] p-6 w-72 dark:bg-neutral-800">
+            <div className="bg-[#fff] p-6 w-75 shadow-[0px_4px_8px_0px_rgba(0,0,0,0.15)]">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-l font-bold leading-[140%]">카테고리</h2>
+                <h2 className="text-xl font-semibold leading-[140%]">카테고리</h2>
                 <div className="flex justify-end space-x-2">
-                  <button
-                    onClick={() => setSelectedCategories(['ALL'])}
-                    className="bg-white px-2 py-1 text-sm dark:bg-gray-600"
-                  >
-                    리셋
+                  <button onClick={() => setSelectedCategories(['ALL'])} className="cursor-pointer">
+                    <ResetSvg />
                   </button>
-                  <button
-                    onClick={() => setIsFilterOpen(false)}
-                    className="bg-white px-2 py-1 text-sm dark:bg-gray-600"
-                  >
-                    닫기
+                  <button onClick={() => setIsFilterOpen(false)} className="cursor-pointer">
+                    <XSvg />
                   </button>
                 </div>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <label className="flex items-center">
                   <input
                     type="checkbox"
                     checked={selectedCategories.includes('ALL')}
                     onChange={() => setSelectedCategories(['ALL'])}
-                    className="mr-3 text-base font-semibold leading-[140%]"
+                    className="mr-[10px] w-5 h-5"
                   />
-                  전체
+                  <span className="text-base font-medium leading-[140%] text-[#212121]">ALL</span>
                 </label>
                 {categories.map((category) => (
                   <label key={category} className="flex items-center">
@@ -127,9 +120,11 @@ const LectureListPage = () => {
                           );
                         }
                       }}
-                      className="mr-3 text-base font-semibold leading-[140%]"
+                      className="mr-[10px] w-5 h-5"
                     />
-                    {category}
+                    <span className="text-base font-medium leading-[140%] text-[#212121]">
+                      {category}
+                    </span>
                   </label>
                 ))}
               </div>
