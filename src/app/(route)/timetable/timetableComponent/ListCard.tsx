@@ -67,6 +67,7 @@ const ListCard = ({ lectureList }: ListCardProps) => {
                 isWished={wishlist.some((w) => w.lectureId === getLectureId(lecture))}
                 itemId={getLectureId(lecture)}
                 className="w-11 h-11 bg-[#F1F5F9]"
+                iconClassName="w-6 h-6 text-[#00249C]"
                 onBeforeToggle={() => {
                   if (!accessToken) {
                     openLoginModal();

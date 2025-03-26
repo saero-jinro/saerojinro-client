@@ -58,6 +58,7 @@ const Card = ({
           isWished={isWished}
           itemId={id}
           className="absolute top-2 right-2"
+          iconClassName="w-8 h-8 text-[#015AFF]"
           onBeforeToggle={() => {
             if (!accessToken) {
               openLoginModal();
@@ -87,7 +88,7 @@ const Card = ({
         {!isProfile && (
           <LectureReserveButton
             isReserved={isReserved}
-            className="w-full bg-[#155DFC] px-[94px] py-[13px] mt-3"
+            className="w-full bg-[#015AFF] px-[94px] py-[13px] mt-3"
             onClick={async (e) => {
               e.stopPropagation();
 
