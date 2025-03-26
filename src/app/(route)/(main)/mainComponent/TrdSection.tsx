@@ -1,7 +1,7 @@
 import KakaoMap from './component/kakaoMap';
 import SectionWrapper from './component/SectionWrapper';
 // import { LoadingMapImg } from './component/kakaoMap';
-import Image from 'next/image';
+import TrdIcon from './component/TrdIcon';
 
 type Info = {
   title: string;
@@ -75,24 +75,16 @@ export default TrdSection;
 /** 컴포넌트 **/
 // #region
 type svgName = 'pin' | 'bus' | 'subway';
-// 아이콘
-const Icon = ({ name }: { name: svgName }) => {
-  return (
-    <div className="w-4 md:w-6 aspect-square relative">
-      <Image alt={`img-${name}`} fill src={`/main/${name}.webp`} />
-    </div>
-  );
-};
 
 // 장소 리스트
 const LocationList = ({ content, title }: Info) => {
   return (
     <article className="flex flex-col gap-4">
       <h3 className="text-base md:text-xl font-bold">{title}</h3>
-      <ul>
+      <ul className="flex flex-col gap-6">
         {content.map(({ info, icon }, idx) => (
           <li key={idx + info} className="flex items-center">
-            <Icon name={icon} />
+            <TrdIcon name={icon} />
             <p className="ml-2 text-sm md:text-lg font-medium">{info}</p>
           </li>
         ))}
