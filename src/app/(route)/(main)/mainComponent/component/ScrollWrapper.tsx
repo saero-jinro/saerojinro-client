@@ -111,7 +111,7 @@ const ScrollWrapper = ({ children, gap = 10, className }: ScrollWrapperProps) =>
       <div
         ref={OuterRef}
         aria-live="polite"
-        className={`overflow-x-scroll h-[410px] hide-scrollbar scroll-smooth ${className}`}
+        className={`overflow-x-scroll hide-scrollbar scroll-smooth ${className}`}
       >
         <ul className="flex gap-2.5">
           {React.Children.toArray(children).map((child, idx) => (
@@ -157,14 +157,14 @@ interface HandleButtonProps extends HTMLAttributes<HTMLButtonElement> {
 
 const HandleButton = ({ type, ...props }: HandleButtonProps) => {
   const style = {
-    right: 'translate-y-1/2 translate-x-[calc(100%)] right-0',
-    left: 'translate-y-1/2 -translate-x-[calc(100%)] left-0',
+    right: 'translate-y-[-90%] translate-x-[calc(105%)] right-0',
+    left: 'translate-y-[-90%] -translate-x-[calc(105%)] left-0',
   };
   return (
     <button
       aria-label="controll-card-scroll"
       {...props}
-      className={`hidden md:block absolute top-1/2 cursor-pointer ${style[type]}`}
+      className={`hidden md:block absolute top-1/2 cursor-pointer ${style[type]} rounded-full hover:bg-[#ffffff41]`}
     >
       {type === 'left' ? <LeftSvg /> : <RightSvg />}
     </button>

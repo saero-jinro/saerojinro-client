@@ -166,7 +166,7 @@ const SectionList = ({ startDay, startDate }: Props) => {
           setOption(option);
         }}
       />
-      <ScrollWrapper className="mt-3 h-[405.19px]">
+      <ScrollWrapper className="mt-3 h-[410.19px]">
         {loading
           ? Array.from({ length: prevNum }).map((_, idx) => <SkeletonCard key={idx} />)
           : lectures[option].lectures.map((lecture) => (
