@@ -6,6 +6,7 @@ import Image from 'next/image';
 import useAuthStore from '@/_store/auth/useAuth';
 import useLoginModalStore from '@/_store/modal/useLoginModalStore';
 import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
+import useDownload from '@/_hooks/download/download';
 import TextViewer from '@/_components/TextViewer/TextViewer';
 import QuestionSection from '../component/QuestionSection';
 import LectureReserveButton from '@/_components/LectureReserveButton/LectureReserveButton';
@@ -52,6 +53,7 @@ const LectureDetailPage = () => {
   const isReserved = reservation.some((lec) => lec.lectureId === Number(lectureId));
   const isWished = wishlist.some((w) => w.lectureId === Number(lectureId));
   const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API;
+  const { downloadLectureFile } = useDownload();
 
   useEffect(() => {
     const fetchLectureDetail = async () => {
@@ -113,7 +115,10 @@ const LectureDetailPage = () => {
       </article>
 
       <div>
-        <button className="btn rounded-xs py-[6px] px-4 flex flex-row items-center justify-center gap-2 font-semibold text-base bg-white text-[#015AFF] border border-[#015AFF]">
+        <button
+          onClick={() => downloadLectureFile(lecture.speakerName, lecture.materialsId)}
+          className="btn rounded-xs py-[6px] px-4 flex flex-row items-center justify-center gap-2 font-semibold text-base bg-white text-[#015AFF] border border-[#015AFF] cursor-pointer"
+        >
           <DownloadSvg />
           download
         </button>
