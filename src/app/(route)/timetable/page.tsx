@@ -231,11 +231,19 @@ const TimetablePage = () => {
           <div className="flex-1 px-6 pt-11 bg-[#F4F4F4] h-full dark:bg-gray-900">
             <h3 className="font-bold text-xl leading-[140%] pb-6">즐겨찾기 목록</h3>
             <div className="h-1/3 overflow-auto">
-              <ListCard lectureList={timeWish} />
+              {timeWish.length > 0 ? (
+                <ListCard lectureList={timeWish} />
+              ) : (
+                <p className="text-gray-500 text-sm">해당 시간에 즐겨찾기한 강의가 없습니다.</p>
+              )}
             </div>
             <h3 className="pt-8 pb-6 font-bold text-xl leading-[140%]">공석 추천 목록</h3>
             <div className="h-1/2 overflow-auto">
-              <ListCard lectureList={recommandLectures} />
+              {recommandLectures.length > 0 ? (
+                <ListCard lectureList={recommandLectures} />
+              ) : (
+                <p className="text-gray-500 text-sm mb-3">해당 시간에 추천 강의가 없습니다.</p>
+              )}
             </div>
           </div>
         )}
@@ -244,7 +252,11 @@ const TimetablePage = () => {
           <div className="flex-1 px-6 pt-11 bg-[#F4F4F4] h-full dark:bg-gray-900">
             <h3 className="font-bold text-xl leading-[140%] pb-6">즐겨찾기 목록</h3>
             <div className="h-full overflow-auto">
-              <ListCard lectureList={wishlist} />
+              {wishlist.length > 0 ? (
+                <ListCard lectureList={wishlist} />
+              ) : (
+                <p className="text-gray-500 text-sm mb-3">즐겨찾기한 강의가 없습니다.</p>
+              )}
             </div>
           </div>
         )}
