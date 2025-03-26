@@ -1,12 +1,11 @@
-// import ThemeToggleButton from './ThemeToggleButton/ThemeToggleButton.client';
-// import getTheme from '@/_utils/Header/getTheme.server';
+import ThemeToggleButton from './ThemeToggleButton/ThemeToggleButton.client';
+import getTheme from '@/_utils/Header/getTheme.server';
 import HeaderNav from './HeaderNav/HeaderNav';
-import Link from 'next/link';
 import Alarm from './Alarm/AlarmWindow';
-import LoginModal from '../Login/LoginModal';
+import Link from 'next/link';
 
 const Header = async () => {
-  // const theme = await getTheme();
+  const theme = await getTheme();
 
   return (
     <>
@@ -15,11 +14,10 @@ const Header = async () => {
           <Link className="font-bold text-xl" href={'/'}>
             <span>IT TIME</span>
           </Link>
-          {/* <HeaderNav><ThemeToggleButton theme={theme} /></HeaderNav> */}
-
-          <HeaderNav />
-          <Alarm />
-          <LoginModal />
+          <HeaderNav>
+            <ThemeToggleButton theme={theme} />
+            <Alarm />
+          </HeaderNav>
         </nav>
       </header>
     </>

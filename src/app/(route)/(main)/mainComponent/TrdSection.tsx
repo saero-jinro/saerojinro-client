@@ -1,5 +1,6 @@
+import KakaoMap from './component/kakaoMap';
 import SectionWrapper from './component/SectionWrapper';
-import { LoadingMapImg } from './component/kakaoMap';
+// import { LoadingMapImg } from './component/kakaoMap';
 import Image from 'next/image';
 
 type Info = {
@@ -59,10 +60,10 @@ const TrdSection = () => {
         {/* 지도 */}
         <div aria-label="location-map" className="w-auto mt-6 lg:mt-0">
           <div className="ml-auto w-full lg:max-w-[720px] relative overflow-hidden h-[181px] md:h-[280px]">
-            {/* <KakaoMap /> */}
-            <div className="w-full h-full relative overflow-hidden">
+            <KakaoMap />
+            {/* <div className="w-full h-full relative overflow-hidden">
               <LoadingMapImg />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

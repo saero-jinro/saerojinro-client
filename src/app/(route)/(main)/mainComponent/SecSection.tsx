@@ -3,14 +3,14 @@ import SectionList from './component/SectionList';
 
 const SecSection = async () => {
   const DATE = '2025-03';
-  const DAY = 5;
+  const DAY = 1;
 
   return (
     <>
       <SectionWrapper
         role="region"
         aria-labelledby="introduce-sections"
-        className="w-screen select-none"
+        className="w-screen select-none bg-[#E2E8F0]"
       >
         <div className="max-w-[1280px] w-screen mx-auto">
           <div className="mx-auto flex flex-col gap-6 px-4 py-[64px] md:px-[40px]">
