@@ -76,10 +76,15 @@ const AdminDashboard = () => {
                 </thead>
                 <tbody>
                   {timeRank.map((time, index) => (
-                    <tr key={index} className="border-b border-b-gray-200 h-[54px] px-[16px] py-[12px] text-center">
+                    <tr
+                      key={index}
+                      className="border-b border-b-gray-200 h-[54px] px-[16px] py-[12px] text-center"
+                    >
                       <td className="px-[16px] py-[8px] whitespace-nowrap ">{time.rank}</td>
                       <td className="px-[16px] py-[8px] whitespace-nowrap">{time.day}</td>
-                      <td className="px-[16px] py-[8px] whitespace-nowrap">{formatTime(time.startTime)}</td>
+                      <td className="px-[16px] py-[8px] whitespace-nowrap">
+                        {formatTime(time.startTime)}
+                      </td>
                       <td className="px-[16px] py-[8px] whitespace-nowrap">{time.expectation}</td>
                     </tr>
                   ))}
@@ -97,22 +102,36 @@ const AdminDashboard = () => {
               <table className="w-full table-auto border-collapse">
                 <thead>
                   <tr className="bg-[#00249C] text-bold text-white h-[46px] px-[16px] py-[12px]">
-                    <th className="px-[16px] py-[8px] whitespace-nowrap"
-                      onClick={toggleSort}>{isLowToHigh ? '높은 순▲' : '낮은 순▼'}</th>
+                    <th className="px-[16px] py-[8px] whitespace-nowrap" onClick={toggleSort}>
+                      {isLowToHigh ? '높은 순▲' : '낮은 순▼'}
+                    </th>
                     <th className="px-[16px] py-[8px] text-left whitespace-nowrap">강의명</th>
                     <th className="px-[16px] py-[8px] whitespace-nowrap text-center">강연자</th>
                     <th className="px-[16px] py-[8px] text-center whitespace-nowrap">신청한 수</th>
-                    <th className="px-[16px] py-[8px] text-center whitespace-nowrap">즐겨찾기 수</th>
+                    <th className="px-[16px] py-[8px] text-center whitespace-nowrap">
+                      즐겨찾기 수
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {sortedLectures.map((lecture) => (
-                    <tr key={lecture.lectureId} className="border-b border-b-gray-200 h-[54px] px-[16px] py-[12px]">
-                      <td className="px-[16px] py-[8px] whitespace-nowrap text-center">{lecture.rank}</td>
+                    <tr
+                      key={lecture.lectureId}
+                      className="border-b border-b-gray-200 h-[54px] px-[16px] py-[12px]"
+                    >
+                      <td className="px-[16px] py-[8px] whitespace-nowrap text-center">
+                        {lecture.rank}
+                      </td>
                       <td className="px-[16px] py-[8px] whitespace-nowrap">{lecture.title}</td>
-                      <td className="px-[16px] py-[8px] whitespace-nowrap text-center">{lecture.speaker}</td>
-                      <td className="px-[16px]py-[8px] whitespace-nowrap text-center">{lecture.reservation}</td>
-                      <td className="px-[16px]py-[8px] whitespace-nowrap text-center">{lecture.wishlist}</td>
+                      <td className="px-[16px] py-[8px] whitespace-nowrap text-center">
+                        {lecture.speaker}
+                      </td>
+                      <td className="px-[16px]py-[8px] whitespace-nowrap text-center">
+                        {lecture.reservation}
+                      </td>
+                      <td className="px-[16px]py-[8px] whitespace-nowrap text-center">
+                        {lecture.wishlist}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
