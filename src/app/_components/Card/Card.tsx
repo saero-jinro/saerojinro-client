@@ -42,7 +42,7 @@ const Card = ({
 
   return (
     <div
-      className="overflow-hidden w-[282px] bg-white dark:bg-black border border-[#DEE2E6] rounded-xl cursor-pointer"
+      className="overflow-hidden w-[282px] h-[410px] bg-white dark:bg-black border border-[#DEE2E6] rounded-xl cursor-pointer"
       onClick={handleClick}
     >
       <div className="relative">
@@ -51,7 +51,7 @@ const Card = ({
           alt={title}
           width={282}
           height={170}
-          className="w-full h-[170px] object-cover"
+          className="w-full h-[188px] object-cover"
           priority
         />
         <WishButton
@@ -67,22 +67,23 @@ const Card = ({
           }}
         />
       </div>
-      <div className="px-4 py-5">
-        <div className="w-full bg-white text-sm font-semibold leading-[140%] dark:bg-black dark:text-white">
-          {time}
-        </div>
-        <h3 className="text-[20px] font-bold leading-[140%] pt-1 h-15 overflow-hidden">{title}</h3>
-
-        {!isProfile && (
-          <div className="flex items-center pt-1">
-            <p className="text-sm font-semibold leading-[140%] text-[#A09F9F]">{speakerName}</p>
+      <div className="p-4">
+        <div className="h-[130px]">
+          <div className="w-full bg-white text-sm font-semibold leading-[140%] dark:bg-black dark:text-white">
+            {time}
           </div>
-        )}
+          <h3 className="text-[20px] font-bold leading-[140%] pt-[2px] overflow-hidden">{title}</h3>
 
-        <div className="flex flex-wrap gap-1 pt-3">
-          <span className="text-sm font-semibold leading-[140%] text-[#878787]">#{category}</span>
+          {!isProfile && (
+            <div className="flex items-center pt-1">
+              <p className="text-sm font-semibold leading-[140%] text-[#757575]">{speakerName}</p>
+            </div>
+          )}
+
+          <div className="flex flex-wrap gap-1 pt-2">
+            <span className="text-sm font-semibold leading-[140%] text-[#2F78FF]">#{category}</span>
+          </div>
         </div>
-
         {!isProfile && (
           <LectureReserveButton
             isReserved={isReserved}
