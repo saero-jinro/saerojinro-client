@@ -3,6 +3,7 @@ import getTheme from '@/_utils/Header/getTheme.server';
 import HeaderNav from './HeaderNav/HeaderNav';
 import Alarm from './Alarm/AlarmWindow';
 import Link from 'next/link';
+import LoginModal from '../Login/LoginModal';
 
 const Header = async () => {
   const theme = await getTheme();
@@ -18,6 +19,7 @@ const Header = async () => {
             <ThemeToggleButton theme={theme} />
             <Alarm />
           </HeaderNav>
+          <LoginModal />
         </nav>
       </header>
     </>
