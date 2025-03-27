@@ -10,7 +10,7 @@ const DayTab = ({ days, selectedDay, onSelectDay }: DayTabProps) => {
       {days.map((day) => (
         <button
           key={day}
-          className={`text-center w-full px-4 py-[18px] cursor-pointer rounded-sm font-bold text-xl ${selectedDay === day ? 'text-white bg-[#00249C] dark:bg-gray-700' : ''}`}
+          className={`text-center w-full px-4 py-[18px] cursor-pointer rounded-sm font-bold text-xl ${selectedDay === day ? 'text-white bg-[#00249C] dark:bg-[#001A6F]' : 'dark:text-[#CAD5E2]'}`}
           onClick={() => onSelectDay(day)}
         >
           DAY {day[3]}

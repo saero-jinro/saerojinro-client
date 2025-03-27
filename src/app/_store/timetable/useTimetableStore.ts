@@ -21,6 +21,10 @@ export const useTimetableStore = create<TimetableState>((set, get) => ({
   fetchTimetable: async () => {
     try {
       const accessToken = authStoreGetState().state.accessToken;
+      if (!accessToken) {
+        console.warn('로그인 이후 이용 가능합니다.');
+        return;
+      }
 
       const url = `${BASE_URL}/api/timetables/me`;
       const response = await fetch(url, {

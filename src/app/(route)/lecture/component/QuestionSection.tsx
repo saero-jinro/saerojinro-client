@@ -2,7 +2,6 @@ import { TextareaHTMLAttributes, useEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
 import useHeaderStore from '@/_store/Header/useHeaderStore';
 import useAuthStore from '@/_store/auth/useAuth';
-import { usePopup } from '@/_hooks/popup/popup';
 import UserSVG from '@/assets/Lecture/Regular.svg';
 
 interface QuestionProps {
@@ -10,7 +9,7 @@ interface QuestionProps {
   content: string;
   userName: string;
   profileImage: string;
-  userId?: boolean;
+  userId?: number;
 }
 
 // 크기 자동 조절 textArea
@@ -42,20 +41,11 @@ const QuestionSection = () => {
   const [questions, setQuestions] = useState<QuestionProps[]>([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editingContent, setEditingContent] = useState('');
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const showPopup = useHeaderStore((store) => store.popup.actions.showPopup);
 
   useEffect(() => {
     fetchQuestions();
   }, []);
-
-  const { onOpen, Popup } = usePopup({
-    contents: '정말 삭제하시겠습니까?',
-    onFunc: () => {
-      if (selectedId !== null) {
-        handleDelete(selectedId);
-      }
-    },
-  });
 
   const fetchQuestions = async () => {
     try {
@@ -152,10 +142,10 @@ const QuestionSection = () => {
     <>
       <h2 className="text-2xl font-bold self-stretch">사전 질문</h2>
       <div className="flex gap-6">
-        <div className="flex items-center justify-center resize-none w-full bg-[#F1F5F9] px-4 rounded-xs">
+        <div className="flex items-center justify-center resize-none w-full bg-[#F1F5F9] dark:bg-[#0D121E] px-4 rounded-xs">
           <Textarea
             placeholder="강의 중 다뤄졌으면 하는 질문을 자유롭게 입력해주세요."
-            className="w-full border-none min-h-6 overflow-hidden resize-none border px-3 rounded-md focus:outline-none"
+            className="w-full border-none min-h-6 overflow-hidden resize-none border px-3 rounded-md focus:outline-none "
             value={text}
             onChange={(e) => setText(e.target.value)}
             rows={1}
@@ -163,7 +153,7 @@ const QuestionSection = () => {
         </div>
         <button
           onClick={handleSubmit}
-          className="btn font-semibold text-base rounded-xs px-4 py-1 w-[62px] h-12 overflow-hidden cursor-pointer"
+          className="btn font-semibold text-base rounded-xs px-4 py-1 w-[62px] h-12 overflow-hidden cursor-pointer dark:bg-[#003AA5]"
         >
           등록
         </button>
@@ -230,16 +220,18 @@ const QuestionSection = () => {
                     <>
                       <button
                         onClick={() => handleEditClick(question)}
-                        className="cursor-pointer font-medium text-base"
+                        className="cursor-pointer font-medium text-base dark:text-[#CAD5E2]"
                       >
                         수정
                       </button>
                       <button
                         onClick={() => {
-                          setSelectedId(question.id);
-                          onOpen();
+                          showPopup({
+                            contents: '정말 삭제하시겠습니까?',
+                            func: () => handleDelete(question.id),
+                          });
                         }}
-                        className="cursor-pointer font-medium text-base"
+                        className="cursor-pointer font-medium text-base dark:text-[#CAD5E2]"
                       >
                         삭제
                       </button>
@@ -250,7 +242,6 @@ const QuestionSection = () => {
             </div>
           ))
         )}
-        <Popup />
       </div>
     </>
   );

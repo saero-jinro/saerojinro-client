@@ -127,7 +127,7 @@ const TimetablePage = () => {
           </div>
           {isLoggedIn ? (
             <div
-              className="grid border border-[#E2E8F0]"
+              className="grid border border-[#E2E8F0] dark:border-[#161F2E]"
               style={{ gridTemplateColumns: '100px 1fr' }}
             >
               {timeSlots.map(({ start, end }) => {
@@ -138,7 +138,7 @@ const TimetablePage = () => {
                   return (
                     <div
                       key={`empty-${start}`}
-                      className="flex justify-center items-center border border-[#E2E8F0] px-5 py-6 h-full text-center font-semibold text-base leading-[140%] text-[#757575]"
+                      className="flex justify-center items-center border border-[#E2E8F0] px-5 py-6 h-full text-center font-semibold text-base leading-[140%] text-[#757575] dark:bg-[#070A12] dark:border-[#161F2E] dark:text-[#62748E]"
                     >
                       {start}
                       <br />-<br />
@@ -173,18 +173,17 @@ const TimetablePage = () => {
                     occupiedTime.setHours(occupiedTime.getHours() + 1);
                   }
                 }
-
                 const bgColor = (() => {
-                  if (lecture) return 'bg-white';
-                  if (isSelected) return 'bg-[#E6EFFF]';
-                  return 'bg-[#F1F5F9]';
+                  if (lecture) return 'bg-white dark:bg-[#070A12]';
+                  if (isSelected) return 'bg-[#E6EFFF] dark:bg-[#001046]';
+                  return 'bg-[#F1F5F9] dark:bg-[#0D121E]';
                 })();
 
                 return (
                   <Fragment key={`time-${start}-${end}`}>
                     <div
                       className={`flex justify-center items-center border px-5 py-6 h-full text-center font-semibold text-base leading-[140%] ${bgColor} 
-                        ${isSelected ? 'border-r-0 border-[#015AFF] text-[#2F78FF]' : 'border-[#E2E8F0] text-[#757575]'}`}
+                        ${isSelected ? 'border-r-0 border-[#015AFF] text-[#2F78FF] dark:text-[#014DD9]  dark:border-[#003AA5]' : 'border-[#E2E8F0] text-[#757575] dark:border-[#161F2E] dark:text-[#62748E]'}`}
                     >
                       {start}
                       <br />-<br />
@@ -194,26 +193,23 @@ const TimetablePage = () => {
                     {lecture ? (
                       <div
                         key={lecture.reservationId}
-                        className="flex flex-col justify-center p-6 cursor-pointer"
+                        className={`flex flex-col justify-center p-6 cursor-pointer bg-white dark:bg-[#070A12] border border-[#E2E8F0] dark:border-[#161F2E] ${rowSpan > 1 ? 'border-b-0' : 'border-b'}`}
                         style={{
                           gridRow: `span ${rowSpan}`,
-                          backgroundColor: '#fff',
-                          border: '1px solid #E2E8F0',
-                          borderBottom: rowSpan > 1 ? 'none' : '1px solid #E2E8F0',
                         }}
                         onClick={() => router.push(`/lecture/${lecture.lectureId}`)}
                       >
-                        <p className="w-fit rounded-sm bg-[#F1F5F9] text-[#015AFF] px-2 py-1 font-semibold text-sm leading-[140%]">
+                        <p className="w-fit rounded-sm bg-[#F1F5F9] text-[#015AFF] dark:bg-[#0D121E] dark:text-[#014DD9] px-2 py-1 font-semibold text-sm leading-[140%]">
                           {lecture.location}
                         </p>
                         <p className="font-semibold text-xl leading-[140%] pt-2 pb-3">
                           {lecture.title}
                         </p>
                         <div className="flex justify-between items-center">
-                          <p className="font-medium text-lg leading-[140%]">
+                          <p className="font-medium text-lg leading-[140%] dark:text-[#CAD5E2]">
                             {lecture.speakerName}
                           </p>
-                          <p className="px-3 py-[9px] text-[#757575] font-medium text-sm">
+                          <p className="px-3 py-[9px] text-[#757575] dark:text-[#62748E] font-medium text-sm">
                             인원수{' '}
                             <span className="text-[#FF6467]">{lecture.currentReservation}</span> /{' '}
                             {lecture.capacity}
@@ -223,8 +219,8 @@ const TimetablePage = () => {
                     ) : (
                       <div
                         className={`flex justify-center items-center border font-medium text-lg cursor-pointer 
-                        ${isSelected ? 'border-[#015AFF] text-[#2F78FF] bg-[#E6EFFF]' : 'border-[#E2E8F0] text-[#BDBDBD] bg-[#F1F5F9]'}
-                        hover:text-[#2F78FF] hover:bg-[#E6EFFF]
+                        ${isSelected ? 'border-[#015AFF] text-[#2F78FF] bg-[#E6EFFF] dark:text-[#014DD9] dark:bg-[#001046] dark:border-[#003AA5]' : 'border-[#E2E8F0] text-[#BDBDBD] bg-[#F1F5F9] dark:bg-[#0D121E] dark:border-[#161F2E] dark:text-[#62748E]'}
+                        hover:text-[#2F78FF] hover:bg-[#E6EFFF] dark:hover:text-[#0140B5] dark:hover:bg-[#001046]
                         `}
                         style={{
                           gridRow: 'span 1',
@@ -241,7 +237,7 @@ const TimetablePage = () => {
               })}
             </div>
           ) : (
-            <div className="flex justify-center items-center h-[690px] bg-gray-100">
+            <div className="flex justify-center items-center h-[690px] bg-[#F1F5F9] text-[#757575] dark:bg-[#0D121E] dark:text-[#62748E]">
               로그인 이후 이용 가능합니다.
             </div>
           )}

@@ -74,7 +74,10 @@ const LectureListPage = () => {
       />
       <div className="relative flex justify-between items-center h-10 mt-10">
         <h1 className="text-lg font-medium leading-[140%]">
-          <span className="text-[#015AFF]">{groupedByDay[selectedDate]?.length || 0}</span> lecture
+          <span className="text-[#015AFF] dark:text-[#014DD9]">
+            {groupedByDay[selectedDate]?.length || 0}
+          </span>{' '}
+          lecture
         </h1>
         <button onClick={() => setIsFilterOpen((prev) => !prev)} className="cursor-pointer">
           <FilterSvg />
@@ -82,7 +85,7 @@ const LectureListPage = () => {
 
         {isFilterOpen && (
           <div className="absolute top-10 right-0 z-10">
-            <div className="bg-[#fff] p-6 w-75 shadow-[0px_4px_8px_0px_rgba(0,0,0,0.15)]">
+            <div className="bg-[#fff] dark:bg-[#070A12] p-6 w-75 shadow-[0px_4px_8px_0px_rgba(0,0,0,0.15)]">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold leading-[140%]">카테고리</h2>
                 <div className="flex justify-end space-x-2">
@@ -100,9 +103,11 @@ const LectureListPage = () => {
                     type="checkbox"
                     checked={selectedCategories.includes('ALL')}
                     onChange={() => setSelectedCategories(['ALL'])}
-                    className="mr-[10px] w-5 h-5"
+                    className="mr-[10px] w-5 h-5 accent-[#015AFF] dark:accent-[#003AA5]"
                   />
-                  <span className="text-base font-medium leading-[140%] text-[#212121]">ALL</span>
+                  <span className="text-base font-medium leading-[140%] text-[#212121] dark:text-white">
+                    ALL
+                  </span>
                 </label>
                 {categories.map((category) => (
                   <label key={category} className="flex items-center">
@@ -120,9 +125,9 @@ const LectureListPage = () => {
                           );
                         }
                       }}
-                      className="mr-[10px] w-5 h-5"
+                      className="mr-[10px] w-5 h-5 accent-[#015AFF] dark:accent-[#003AA5]"
                     />
-                    <span className="text-base font-medium leading-[140%] text-[#212121]">
+                    <span className="text-base font-medium leading-[140%] text-[#212121] dark:text-white">
                       {category}
                     </span>
                   </label>
