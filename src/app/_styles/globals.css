@@ -13,7 +13,7 @@
   }
 
   .dark .btn {
-    background-color: #003AA5;
+    background-color: #003aa5;
     color: #fff;
   }
 
@@ -41,7 +41,7 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #02050C;
+  --foreground: #02050c;
 }
 html {
   overflow-x: hidden;
