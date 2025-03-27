@@ -46,12 +46,12 @@ const FAQItem = ({ title, contents }: FAQItemType) => {
   }, [toggle]);
 
   return (
-    <div className="border-b border-[#E2E8F0] text-black">
+    <div className="border-b border-[#E2E8F0] dark:border-[#161F2E] ">
       <button
         aria-expanded={toggle}
         onClick={clickHandler}
         aria-label="toggle-FAQ"
-        className="bg-[#F8FAFC] w-full flex flex-row items-start p-4 md:p-6 select-none cursor-pointer"
+        className="bg-[#F8FAFC] text-black dark:bg-[#02050C] dark:text-[#fff] w-full flex flex-row items-start p-4 md:p-6 select-none cursor-pointer"
       >
         <div className="font-semibold text-base md:text-xl w-full text-start">
           <span className="mr-2">Q.</span>
@@ -68,7 +68,7 @@ const FAQItem = ({ title, contents }: FAQItemType) => {
           transition: 'height 0.15s ease',
         }}
         aria-hidden={!toggle}
-        className="bg-[#E2E8F0]"
+        className="bg-[#E2E8F0] text-[#424242] dark:bg-[#070A12] dark:text-[#CAD5E2]"
       >
         <div
           className={`block transition-opacity p-4 pt-3 md:p-6 md:pt-5 text-sm md:text-lg font-medium duration-100 ${

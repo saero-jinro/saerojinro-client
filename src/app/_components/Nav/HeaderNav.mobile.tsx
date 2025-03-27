@@ -31,7 +31,7 @@ export const MobileNavigation = () => {
       return <Link href="/admin">admin</Link>;
     }
 
-    return <AlarmButton scale={24} />;
+    return <AlarmButton scale={32} />;
   };
 
   return (

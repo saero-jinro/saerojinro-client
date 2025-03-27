@@ -128,7 +128,7 @@ const ScrollWrapper = ({ children, gap = 10, className }: ScrollWrapperProps) =>
             onClick={() => scrollToPage(i)}
             aria-label={`페이지 ${i + 1}`}
             className={`w-2.5 h-2.5 rounded-full transition-colors outline-none ${
-              i === page ? 'bg-blue-600' : 'bg-gray-300'
+              i === page ? 'bg-[#00249C]' : 'bg-[#E2E8F0]'
             }`}
           />
         ))}

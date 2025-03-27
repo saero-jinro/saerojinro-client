@@ -23,17 +23,19 @@ const FourthSection = () => {
   ];
   return (
     <>
-      <section aria-labelledby="FAQ" className="bg-[#0F172B] w-screen">
-        <div className="px-4 md:px-[40px] py-[52px] md:py-[100px] w-full max-w-[1280px] flex flex-col mx-auto ">
+      <section aria-labelledby="FAQ" className="bg-[#0F172B] dark:bg-[#161F2E] w-screen">
+        <div className="px-4 md:px-[40px] py-[52px] md:py-[100px] w-full max-w-[1280px] flex flex-col mx-auto">
           <h2
             id="FAQ"
-            className="text-xl md:text-[32px] mb-6 flex items-center justify-center font-bold text-white"
+            className="text-xl md:text-[32px] mb-5 md:mb-6 flex items-center justify-center font-bold text-white"
           >
             FAQ
           </h2>
-          {FAQDtos.map((item) => (
-            <FAQItem key={item.title} {...item} />
-          ))}
+          <div className="rounded-[4px] overflow-hidden">
+            {FAQDtos.map((item) => (
+              <FAQItem key={item.title} {...item} />
+            ))}
+          </div>
         </div>
       </section>
     </>

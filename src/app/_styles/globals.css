@@ -3,6 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 @theme {
   --breakpoint-xs: 375px;
+  --breakpoint-sec3: 1194;
 }
 
 @layer components {
