@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
+import '../../_styles/admin.css';
 
 interface Lecture {
   lectureId: number;
@@ -57,64 +58,85 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="w-[1200px] mx-auto pt-[64px] pb-[64px]">
-      <div className="flex gap-[24px]">
-        {/* Crowd Forecast */}
-        <div className="w-[384px]">
-          <h1 className="text-lg font-bold mb-[12px]">Crowd Forecast</h1>
-          <div className="border border-gray-300 rounded-md bg-white">
-            <table className="w-full table-auto border-collapse">
-              <thead>
-                <tr className="bg-blue-600 text-white text-left">
-                  <th className="px-[16px] py-[12px]">순위</th>
-                  <th className="px-[16px] py-[12px]">날짜</th>
-                  <th className="px-[16px] py-[12px]">시간</th>
-                  <th className="px-[16px] py-[12px] text-right">예상 인원</th>
-                </tr>
-              </thead>
-              <tbody>
-                {timeRank.map((time, index) => (
-                  <tr key={index} className="border-b border-b-gray-200">
-                    <td className="px-[16px] py-[8px]">{time.rank}</td>
-                    <td className="px-[16px] py-[8px]">{time.day}</td>
-                    <td className="px-[16px] py-[8px]">{formatTime(time.startTime)}</td>
-                    <td className="px-[16px] py-[8px] text-right">{time.expectation}</td>
+    <div className="bg-[#E2E8F0] w-full min-h-screen">
+      <div className="w-[1200px] mx-auto pt-[109px] pb-[109px] mb-[84px]">
+        <div className="flex gap-[24px]">
+          {/* Crowd Forecast */}
+          <div className="w-[494px]">
+            <h1 className="text-lg font-bold mb-[12px] text-[20px]">Crowd Forecast</h1>
+            <div className="border border-gray-300 rounded-md bg-white">
+              <table className="w-full table-auto border-collapse">
+                <thead>
+                  <tr className="bg-[#00249C] font-bold text-white text-center h-[46px] px-[16px] py-[12px]">
+                    <th className="px-[16px] py-[8px] whitespace-nowrap">순위</th>
+                    <th className="px-[16px] py-[8px]">날짜</th>
+                    <th className="px-[16px] py-[8px]">시간</th>
+                    <th className="px-[16px] py-[8px] whitespace-nowrap">예상 인원</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {timeRank.map((time, index) => (
+                    <tr
+                      key={index}
+                      className="border-b border-b-gray-200 h-[54px] px-[16px] py-[12px] text-center"
+                    >
+                      <td className="px-[16px] py-[8px] whitespace-nowrap ">{time.rank}</td>
+                      <td className="px-[16px] py-[8px] whitespace-nowrap">{time.day}</td>
+                      <td className="px-[16px] py-[8px] whitespace-nowrap">
+                        {formatTime(time.startTime)}
+                      </td>
+                      <td className="px-[16px] py-[8px] whitespace-nowrap">{time.expectation}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
 
-        {/* Lecture Tracker */}
-        <div className="w-[792px]">
-          <div className="flex justify-between items-center mb-[12px]">
-            <h1 className="text-lg font-bold">Lecture Tracker</h1>
-          </div>
-          <div className="border border-gray-300 rounded-md bg-white">
-            <table className="w-full table-auto border-collapse">
-              <thead>
-                <tr className="bg-blue-600 text-white text-left">
-                  <th onClick={toggleSort}>{isLowToHigh ? '높은 순▲' : '낮은 순▼'}</th>
-
-                  <th className="px-[16px] py-[12px]">강의명</th>
-                  <th className="px-[16px] py-[12px] whitespace-nowrap">강연자</th>
-                  <th className="px-[16px] py-[12px] text-right">신청한 수</th>
-                  <th className="px-[16px] py-[12px] text-right">즐겨찾기 수</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sortedLectures.map((lecture) => (
-                  <tr key={lecture.lectureId} className="border-b border-b-gray-200">
-                    <td className="px-[16px] py-[8px]">{lecture.rank}</td>
-                    <td className="px-[16px] py-[8px]">{lecture.title}</td>
-                    <td className="px-[16px] py-[8px] whitespace-nowrap">{lecture.speaker}</td>
-                    <td className="px-[16px] py-[8px] text-right">{lecture.reservation}</td>
-                    <td className="px-[16px] py-[8px] text-right">{lecture.wishlist}</td>
+          {/* Lecture Tracker */}
+          <div className="w-[818px]">
+            <div className="flex justify-between items-center mb-[12px]">
+              <h1 className="text-lg font-bold text-[20px]">Lecture Tracker</h1>
+            </div>
+            <div className="border border-gray-300 rounded-md bg-white">
+              <table className="w-full table-auto border-collapse">
+                <thead>
+                  <tr className="bg-[#00249C] text-bold text-white h-[46px] px-[16px] py-[12px]">
+                    <th className="px-[16px] py-[8px] whitespace-nowrap" onClick={toggleSort}>
+                      {isLowToHigh ? '높은 순▲' : '낮은 순▼'}
+                    </th>
+                    <th className="px-[16px] py-[8px] text-left whitespace-nowrap">강의명</th>
+                    <th className="px-[16px] py-[8px] whitespace-nowrap text-center">강연자</th>
+                    <th className="px-[16px] py-[8px] text-center whitespace-nowrap">신청한 수</th>
+                    <th className="px-[16px] py-[8px] text-center whitespace-nowrap">
+                      즐겨찾기 수
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {sortedLectures.map((lecture) => (
+                    <tr
+                      key={lecture.lectureId}
+                      className="border-b border-b-gray-200 h-[54px] px-[16px] py-[12px]"
+                    >
+                      <td className="px-[16px] py-[8px] whitespace-nowrap text-center">
+                        {lecture.rank}
+                      </td>
+                      <td className="px-[16px] py-[8px] whitespace-nowrap">{lecture.title}</td>
+                      <td className="px-[16px] py-[8px] whitespace-nowrap text-center">
+                        {lecture.speaker}
+                      </td>
+                      <td className="px-[16px]py-[8px] whitespace-nowrap text-center">
+                        {lecture.reservation}
+                      </td>
+                      <td className="px-[16px]py-[8px] whitespace-nowrap text-center">
+                        {lecture.wishlist}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
