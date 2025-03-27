@@ -76,17 +76,19 @@ const LectureDetailPage = () => {
   const { dayText, timeText } = formatLectureDate(lecture.startTime, lecture.endTime);
 
   return (
-    <div className="w-full px-[40px] py-16 flex flex-col gap-[40px]">
-      <header className="flex flex-col items-start self-stretch border-b border-b-[#E2E8F0] pb-10">
+    <div className="w-full px-[40px] py-16 flex flex-col gap-[40px]  dark:bg-[#070A12]">
+      <header className="flex flex-col items-start self-stretch border-b border-b-[#E2E8F0] dark:border-b-[#161F2E] pb-10">
         <div className="flex flex-col gap-3">
           <time>
-            <span className="rounded-sm py-1 px-2 text-sm font-medium text-[#2F78FF] bg-[#E6EFFF]">
+            <span className="rounded-sm py-1 px-2 text-sm font-medium text-[#2F78FF] bg-[#E6EFFF] dark:text-[#0140B5] dark:bg-[#001046]">
               {dayText} | {timeText} | {lecture.location}
             </span>
           </time>
           <h1 className="font-bold text-[32px]">{lecture.title}</h1>
           <div className="flex items-center gap-[8px]">
-            <span className="font-semibold text-base text-[#2F78FF]">#{lecture.category}</span>
+            <span className="font-semibold text-base text-[#2F78FF] dark:text-[#0140B5]">
+              #{lecture.category}
+            </span>
           </div>
         </div>
       </header>
@@ -95,7 +97,7 @@ const LectureDetailPage = () => {
         <TextViewer content={lecture.contents} />
       </article>
 
-      <article className="flex gap-6 self-stretch border-t border-t-[#E2E8F0] pt-10">
+      <article className="flex gap-6 self-stretch border-t border-t-[#E2E8F0] dark:border-t-[#161F2E] pt-10">
         <div>
           <Image
             src={lecture.speakerPhotoUrl}
@@ -117,7 +119,7 @@ const LectureDetailPage = () => {
       <div>
         <button
           onClick={() => downloadLectureFile(lecture.speakerName, lecture.materialsId)}
-          className="btn rounded-xs py-[6px] px-4 flex flex-row items-center justify-center gap-2 font-semibold text-base bg-white text-[#015AFF] border border-[#015AFF] cursor-pointer"
+          className="btn rounded-xs py-[6px] px-4 flex flex-row items-center justify-center gap-2 font-semibold text-base bg-white text-[#015AFF] border border-[#015AFF] dark:bg-[#070A12] dark:text-[#014DD9] dark:border-[#003AA5] cursor-pointer"
         >
           <DownloadSvg />
           download
@@ -127,17 +129,17 @@ const LectureDetailPage = () => {
       <div className="flex flex-col gap-6">
         <QuestionSection />
         <div className="flex flex-row gap-2 items-center mt-4">
-          <div className="flex flex-col justify-center items-center bg-[#F1F5F9] w-12 h-12">
+          <div className="flex flex-col justify-center items-center bg-[#F1F5F9] dark:bg-[#0D121E] w-12 h-12">
             <WishButton
               isWished={isWished}
               itemId={Number(lectureId)}
               className="pt-1"
-              iconClassName="w-6 h-6 text-[#015AFF]"
+              iconClassName="w-6 h-6 text-[#015AFF] dark:text-[#014DD9]"
             />
           </div>
           <LectureReserveButton
             isReserved={isReserved}
-            className="w-full bg-[#155DFC] h-12"
+            className="w-full bg-[#155DFC] h-12 dark:bg-[#003AA5]"
             onClick={async (e) => {
               e.stopPropagation();
 

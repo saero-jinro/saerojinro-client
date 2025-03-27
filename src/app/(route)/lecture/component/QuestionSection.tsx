@@ -142,10 +142,10 @@ const QuestionSection = () => {
     <>
       <h2 className="text-2xl font-bold self-stretch">사전 질문</h2>
       <div className="flex gap-6">
-        <div className="flex items-center justify-center resize-none w-full bg-[#F1F5F9] px-4 rounded-xs">
+        <div className="flex items-center justify-center resize-none w-full bg-[#F1F5F9] dark:bg-[#0D121E] px-4 rounded-xs">
           <Textarea
             placeholder="강의 중 다뤄졌으면 하는 질문을 자유롭게 입력해주세요."
-            className="w-full border-none min-h-6 overflow-hidden resize-none border px-3 rounded-md focus:outline-none"
+            className="w-full border-none min-h-6 overflow-hidden resize-none border px-3 rounded-md focus:outline-none "
             value={text}
             onChange={(e) => setText(e.target.value)}
             rows={1}
@@ -153,7 +153,7 @@ const QuestionSection = () => {
         </div>
         <button
           onClick={handleSubmit}
-          className="btn font-semibold text-base rounded-xs px-4 py-1 w-[62px] h-12 overflow-hidden cursor-pointer"
+          className="btn font-semibold text-base rounded-xs px-4 py-1 w-[62px] h-12 overflow-hidden cursor-pointer dark:bg-[#003AA5]"
         >
           등록
         </button>
@@ -220,7 +220,7 @@ const QuestionSection = () => {
                     <>
                       <button
                         onClick={() => handleEditClick(question)}
-                        className="cursor-pointer font-medium text-base"
+                        className="cursor-pointer font-medium text-base dark:text-[#CAD5E2]"
                       >
                         수정
                       </button>
@@ -231,7 +231,7 @@ const QuestionSection = () => {
                             func: () => handleDelete(question.id),
                           });
                         }}
-                        className="cursor-pointer font-medium text-base"
+                        className="cursor-pointer font-medium text-base dark:text-[#CAD5E2]"
                       >
                         삭제
                       </button>
