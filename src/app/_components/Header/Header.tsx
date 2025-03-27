@@ -18,10 +18,10 @@ const Header = async () => {
           </Link>
           <HeaderNav>
             <ThemeToggleButton theme={theme} />
-            <Alarm />
           </HeaderNav>
-          <LoginModal />
         </nav>
+        <LoginModal />
+        <Alarm />
         <Popup />
       </header>
     </>

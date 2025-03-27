@@ -121,14 +121,14 @@ const ScrollWrapper = ({ children, gap = 10, className }: ScrollWrapperProps) =>
       </div>
 
       {/* 페이지 점 */}
-      <div className="flex justify-center mt-4 gap-2">
+      <div className="flex justify-center mt-4 gap-2 h-[10px]">
         {Array.from({ length: maxPage }).map((_, i) => (
           <button
             key={i}
             onClick={() => scrollToPage(i)}
             aria-label={`페이지 ${i + 1}`}
             className={`w-2.5 h-2.5 rounded-full transition-colors outline-none ${
-              i === page ? 'bg-blue-600' : 'bg-gray-300'
+              i === page ? 'bg-[#00249C]' : 'bg-[#E2E8F0]'
             }`}
           />
         ))}
@@ -157,14 +157,14 @@ interface HandleButtonProps extends HTMLAttributes<HTMLButtonElement> {
 
 const HandleButton = ({ type, ...props }: HandleButtonProps) => {
   const style = {
-    right: 'translate-y-1/2 translate-x-[calc(100%)] right-0',
-    left: 'translate-y-1/2 -translate-x-[calc(100%)] left-0',
+    right: 'translate-y-[-90%] translate-x-[calc(105%)] right-0',
+    left: 'translate-y-[-90%] -translate-x-[calc(105%)] left-0',
   };
   return (
     <button
       aria-label="controll-card-scroll"
       {...props}
-      className={`hidden md:block absolute top-1/2 cursor-pointer ${style[type]}`}
+      className={`hidden md:block absolute top-1/2 cursor-pointer ${style[type]} rounded-full hover:bg-[#ffffff41]`}
     >
       {type === 'left' ? <LeftSvg /> : <RightSvg />}
     </button>

@@ -19,11 +19,11 @@ export const AlarmButton = ({ scale = 32 }: { scale?: number }) => {
       actionDesc="open-alarmWindow"
       onClick={openModal}
       aria-label="open-modal"
-      className="leading-[140%] cursor-pointer relative"
+      className="leading-[140%] z-0 cursor-pointer relative"
     >
       <AlarmSvg width={scale} height={scale} />
       {isNewMessage && (
-        <div className="absolute lef w-[9px] h-[9px] bottom-[0px] right-[2px] bg-red-500 rounded-full" />
+        <div className="absolute w-[9px] h-[9px] bottom-[0px] right-[2px] bg-red-500 rounded-full" />
       )}
     </ClickButton>
   );

@@ -3,7 +3,6 @@
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import Script from 'next/script';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 
 // 빌드시 가끔 1초에 5번 이상 호출되어 가끔 API 락걸림
 // 때문에 사진으로 대체
@@ -85,13 +84,8 @@ const KakaoMap = () => {
 export default KakaoMap;
 
 export const LoadingMapImg = () => (
-  <div className="absolute w-[942px] h-[280px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-    <Image
-      alt="지도 이미지"
-      width={942}
-      height={280}
-      src="/main/map.webp"
-      className="object-contain"
-    />
-  </div>
+  <div
+    className="absolute w-full h-full left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-cover bg-center bg-no-repeat"
+    style={{ backgroundImage: 'url("/main/map1.webp")' }}
+  />
 );

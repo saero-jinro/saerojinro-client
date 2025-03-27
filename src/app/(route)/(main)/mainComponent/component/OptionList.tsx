@@ -5,26 +5,27 @@ import { CategoryLabel, CategoryWithAll } from './SectionList';
 interface Props {
   option: CategoryWithAll;
   ChangeOption: (option: CategoryWithAll) => void;
+  optionList: CategoryWithAll[];
   className?: string;
   limit?: number;
 }
 
-export const OptionList = ({ option, ChangeOption, className }: Props) => {
-  const options = Object.entries(CategoryLabel) as [CategoryWithAll, string][];
-
+export const OptionList = ({ option, ChangeOption, className, optionList }: Props) => {
   return (
-    <ul className={`flex gap-[0.5rem] select-none flex-wrap ${className}`}>
-      {options.map(([category, title]) => (
-        <OptionItem
-          key={category}
-          desc={`item-change-${category}`}
-          onClick={() => ChangeOption(category)}
-          className={`${option === category ? 'bg-[#000000] text-white' : 'bg-[#9A9A9A] text-[#49454f]'}`}
-        >
-          {title}
-        </OptionItem>
-      ))}
-    </ul>
+    <div className="w-full overflow-x-auto hide-scrollbar">
+      <ul className={`flex gap-[0.5rem] select-none ${className}`}>
+        {optionList.map((item) => (
+          <OptionItem
+            key={item}
+            desc={`item-change-${item}`}
+            onClick={() => ChangeOption(item)}
+            className={`${option === item ? 'bg-[#000] text-[#fff] dark:bg-[#fff] dark:text-black' : 'bg-[#E2E8F0] text-[#212121] dark:bg-[#070A12] dark:text-[#fff]'}`}
+          >
+            {CategoryLabel[item]}
+          </OptionItem>
+        ))}
+      </ul>
+    </div>
   );
 };
 
@@ -38,9 +39,9 @@ const OptionItem = ({ desc, onClick, children, className, ...props }: OptionItem
   return (
     <li
       {...props}
-      className={`select-none outline-none text-sm h-8 rounded-[8px] flex items-center justify-center whitespace-nowrap ${className}`}
+      className={`select-none outline-none text-sm md:text-base font-semibold rounded-[20px] flex items-center justify-center whitespace-nowrap ${className}`}
     >
-      <ClickButton className="w-full h-full py-[6px] px-4" actionDesc={desc} onClick={onClick}>
+      <ClickButton className="w-full h-full py-2 px-3 md:px-4" actionDesc={desc} onClick={onClick}>
         {children}
       </ClickButton>
     </li>

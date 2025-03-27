@@ -1,7 +1,6 @@
-import KakaoMap from './component/kakaoMap';
 import SectionWrapper from './component/SectionWrapper';
-// import { LoadingMapImg } from './component/kakaoMap';
-import Image from 'next/image';
+import KakaoMap from './component/kakaoMap';
+import TrdIcon from './component/TrdIcon';
 
 type Info = {
   title: string;
@@ -40,31 +39,33 @@ const TrdSection = () => {
   return (
     <SectionWrapper
       aria-labelledby="conference-location"
-      className="px-4 py-[52px] md:py-16 md:px-10 max-w-7xl overflow-x-hidden"
+      className="max-w-7xl py-[52px] px-4 md:py-20 md:px-10 md:gap-6 flex flex-col text-[#212121] dark:text-[#fff]"
     >
+      {/* px-4 py-[52px] h-[413px] sec3:h-[550px] flex flex-col justify-center overflow-x-hidden" */}
+
       {/* 제목 */}
-      <div className="mb-6">
-        <h2 id="conference-location" className="text-xl md:text-[32px] font-bold">
+      <div>
+        <h2 id="conference-location" className="text-xl md:text-[32px] font-bold block">
           컨퍼런스 위치
         </h2>
       </div>
 
-      <div className="flex flex-col lg:grid lg:[grid-template-columns:400px_auto] self-stretch">
+      {/* <div className="flex flex-col lg:grid lg:[grid-template-columns:400px_auto] self-stretch"> */}
+      {/* <div className="flex flex-row justify-between self-stretch sec3:flex-row"> */}
+      <div className="flex flex-col xl:flex-row justify-between w-full">
         {/* 정보 */}
-        <div className="flex flex-col gap-6 lg-gap-10">
+        <div className="flex flex-col justify-center gap-10">
           {info.map((item, idx) => (
             <LocationList key={idx + item.title} {...item} />
           ))}
         </div>
 
         {/* 지도 */}
-        <div aria-label="location-map" className="w-auto mt-6 lg:mt-0">
-          <div className="ml-auto w-full lg:max-w-[720px] relative overflow-hidden h-[181px] md:h-[280px]">
-            <KakaoMap />
-            {/* <div className="w-full h-full relative overflow-hidden">
-              <LoadingMapImg />
-            </div> */}
-          </div>
+        <div
+          aria-label="location-map"
+          className="mt-13 xl:mt-6 w-full xl:w-auto xl:h-[387.563px] aspect-video bg-black "
+        >
+          <KakaoMap />
         </div>
       </div>
     </SectionWrapper>
@@ -75,24 +76,16 @@ export default TrdSection;
 /** 컴포넌트 **/
 // #region
 type svgName = 'pin' | 'bus' | 'subway';
-// 아이콘
-const Icon = ({ name }: { name: svgName }) => {
-  return (
-    <div className="w-4 md:w-6 aspect-square relative">
-      <Image alt={`img-${name}`} fill src={`/main/${name}.webp`} />
-    </div>
-  );
-};
 
 // 장소 리스트
 const LocationList = ({ content, title }: Info) => {
   return (
     <article className="flex flex-col gap-4">
       <h3 className="text-base md:text-xl font-bold">{title}</h3>
-      <ul>
+      <ul className="flex flex-col gap-3">
         {content.map(({ info, icon }, idx) => (
           <li key={idx + info} className="flex items-center">
-            <Icon name={icon} />
+            <TrdIcon name={icon} />
             <p className="ml-2 text-sm md:text-lg font-medium">{info}</p>
           </li>
         ))}

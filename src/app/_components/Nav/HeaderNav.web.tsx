@@ -36,14 +36,15 @@ const WebNavList = ({ children }: WebNavListProps) => {
           {web.map((props) => (
             <WebNavItem key={props.title} {...props} />
           ))}
+          {!pathname?.startsWith('/admin') && role !== 'guest' && (
+            <Link className="px-2 py-3" href={path[role]}>
+              {nickName}
+            </Link>
+          )}
+          {role === 'guest' && <LoginButton />}
         </ol>
       </nav>
-
-      {!pathname?.startsWith('/admin') && role !== 'guest' && (
-        <Link href={path[role]}>{nickName}</Link>
-      )}
-      {role === 'guest' && <LoginButton />}
-      {role === 'user' && <AlarmButton scale={24} />}
+      {role === 'user' && <AlarmButton scale={32} />}
     </div>
   );
 };
@@ -62,7 +63,7 @@ const WebNavItem = ({ path, title }: NavItem) => {
 const LoginButton = () => {
   const { open } = useLoginModalStore();
   return (
-    <ClickButton actionDesc="open-login-modal" onClick={open}>
+    <ClickButton className="px-2 py-3" actionDesc="open-login-modal" onClick={open}>
       로그인
     </ClickButton>
   );
