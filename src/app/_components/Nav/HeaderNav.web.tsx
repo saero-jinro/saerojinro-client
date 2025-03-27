@@ -54,7 +54,7 @@ export default WebNavList;
 // 아이템
 const WebNavItem = ({ path, title }: NavItem) => {
   return (
-    <li className="cursor-pointer px-2 py-3 text-lg text-nowrap" key={title}>
+    <li className="cursor-pointer px-2 py-3 text-lg text-nowrap hover:brightness-90" key={title}>
       <Link href={path}>{title}</Link>
     </li>
   );
@@ -63,7 +63,11 @@ const WebNavItem = ({ path, title }: NavItem) => {
 const LoginButton = () => {
   const { open } = useLoginModalStore();
   return (
-    <ClickButton className="px-2 py-3" actionDesc="open-login-modal" onClick={open}>
+    <ClickButton
+      className="px-2 py-3 hover:brightness-90"
+      actionDesc="open-login-modal"
+      onClick={open}
+    >
       로그인
     </ClickButton>
   );

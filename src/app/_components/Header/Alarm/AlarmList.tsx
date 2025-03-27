@@ -82,7 +82,7 @@ const AlarmList = () => {
 
 const AlarmItem = ({ createdAt, title, contents }: ItemProps) => {
   return (
-    <li className="w-full my-6 text-sm md:text-base">
+    <li className="w-full text-[#212121] dark:text-[#fff] py-4 border-b border-b-[#E2E8F0] dark:border-b-[#161F2E] text-sm md:text-base">
       <div className="flex justify-between">
         <span className=" font-bold">{title}</span>
         <span className="text-xs md:text-sm font-medium ">{getAlarmTime(createdAt)}</span>

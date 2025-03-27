@@ -1,3 +1,4 @@
+'use client';
 import AlarmButton from '@/_components/Header/Alarm/AlarmButton';
 import { NavItem } from '@/_types/Header/Header.type';
 import { usePathname } from 'next/navigation';
@@ -31,11 +32,15 @@ export const MobileNavigation = () => {
       return <Link href="/admin">admin</Link>;
     }
 
-    return <AlarmButton scale={32} />;
+    return (
+      <div className="w-6 h-6">
+        <AlarmButton scale={24} />
+      </div>
+    );
   };
 
   return (
-    <nav className="w-[215px] h-screen fixed right-0 bg-white text-black top-0 z-[100]">
+    <nav className="w-[250px] h-screen fixed right-0 bg-white text-black dark:bg-[#0F172B] dark:text-[#fff] top-0 z-[100]">
       {/* TOP */}
       <div className="pt-8 px-6 flex items-center justify-end">{renderTopSection()}</div>
 
@@ -69,9 +74,12 @@ interface ItemProps extends NavItem {
 }
 // ITEM
 const MobileNavigationItem = ({ path, title, thisPath, onClose }: ItemProps) => {
+  const style = thisPath
+    ? `text-[#015AFF] dark:text-[##014DD9] bg-[#E6EFFF] dark:bg-[#001046]`
+    : `text-[#212121] dark:text-[#fff]`;
   return (
-    <li style={{ color: thisPath ? '#015AFF' : 'black' }} className="px-2 py-4 font-semibold">
-      <Link onClick={onClose} href={`${path}`}>
+    <li className={`px-2 py-4 font-semibold rounded-[4px] ${style}`}>
+      <Link onClick={onClose} href={path}>
         {title}
       </Link>
     </li>
