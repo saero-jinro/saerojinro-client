@@ -12,10 +12,10 @@ const Header = async () => {
 
   return (
     <>
-      <header className="fixed z-[100] w-screen bg-[#171717]">
+      <header className="fixed z-[100] w-screen bg-[#171717] dark:bg-[#0F172B]">
         <nav className="w-[100%] mx-auto h-[64px] md:h-[80px] px-4 md:px-10 md:py-4 flex justify-between items-center text-[#F8F9FA] relative">
           <Link className="font-bold text-xl" href={'/'}>
-            <span className="ml-3">IT TIME</span>
+            <span className="mr-3">IT TIME</span>
             <AdminTitle />
           </Link>
           <HeaderNav>
