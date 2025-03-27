@@ -42,7 +42,7 @@ const Card = ({
 
   return (
     <div
-      className="overflow-hidden w-[282px] h-[410px] bg-white dark:bg-black border border-[#DEE2E6] rounded-xl cursor-pointer"
+      className="overflow-hidden w-[282px] h-[410px] bg-white dark:bg-[#070A12] border border-[#DEE2E6] dark:border-[#161F2E] rounded-xl cursor-pointer"
       onClick={handleClick}
     >
       <div className="relative">
@@ -58,7 +58,7 @@ const Card = ({
           isWished={isWished}
           itemId={id}
           className="absolute top-2 right-2"
-          iconClassName="w-8 h-8 text-[#015AFF]"
+          iconClassName="w-8 h-8 text-[#015AFF] dark:text-[#003AA5]"
           onBeforeToggle={() => {
             if (!accessToken) {
               openLoginModal();
@@ -70,25 +70,29 @@ const Card = ({
       </div>
       <div className="p-4">
         <div className="h-[130px]">
-          <div className="w-full bg-white text-sm font-semibold leading-[140%] dark:bg-black dark:text-white">
+          <div className="w-full bg-white text-sm font-semibold leading-[140%] dark:bg-[#070A12] dark:text-[#CAD5E2]">
             {time}
           </div>
           <h3 className="text-[20px] font-bold leading-[140%] pt-[2px] overflow-hidden">{title}</h3>
 
           {!isProfile && (
             <div className="flex items-center pt-1">
-              <p className="text-sm font-semibold leading-[140%] text-[#757575]">{speakerName}</p>
+              <p className="text-sm font-semibold leading-[140%] text-[#757575] dark:text-[#62748E]">
+                {speakerName}
+              </p>
             </div>
           )}
 
           <div className="flex flex-wrap gap-1 pt-2">
-            <span className="text-sm font-semibold leading-[140%] text-[#2F78FF]">#{category}</span>
+            <span className="text-sm font-semibold leading-[140%] text-[#2F78FF] dark:text-[#0140B5]">
+              #{category}
+            </span>
           </div>
         </div>
         {!isProfile && (
           <LectureReserveButton
             isReserved={isReserved}
-            className="w-full bg-[#015AFF] px-[94px] py-[13px] mt-3"
+            className="w-full bg-[#015AFF] dark:bg-[#003AA5] px-[94px] py-[13px] mt-3"
             onClick={async (e) => {
               e.stopPropagation();
 
