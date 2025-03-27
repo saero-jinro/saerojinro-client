@@ -2,7 +2,6 @@ import { TextareaHTMLAttributes, useEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
 import useHeaderStore from '@/_store/Header/useHeaderStore';
 import useAuthStore from '@/_store/auth/useAuth';
-import { usePopup } from '@/_hooks/popup/popup';
 import UserSVG from '@/assets/Lecture/Regular.svg';
 
 interface QuestionProps {
@@ -10,7 +9,7 @@ interface QuestionProps {
   content: string;
   userName: string;
   profileImage: string;
-  userId?: boolean;
+  userId?: number;
 }
 
 // 크기 자동 조절 textArea
@@ -42,20 +41,11 @@ const QuestionSection = () => {
   const [questions, setQuestions] = useState<QuestionProps[]>([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editingContent, setEditingContent] = useState('');
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const showPopup = useHeaderStore((store) => store.popup.actions.showPopup);
 
   useEffect(() => {
     fetchQuestions();
   }, []);
-
-  const { onOpen, Popup } = usePopup({
-    contents: '정말 삭제하시겠습니까?',
-    onFunc: () => {
-      if (selectedId !== null) {
-        handleDelete(selectedId);
-      }
-    },
-  });
 
   const fetchQuestions = async () => {
     try {
@@ -236,8 +226,10 @@ const QuestionSection = () => {
                       </button>
                       <button
                         onClick={() => {
-                          setSelectedId(question.id);
-                          onOpen();
+                          showPopup({
+                            contents: '정말 삭제하시겠습니까?',
+                            func: () => handleDelete(question.id),
+                          });
                         }}
                         className="cursor-pointer font-medium text-base"
                       >
@@ -250,7 +242,6 @@ const QuestionSection = () => {
             </div>
           ))
         )}
-        <Popup />
       </div>
     </>
   );
