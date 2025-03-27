@@ -1,25 +1,32 @@
 'use client';
-
+import useHeaderStore from '@/_store/Header/useHeaderStore';
 import { handleLogout } from '@/_utils/Auth/logout';
-import { usePopup } from '@/_hooks/popup/popup';
 import ClickButton from '@/_components/ClickButton';
 
 export const LogoutButton = () => {
+  const showPopup = useHeaderStore((store) => store.popup.actions.showPopup);
+
+  const onOpen = () =>
+    showPopup({
+      contents: '정말 로그아웃 하시겠습니까?',
+      func: () => {
+        onLogout();
+      },
+    });
+
+  const onFail = () =>
+    showPopup({
+      contents: '로그아웃을 실패 하였습니다! err:(',
+    });
+
   const onLogout = async () => {
     const success = await handleLogout();
     if (success) {
       window.location.href = '/';
     } else {
-      alert('로그아웃 실패. 다시 시도해주세요.');
+      onFail();
     }
   };
-
-  const { onOpen, Popup } = usePopup({
-    contents: '정말 로그아웃 하시겠습니까?',
-    onFunc: () => {
-      onLogout();
-    },
-  });
 
   return (
     <div className="w-full mt-[40px]">
@@ -32,18 +39,35 @@ export const LogoutButton = () => {
       >
         로그아웃
       </ClickButton>
-      <Popup />
+      {/* <Popup /> */}
     </div>
   );
 };
 
 export const UserDeleteButton = () => {
-  const { onOpen, Popup } = usePopup({
-    contents: '정말 탈퇴하시겠습니까?',
-    onFunc: () => {
-      console.log('ok');
-    },
-  });
+  const showPopup = useHeaderStore((store) => store.popup.actions.showPopup);
+
+  const onOpen = () =>
+    showPopup({
+      contents: '정말 탈퇴하시겠습니까??',
+      func: () => {
+        onLogout();
+      },
+    });
+
+  const onFail = () =>
+    showPopup({
+      contents: '회원 탈퇴를 실패 하였습니다! err:(',
+    });
+
+  const onLogout = async () => {
+    const success = await handleLogout();
+    if (success) {
+      window.location.href = '/';
+    } else {
+      onFail();
+    }
+  };
 
   return (
     <div className="w-full mt-[40px]">
@@ -58,7 +82,6 @@ export const UserDeleteButton = () => {
       >
         회원 탈퇴
       </ClickButton>
-      <Popup />
     </div>
   );
 };
