@@ -4,7 +4,7 @@ import ToggleModal from '@/_components/ToggleModal';
 import AlarmList from './AlarmList';
 import useAlarmStore from '@/_store/Header/useAlarmStore';
 import ClickButton from '@/_components/ClickButton';
-import Image from 'next/image';
+import RightSvg from '@/assets/Alarm/right.svg';
 
 // 알림 창 컴포넌트
 const Alarm = () => {
@@ -21,11 +21,12 @@ const Alarm = () => {
         hasOverlay={true}
         desc="toggle-modal"
         onClose={closeModal}
-        className="fixed w-screen xs:w-[375px] md:w-[448px] z-[1001] top-0 text-black flex-[1_0] flex-col bg-white h-screen right-0"
+        className="fixed w-screen xs:w-[375px] md:w-[448px] z-[1001] top-0 text-black flex-[1_0] flex-col bg-white dark:bg-[#02050C] h-screen right-0"
       >
-        <div className="right-0 h-16 md:h-[80px] p-4 flex justify-between items-center font-bold text-2xl bg-black text-white">
+        <div className="right-0 h-16 md:h-[80px] px-4 flex justify-between items-center font-bold text-2xl bg-black dark:bg-[#0F172B] text-white">
           <ClickButton actionDesc="modal-close" onClick={closeModal}>
-            <Image alt="left-icon" src="/main/left.webp" width={32} height={32} />
+            <RightSvg />
+            {/* <Image alt="left-icon" src="/main/left.webp" width={32} height={32} /> */}
           </ClickButton>
           <span>알림</span>
           <div className="w-4" />
