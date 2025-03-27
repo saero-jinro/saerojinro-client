@@ -1,12 +1,16 @@
 import { TextareaHTMLAttributes, useEffect, useRef, useState } from 'react';
+import { useParams } from 'next/navigation';
 import useHeaderStore from '@/_store/Header/useHeaderStore';
+import useAuthStore from '@/_store/auth/useAuth';
+import { usePopup } from '@/_hooks/popup/popup';
 import UserSVG from '@/assets/Lecture/Regular.svg';
 
 interface QuestionProps {
   id: number;
-  user_id: number;
-  lecture_id: number;
-  contents: string;
+  content: string;
+  userName: string;
+  profileImage: string;
+  userId?: boolean;
 }
 
 // 크기 자동 조절 textArea
@@ -29,74 +33,224 @@ const Textarea = ({
 };
 
 const QuestionSection = () => {
+  const params = useParams();
+  const lectureId = params.id as string;
+  const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API;
+  const accessToken = useAuthStore((store) => store.state.accessToken);
+  const myName = useAuthStore((store) => store.state.name);
   const [text, setText] = useState('');
   const [questions, setQuestions] = useState<QuestionProps[]>([]);
-  const [review, setReview] = useState('소프트웨어 엔지니어가 강연하는 디자이너?? 이거 진짜예요?');
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editingContent, setEditingContent] = useState('');
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetchQuestions();
+  }, []);
+
+  const { onOpen, Popup } = usePopup({
+    contents: '정말 삭제하시겠습니까?',
+    onFunc: () => {
+      if (selectedId !== null) {
+        handleDelete(selectedId);
+      }
+    },
+  });
+
+  const fetchQuestions = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/questions/lectures/${lectureId}`);
+      if (!response.ok) {
+        throw new Error('네트워크 응답 오류');
+      }
+      const data = await response.json();
+      console.log(data);
+      const questionList: QuestionProps[] = data.questionList;
+      setQuestions(questionList);
+    } catch (error) {
+      console.error('데이터 불러오기 실패: ', error);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!text.trim()) return;
+
+    try {
+      const response = await fetch(`${BASE_URL}/api/questions/lectures/${lectureId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+        },
+        body: JSON.stringify({
+          content: text,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('질문 등록 실패');
+      }
+
+      fetchQuestions();
+
+      setText('');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/questions/${id}`, {
+        method: 'DELETE',
+        headers: {
+          ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('질문 삭제 실패');
+      }
+
+      await fetchQuestions();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleEditClick = (question: QuestionProps) => {
+    setEditingId(question.id);
+    setEditingContent(question.content);
+  };
+
+  const handleSave = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/questions/${editingId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+        },
+        body: JSON.stringify({
+          content: editingContent,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('질문 수정 실패');
+      }
+
+      await fetchQuestions();
+      setEditingId(null);
+      setEditingContent('');
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
       <h2 className="text-2xl font-bold self-stretch">사전 질문</h2>
       <div className="flex gap-6">
-        <div className="flex items-center justify-center resize-none w-full bg-[#F1F5F9] text-[#BDBDBD] px-4 rounded-xs">
+        <div className="flex items-center justify-center resize-none w-full bg-[#F1F5F9] px-4 rounded-xs">
           <Textarea
-            placeholder="강연자에게 질문하고 싶은 것을 입력해주세요. 등록된 사전질문은 작성자와 강연자에게만 보입니다."
+            placeholder="강의 중 다뤄졌으면 하는 질문을 자유롭게 입력해주세요."
             className="w-full border-none min-h-6 overflow-hidden resize-none border px-3 rounded-md focus:outline-none"
             value={text}
             onChange={(e) => setText(e.target.value)}
             rows={1}
           />
         </div>
-        <button className="btn font-semibold text-base rounded-xs px-4 py-1 w-[62px] h-12 overflow-hidden">
+        <button
+          onClick={handleSubmit}
+          className="btn font-semibold text-base rounded-xs px-4 py-1 w-[62px] h-12 overflow-hidden cursor-pointer"
+        >
           등록
         </button>
       </div>
 
-      <div className="flex items-start gap-6 self-stretch relative">
-        <div className="absolute flex h-[46px] w-[78px] items-center gap-1">
-          <div className="w-8 h-8 gap-1">
-            <UserSVG />
-          </div>
-          <div>
-            <span className="font-semibold text-base">닉네임</span>
-          </div>
-        </div>
-        <div className="flex-1 pt-8 mt-2 md:pt-0 md:mx-[calc(72px+24px+24px)]">
-          <p>
-            도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배
-            도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배
-            도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배 도배
-          </p>
-        </div>
-        <div className="absolute h-[46px] right-0 flex gap-6 items-center ">
-          <button>수정</button>
-          <button>삭제</button>
-        </div>
-      </div>
+      <div className="mt-6 flex flex-col gap-3">
+        {questions.length === 0 ? (
+          <p className="text-[#757575] text-sm font-medium text-center">등록된 질문이 없습니다.</p>
+        ) : (
+          questions.map((question) => (
+            <div
+              key={question.id}
+              className="flex justify-between items-start gap-6 self-stretch relative"
+            >
+              <div className="absolute flex w-fit max-w-28 min-h-8 gap-1">
+                <div className="w-8 h-8 rounded-full overflow-hidden">
+                  {question.profileImage ? (
+                    <img
+                      src={question.profileImage}
+                      alt="프로필 이미지"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <UserSVG />
+                  )}
+                </div>
+                <div className="flex items-center">
+                  <span
+                    className="font-semibold text-base truncate block max-w-20"
+                    title={question.userName || 'user'}
+                  >
+                    {question.userName || 'user'}
+                  </span>
+                </div>
+              </div>
 
-      {/* 수정 가능 댓글 */}
-      <div className="flex items-start gap-6 self-stretch relative">
-        <div className="flex w-[78px] h-[46px] items-center gap-1 absolute ">
-          <div className="w-8 h-8 gap-1">
-            <UserSVG />
-          </div>
-          <div>
-            <span className="font-semibold text-base">닉네임</span>
-          </div>
-        </div>
-        <div className="flex-1 pt-8 mt-2 md:pt-0 md:mx-[calc(72px+24px+24px)]">
-          <div className="flex items-center justify-center w-full">
-            <Textarea
-              value={review}
-              spellCheck={false}
-              onChange={(e) => setReview(e.target.value)}
-              className="resize-none w-full overflow-hidden border-none outline-none rounded-[4px] py-2 focus:px-2 focus:border focus:border-solid focus:border-[#1677FF]"
-            />
-          </div>
-        </div>
-        <div className="absolute h-[46px] right-0 flex gap-6 items-center">
-          <button>수정</button>
-          <button>삭제</button>
-        </div>
+              <div className="flex flex-1 items-center min-h-8 md:pt-0 md:mx-[calc(72px+24px+24px)]">
+                {editingId === question.id ? (
+                  <Textarea
+                    value={editingContent}
+                    spellCheck={false}
+                    onChange={(e) => setEditingContent(e.target.value)}
+                    className="resize-none w-full overflow-hidden rounded-[4px] border border-solid border-[#015AFF] p-2"
+                  />
+                ) : (
+                  <p className="font-normal text-base">{question.content}</p>
+                )}
+              </div>
+              {question.userName == myName && (
+                <div className="absolute h-[46px] right-0 flex gap-6 items-start">
+                  {editingId === question.id ? (
+                    <>
+                      <button onClick={handleSave}>저장</button>
+                      <button
+                        onClick={() => {
+                          setEditingId(null);
+                          setEditingContent('');
+                        }}
+                      >
+                        취소
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => handleEditClick(question)}
+                        className="cursor-pointer font-medium text-base"
+                      >
+                        수정
+                      </button>
+                      <button
+                        onClick={() => {
+                          setSelectedId(question.id);
+                          onOpen();
+                        }}
+                        className="cursor-pointer font-medium text-base"
+                      >
+                        삭제
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+          ))
+        )}
+        <Popup />
       </div>
     </>
   );
