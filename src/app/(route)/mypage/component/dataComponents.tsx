@@ -1,12 +1,12 @@
 'use client';
 
+import useHeaderStore from '@/_store/Header/useHeaderStore';
 import { wrapApiResponse } from '@/_utils/api/response';
 import { ApiResponse } from '@/_types/Auth/auth.type';
+import ClickButton from '@/_components/ClickButton';
 import useAuthStore from '@/_store/auth/useAuth';
-import { usePopup } from '@/_hooks/popup/popup';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import ClickButton from '@/_components/ClickButton';
 
 const updateUserInfo = async (
   name: string,
@@ -15,7 +15,7 @@ const updateUserInfo = async (
 ): Promise<ApiResponse<null>> => {
   const BACK_URL = process.env.NEXT_PUBLIC_BACKEND_API;
   const URL = `${BACK_URL}/api/users`;
-
+  console.log('asdasd');
   return wrapApiResponse(
     () =>
       fetch(URL, {
@@ -38,14 +38,16 @@ type EditableFieldProps = {
 };
 
 export const EditableField = ({ id, label, value, onSave }: EditableFieldProps) => {
+  const showPopup = useHeaderStore((store) => store.popup.actions.showPopup);
   const [state, setState] = useState(value);
 
-  const { onOpen, Popup } = usePopup({
-    contents: `${label}을(를) 변경하시겠습니까?`,
-    onFunc: () => {
-      handleUpdate();
-    },
-  });
+  const onOpen = () =>
+    showPopup({
+      contents: `${label}을(를) 변경하시겠습니까?`,
+      func: () => {
+        handleUpdate();
+      },
+    });
 
   useEffect(() => {
     setState(value);
@@ -60,8 +62,12 @@ export const EditableField = ({ id, label, value, onSave }: EditableFieldProps) 
       alert(`${label}을(를) 입력해주세요.`);
       return;
     }
-    const ok = await onSave(state);
-    if (!ok) setState(value);
+    try {
+      const ok = await onSave(state);
+      if (!ok) setState(value);
+    } catch {
+      alert(`연결 에러`);
+    }
   };
 
   return (
@@ -86,7 +92,7 @@ export const EditableField = ({ id, label, value, onSave }: EditableFieldProps) 
           변경
         </ClickButton>
       </div>
-      <Popup />
+      {/* <Popup /> */}
     </div>
   );
 };
@@ -104,15 +110,24 @@ export const MyProfileEmail = () => {
       label="이메일"
       value={email ?? ''}
       onSave={async (next) => {
-        if (!name || !accessToken) return false;
-        const res = await updateUserInfo(name, next, accessToken);
-        if (res.ok) {
-          alert('이메일이 변경되었습니다!');
-          updateUserInfoData({ email: next });
-          return true;
+        try {
+          if (!name) throw new Error('이름을 입력하세요');
+          if (!accessToken) throw new Error('액세스 토큰이 존재하지 않습니다');
+          const res = await updateUserInfo(name, next, accessToken);
+
+          if (res.ok) {
+            alert('이메일이 변경되었습니다!');
+            updateUserInfoData({ email: next });
+            return true;
+          }
+
+          alert(res.error || '이메일 변경에 실패했습니다.');
+          return false;
+        } catch (e) {
+          console.error('업데이트 요청 실패:', e);
+          alert('요청 중 문제가 발생했습니다.');
+          return false;
         }
-        alert(res.error || '이메일 변경에 실패했습니다.');
-        return false;
       }}
     />
   );
