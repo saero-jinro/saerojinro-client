@@ -66,33 +66,42 @@ const LectureListPage = () => {
   const categories = Array.from(new Set(lectures.map((lecture) => lecture.category)));
 
   return (
-    <div className="px-10 py-16">
+    <div className="px-10 py-16 max-md:px-4 max-md:py-8">
       <DayTab
         days={Object.values(dateToDayMap)}
         selectedDay={selectedDay}
         onSelectDay={setSelectedDay}
       />
-      <div className="relative flex justify-between items-center h-10 mt-10">
-        <h1 className="text-lg font-medium leading-[140%]">
+      <div className="relative flex justify-between items-center h-10 mt-10 max-md:mt-5">
+        <h1 className="text-lg font-medium leading-[140%] max-md:text-sm">
           <span className="text-[#015AFF] dark:text-[#014DD9]">
             {groupedByDay[selectedDate]?.length || 0}
           </span>{' '}
           lecture
         </h1>
-        <button onClick={() => setIsFilterOpen((prev) => !prev)} className="cursor-pointer">
+        <button
+          onClick={() => setIsFilterOpen((prev) => !prev)}
+          className="p-1 w-8 h-8 max-md:w-6 max-md:h-6 flex items-center justify-center cursor-pointer"
+        >
           <FilterSvg />
         </button>
 
         {isFilterOpen && (
-          <div className="absolute top-10 right-0 z-10">
-            <div className="bg-[#fff] dark:bg-[#070A12] p-6 w-75 shadow-[0px_4px_8px_0px_rgba(0,0,0,0.15)]">
+          <div className="absolute top-10 right-0 z-10 max-md:fixed max-md:inset-0 max-md:top-16 max-md:bg-[#000000B2]">
+            <div className="bg-[#fff] dark:bg-[#070A12] p-6 w-75 shadow-[0px_4px_8px_0px_rgba(0,0,0,0.15)] max-md:w-screen max-md:rounded-b-sm max-md:px-4 max-md:py-5">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold leading-[140%]">카테고리</h2>
-                <div className="flex justify-end space-x-2">
-                  <button onClick={() => setSelectedCategories(['ALL'])} className="cursor-pointer">
+                <h2 className="text-xl font-bold leading-[140%] max-md:text-base">카테고리</h2>
+                <div className="flex justify-end space-x-2 max-md:space-x-1">
+                  <button
+                    onClick={() => setSelectedCategories(['ALL'])}
+                    className="w-6 h-6 p-1 cursor-pointer"
+                  >
                     <ResetSvg />
                   </button>
-                  <button onClick={() => setIsFilterOpen(false)} className="cursor-pointer">
+                  <button
+                    onClick={() => setIsFilterOpen(false)}
+                    className="w-6 h-6 p-1 cursor-pointer"
+                  >
                     <XSvg />
                   </button>
                 </div>
@@ -103,7 +112,7 @@ const LectureListPage = () => {
                     type="checkbox"
                     checked={selectedCategories.includes('ALL')}
                     onChange={() => setSelectedCategories(['ALL'])}
-                    className="mr-[10px] w-5 h-5 accent-[#015AFF] dark:accent-[#003AA5]"
+                    className="mr-[10px] max-md:mr-2 w-5 h-5 accent-[#015AFF] dark:accent-[#003AA5]"
                   />
                   <span className="text-base font-medium leading-[140%] text-[#212121] dark:text-white">
                     ALL
@@ -125,7 +134,7 @@ const LectureListPage = () => {
                           );
                         }
                       }}
-                      className="mr-[10px] w-5 h-5 accent-[#015AFF] dark:accent-[#003AA5]"
+                      className="mr-[10px] max-md:mr-2 w-5 h-5 accent-[#015AFF] dark:accent-[#003AA5]"
                     />
                     <span className="text-base font-medium leading-[140%] text-[#212121] dark:text-white">
                       {category}
@@ -138,12 +147,12 @@ const LectureListPage = () => {
         )}
       </div>
 
-      <div className="space-y-8">
+      <div className="space-y-8  max-md:space-y-4">
         {sortedTime.length > 0 ? (
           sortedTime.map((time) => (
             <div key={time}>
-              <h2 className="text-2xl font-bold mt-8 mb-4">{time}</h2>
-              <ul className="flex flex-wrap gap-6">
+              <h2 className="text-2xl font-bold mt-8 mb-4 max-md:text-lg max-md:my-4">{time}</h2>
+              <ul className="flex flex-wrap gap-6 max-md:gap-3">
                 {filteredLectures[time].map((lecture) => (
                   <Card
                     key={lecture.id}
