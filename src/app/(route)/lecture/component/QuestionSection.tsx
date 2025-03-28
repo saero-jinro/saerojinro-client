@@ -147,12 +147,12 @@ const QuestionSection = () => {
 
   return (
     <>
-      <h2 className="text-2xl font-bold self-stretch">사전 질문</h2>
-      <div className="flex gap-6">
+      <h2 className="text-2xl font-bold self-stretch max-md:text-xl">사전 질문</h2>
+      <div className="flex gap-6 max-md:gap-4">
         <div className="flex items-center justify-center resize-none w-full bg-[#F1F5F9] dark:bg-[#0D121E] px-4 rounded-xs">
           <Textarea
-            placeholder="강의 중 다뤄졌으면 하는 질문을 자유롭게 입력해주세요."
-            className="w-full border-none min-h-6 overflow-hidden resize-none border px-3 rounded-md focus:outline-none "
+            placeholder="강의 중 다뤄졌으면 하는 질문을 입력해주세요."
+            className="w-full border-none min-h-6 overflow-hidden resize-none border px-3 rounded-md focus:outline-none max-md:text-sm max-md:px-0"
             value={text}
             onChange={(e) => setText(e.target.value)}
             rows={1}
@@ -160,34 +160,34 @@ const QuestionSection = () => {
         </div>
         <button
           onClick={handleSubmit}
-          className="btn font-semibold text-base rounded-xs px-4 py-1 w-[62px] h-12 overflow-hidden cursor-pointer dark:bg-[#003AA5]"
+          className="btn font-semibold text-base max-md:text-sm rounded-xs whitespace-nowrap px-4 max-md:py-1.5 py-1 h-12 max-md:h-11 overflow-hidden cursor-pointer dark:bg-[#003AA5]"
         >
           등록
         </button>
       </div>
 
-      <div className="mt-6 flex flex-col gap-3">
+      <div className="mt-6 max-md:mt-5 flex flex-col gap-3">
         {questions.length === 0 ? (
           <p className="text-[#757575] text-sm font-medium text-center">등록된 질문이 없습니다.</p>
         ) : (
           questions.map((question) => (
             <div
               key={question.id}
-              className="flex justify-between items-start gap-6 self-stretch relative"
+              className="relative flex flex-col gap-2 md:flex-row md:items-start md:gap-6"
             >
-              <div className="absolute flex w-fit max-w-28 min-h-8 gap-1">
-                <div className="w-8 h-8 rounded-full overflow-hidden">
-                  {question.profileImage ? (
-                    <img
-                      src={question.profileImage}
-                      alt="프로필 이미지"
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <UserSVG />
-                  )}
-                </div>
-                <div className="flex items-center">
+              <div className="flex justify-between">
+                <div className="flex items-center gap-1 min-w-20">
+                  <div className="w-8 h-8 rounded-xs overflow-hidden">
+                    {question.profileImage ? (
+                      <img
+                        src={question.profileImage}
+                        alt="프로필 이미지"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <UserSVG />
+                    )}
+                  </div>
                   <span
                     className="font-semibold text-base truncate block max-w-20"
                     title={question.userName || 'user'}
@@ -195,9 +195,47 @@ const QuestionSection = () => {
                     {question.userName || 'user'}
                   </span>
                 </div>
+
+                {question.userName === myName && (
+                  <div className="md:absolute md:right-0 md:top-0 flex gap-2">
+                    {editingId === question.id ? (
+                      <>
+                        <button onClick={handleSave}>저장</button>
+                        <button
+                          onClick={() => {
+                            setEditingId(null);
+                            setEditingContent('');
+                          }}
+                        >
+                          취소
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => handleEditClick(question)}
+                          className="cursor-pointer font-medium text-base dark:text-[#CAD5E2]"
+                        >
+                          수정
+                        </button>
+                        <button
+                          onClick={() => {
+                            showPopup({
+                              contents: '정말 삭제하시겠습니까?',
+                              func: () => handleDelete(question.id),
+                            });
+                          }}
+                          className="cursor-pointer font-medium text-base dark:text-[#CAD5E2]"
+                        >
+                          삭제
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
 
-              <div className="flex flex-1 items-center min-h-8 md:pt-0 md:mx-[calc(72px+24px+24px)]">
+              <div className="w-full md:pr-[100px]">
                 {editingId === question.id ? (
                   <Textarea
                     value={editingContent}
@@ -209,43 +247,6 @@ const QuestionSection = () => {
                   <p className="font-normal text-base">{question.content}</p>
                 )}
               </div>
-              {question.userName == myName && (
-                <div className="absolute h-[46px] right-0 flex gap-6 items-start">
-                  {editingId === question.id ? (
-                    <>
-                      <button onClick={handleSave}>저장</button>
-                      <button
-                        onClick={() => {
-                          setEditingId(null);
-                          setEditingContent('');
-                        }}
-                      >
-                        취소
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        onClick={() => handleEditClick(question)}
-                        className="cursor-pointer font-medium text-base dark:text-[#CAD5E2]"
-                      >
-                        수정
-                      </button>
-                      <button
-                        onClick={() => {
-                          showPopup({
-                            contents: '정말 삭제하시겠습니까?',
-                            func: () => handleDelete(question.id),
-                          });
-                        }}
-                        className="cursor-pointer font-medium text-base dark:text-[#CAD5E2]"
-                      >
-                        삭제
-                      </button>
-                    </>
-                  )}
-                </div>
-              )}
             </div>
           ))
         )}
