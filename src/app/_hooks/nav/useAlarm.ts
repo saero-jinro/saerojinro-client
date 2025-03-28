@@ -60,6 +60,7 @@ const useAlarm = () => {
       if (!hasInitializedRef.current) {
         hasInitializedRef.current = true; // 최초 실행 ㅇㅇ
         prevAlarmCountRef.current = len; // 알림 수 저장
+        if (len !== 0) setNewMessageState(true);
         return;
       }
 

@@ -15,6 +15,18 @@ const AdminLoginPage = () => {
   const handleLogin = async () => {
     setError(null);
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      setError('이메일 형식을 확인해주세요.');
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('비밀번호는 6자리 이상이어야 합니다.');
+      return;
+    }
+
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/admin`, {
         method: 'POST',
@@ -33,10 +45,9 @@ const AdminLoginPage = () => {
       router.push('/admin');
     } catch (err) {
       console.error('서버 오류:', err);
-      alert('로그인 실패');
+      setError('로그인 실패. 이메일과 비밀번호를 다시 확인해주세요.');
     }
   };
-
   return (
     <div className="max-w-[1280px] dark:bg-[#02050C] w-full h-screen self-stretch px-10 py-16 bg-color-bg-secondary inline-flex flex-col justify-center items-center gap-10 overflow-hidden">
       <div className="justify-start text-color-text-primary text-3xl font-bold font-['Pretendard'] leading-10">
