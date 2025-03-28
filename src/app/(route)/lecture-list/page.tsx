@@ -87,8 +87,14 @@ const LectureListPage = () => {
         </button>
 
         {isFilterOpen && (
-          <div className="absolute top-10 right-0 z-10 max-md:fixed max-md:inset-0 max-md:top-16 max-md:bg-[#000000B2]">
-            <div className="bg-[#fff] dark:bg-[#070A12] p-6 w-75 shadow-[0px_4px_8px_0px_rgba(0,0,0,0.15)] max-md:w-screen max-md:rounded-b-sm max-md:px-4 max-md:py-5">
+          <div
+            className="absolute top-10 right-0 z-10 max-md:fixed max-md:inset-0 max-md:top-16 max-md:bg-[#000000B2]"
+            onClick={() => setIsFilterOpen(false)}
+          >
+            <div
+              className="bg-[#fff] dark:bg-[#070A12] p-6 w-75 shadow-[0px_4px_8px_0px_rgba(0,0,0,0.15)] max-md:w-screen max-md:rounded-b-sm max-md:px-4 max-md:py-5"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold leading-[140%] max-md:text-base">카테고리</h2>
                 <div className="flex justify-end space-x-2 max-md:space-x-1">
