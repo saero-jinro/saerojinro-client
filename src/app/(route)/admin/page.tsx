@@ -1,5 +1,6 @@
 'use client';
 
+import useAuthStore from '@/_store/auth/useAuth';
 import { useState, useEffect, useMemo } from 'react';
 import '../../_styles/admin.css';
 
@@ -24,22 +25,27 @@ const AdminDashboard = () => {
   const [lecturesRaw, setLecturesRaw] = useState<Lecture[]>([]);
   const [timeRank, setTimeRank] = useState<TimeRank[]>([]);
 
+  const accessToken = useAuthStore((store) => store.state.accessToken);
+  const role = useAuthStore((store) => store.state.role);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://admin.saerojinro.site/api/dashboard');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADMIN_API}/api/dashboard`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+
         if (!response.ok) throw new Error('API 호출 실패');
         const data = await response.json();
-
+        console.log(data);
         setLecturesRaw(data.lectureHighRank.concat(data.lectureLowRank)); // 전체 데이터를 한번에 받는다고 가정
         setTimeRank(data.timeRank.slice(0, 10));
       } catch (error) {
         console.error('데이터 로딩 실패:', error);
       }
     };
-
-    fetchData();
-  }, []);
+    if (role === 'admin') fetchData();
+  }, [accessToken, role]);
 
   const toggleSort = () => {
     setIsLowToHigh((prev) => !prev);
