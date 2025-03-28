@@ -1,4 +1,5 @@
 'use client';
+import useAuthStore from '@/_store/auth/useAuth';
 import { wrapApiResponse } from '@/_utils/api/response';
 import { useState } from 'react';
 
@@ -6,14 +7,21 @@ import { useState } from 'react';
 const useDownload = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  const accessToken = useAuthStore((store) => store.state.accessToken);
 
   // 데이터 get
   const fetchLectureFile = (materialsId: number) => {
+    if (!accessToken)
+      return {
+        ok: false,
+        data: null,
+      };
     return wrapApiResponse(
       () =>
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/api/files/download/${materialsId}`, {
           headers: {
             Accept: 'application/octet-stream',
+            Authorization: `Bearer ${accessToken}`,
           },
         }),
       async (res) => {
