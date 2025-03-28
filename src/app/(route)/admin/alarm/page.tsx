@@ -267,9 +267,10 @@ const NotificationPage = () => {
           ))}
         </div>
         <div className="w-[1122px] mt-4">
-          <button 
+          <button
             onClick={handleSendNotification}
-            className="flex items-center justify-center bg-blue-600 text-white px-6 py-2 hover:bg-blue-700 w-[92px] h-[48px] whitespace-nowrap">
+            className="flex items-center justify-center bg-blue-600 text-white px-6 py-2 hover:bg-blue-700 w-[92px] h-[48px] whitespace-nowrap"
+          >
             알림 전송
           </button>
         </div>
