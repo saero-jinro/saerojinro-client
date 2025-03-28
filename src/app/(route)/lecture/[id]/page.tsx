@@ -131,6 +131,13 @@ const LectureDetailPage = () => {
               itemId={Number(lectureId)}
               className="pt-1"
               iconClassName="w-6 h-6 text-[#015AFF] dark:text-[#014DD9]"
+              onBeforeToggle={() => {
+                if (!accessToken) {
+                  openLoginModal();
+                  return false;
+                }
+                return true;
+              }}
             />
           </div>
           <LectureReserveButton

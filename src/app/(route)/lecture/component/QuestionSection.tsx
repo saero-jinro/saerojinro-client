@@ -2,6 +2,7 @@ import { TextareaHTMLAttributes, useEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
 import useHeaderStore from '@/_store/Header/useHeaderStore';
 import useAuthStore from '@/_store/auth/useAuth';
+import useLoginModalStore from '@/_store/modal/useLoginModalStore';
 import UserSVG from '@/assets/Lecture/Regular.svg';
 
 interface QuestionProps {
@@ -42,6 +43,7 @@ const QuestionSection = () => {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editingContent, setEditingContent] = useState('');
   const showPopup = useHeaderStore((store) => store.popup.actions.showPopup);
+  const { open: openLoginModal } = useLoginModalStore();
 
   useEffect(() => {
     fetchQuestions();
@@ -63,6 +65,11 @@ const QuestionSection = () => {
   };
 
   const handleSubmit = async () => {
+    if (!accessToken) {
+      openLoginModal();
+      return;
+    }
+
     if (!text.trim()) return;
 
     try {
