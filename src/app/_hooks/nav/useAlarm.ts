@@ -14,6 +14,7 @@ const useAlarm = () => {
   };
 
   const accessToken = useAuthStore((store) => store.state.accessToken);
+  const setAuth = useAuthStore((store) => store.actions.setAuth);
   const role = useAuthStore((store) => store.state.role);
   const isOpen = useAlarmStore((store) => store.isOpen.state.isOpen);
   const isNewMessage = useAlarmStore((store) => store.isNewMessage.state.isNewMessage);
@@ -49,6 +50,7 @@ const useAlarm = () => {
 
     try {
       const res = await getNotifications();
+
       if (!res.data) throw new Error('데이터가 존재하지 않습니다');
 
       const data = res.data;
@@ -71,8 +73,9 @@ const useAlarm = () => {
       if (!isOpen) setNewMessageState(true);
     } catch (err) {
       console.error(err);
+      setAuth(null, 'guest');
     }
-  }, [accessToken, role, isOpen, loadInitAlarms, getNotifications, setNewMessageState]);
+  }, [accessToken, role, isOpen, loadInitAlarms, getNotifications, setNewMessageState, setAuth]);
 
   //#endregion
 
