@@ -100,6 +100,8 @@ const Page = () => {
                   image={lecture.image}
                   title={lecture.title}
                   time={`${formatTime(lecture.start_time)} ~ ${formatTime(lecture.end_time)}`}
+                  startTime={lecture.start_time}
+                  endTime={lecture.end_time}
                   category={lecture.category}
                   isWished={false}
                   isProfile={true}

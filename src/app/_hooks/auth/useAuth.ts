@@ -18,10 +18,11 @@ const useAuth = () => {
   };
 
   const getUserInfo = useCallback(() => {
-    if (role !== 'user' || !accessToken) {
+    if (role === 'guest' || !accessToken) {
       return Promise.resolve({ ok: false, error: '토큰 없음' } as ApiResponse<{
         name: string;
         email: string;
+        profileImage: string | null;
       }>);
     }
 
@@ -30,7 +31,8 @@ const useAuth = () => {
         fetch(`${URL.mypage}`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         }),
-      (res) => res.json().then((dto: { name: string; email: string }) => dto),
+      (res) =>
+        res.json().then((dto: { name: string; email: string; profileImage: string | null }) => dto),
     );
   }, [role, accessToken, URL.mypage]);
 
@@ -52,6 +54,7 @@ const useAuth = () => {
 
         const { accessToken, role } = dto.data;
         console.log(accessToken);
+
         setAuth(accessToken, role);
       } catch (err: unknown) {
         console.error('Refresh Token 요청 중 오류 발생:', err);
@@ -61,18 +64,8 @@ const useAuth = () => {
 
   // 헤더에 보이는 이름 설정
   useEffect(() => {
-    const getCookie = (name: string): string | null => {
-      const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
-      return match ? decodeURIComponent(match[1]) : null;
-    };
-
     if (role === 'guest') {
       setUserInfo('로그인', null, null);
-      return;
-    }
-
-    if (role === 'admin') {
-      setUserInfo('admin', null, null);
       return;
     }
 
@@ -83,8 +76,8 @@ const useAuth = () => {
         if (!res.data) throw new Error('유효하지 않는 데이터 입니다.');
 
         const dto = res.data;
-        const image = getCookie('pictrue');
-        setUserInfo(dto.name, dto.email, image);
+
+        setUserInfo(dto.name, dto.email, dto.profileImage);
       } catch (err) {
         console.error(err);
       }

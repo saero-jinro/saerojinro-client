@@ -11,6 +11,7 @@ export const handleLogout = async (): Promise<boolean> => {
     }
 
     console.log('로그아웃 성공');
+    document.cookie = 'adminToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     return true;
   } catch (error) {
     console.error('로그아웃 중 오류 발생:', error);

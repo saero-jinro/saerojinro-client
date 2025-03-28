@@ -11,7 +11,7 @@ const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>)
     <html lang="ko" className={theme === 'dark' ? 'dark' : ''}>
       <body
         className={
-          'antialiased w-screen h-screen bg-white text-black dark:bg-black dark:text-white'
+          'antialiased w-screen h-screen bg-[#F8FAFC] text-black dark:bg-[#02050C] dark:text-white'
         }
       >
         <KaKaoScript />
