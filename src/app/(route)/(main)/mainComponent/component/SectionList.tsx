@@ -65,7 +65,7 @@ const SectionList = ({ startDay, startDate }: Props) => {
   const [option, setOption] = useState<CategoryWithAll>('ALL');
   const [loading, setLoading] = useState<boolean>(true);
   const [prevNum, setPrevNum] = useState<number>(5);
-  const { wishlist } = useTimetableStore();
+  const { wishlist, reservation } = useTimetableStore();
 
   const [lectures, setLectures] = useState<CategoryState>(
     (Object.keys(CategoryLabel) as CategoryWithAll[]).reduce((acc, key) => {
@@ -163,10 +163,13 @@ const SectionList = ({ startDay, startDate }: Props) => {
                 image={lecture.thumbnailUri}
                 title={lecture.title}
                 time={`${formatTime(lecture.startTime)} ~ ${formatTime(lecture.endTime)}`}
+                startTime={lecture.startTime}
+                endTime={lecture.endTime}
                 category={lecture.category}
                 speakerName={lecture.speakerName}
                 isWished={wishlist.some((w) => w.lectureId === lecture.id)}
                 isProfile={false}
+                isReserved={reservation.some((r) => r.lectureId === lecture.id)}
               />
             ))}
       </ScrollWrapper>
