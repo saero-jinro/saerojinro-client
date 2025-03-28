@@ -79,15 +79,11 @@ const ListCard = ({ lectureList }: ListCardProps) => {
               <LectureReserveButton
                 isReserved={isReserved}
                 className="bg-[#00249C] dark:bg-[#001A6F] w-full py-[11px]"
-                onClick={async (e) => {
-                  e.stopPropagation();
-
-                  if (!accessToken) {
-                    openLoginModal();
-                    return;
-                  }
+                onConfirm={async () => {
                   await toggleReservation(getLectureId(lecture), isReserved);
                 }}
+                startTime={lecture.startTime}
+                endTime={lecture.endTime}
               />
             </div>
           </li>

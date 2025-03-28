@@ -142,7 +142,7 @@ const LectureListPage = () => {
         {sortedTime.length > 0 ? (
           sortedTime.map((time) => (
             <div key={time}>
-              <h2 className="text-2xl font-bold mt-8 mb-6">{time}</h2>
+              <h2 className="text-2xl font-bold mt-8 mb-4">{time}</h2>
               <ul className="flex flex-wrap gap-6">
                 {filteredLectures[time].map((lecture) => (
                   <Card
@@ -152,6 +152,8 @@ const LectureListPage = () => {
                     title={lecture.title}
                     category={lecture.category}
                     time={`${formatTime(lecture.startTime)} ~ ${formatTime(lecture.endTime)}`}
+                    startTime={lecture.startTime}
+                    endTime={lecture.endTime}
                     speakerName={lecture.speakerName}
                     isWished={wishlist.some((w) => w.lectureId === lecture.id)}
                     isProfile={false}

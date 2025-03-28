@@ -107,14 +107,7 @@ export const useTimetableStore = create<TimetableState>((set, get) => ({
     try {
       const accessToken = authStoreGetState().state.accessToken;
       const method = isReserved ? 'DELETE' : 'POST';
-      const reservation = get().reservation;
-
-      let url = `${BASE_URL}/api/reservations/lectures/${lectureId}`;
-      if (isReserved) {
-        const target = reservation.find((r) => r.lectureId === lectureId);
-        if (!target) throw new Error('예약 정보 없음');
-        url = `${BASE_URL}/api/reservations/lectures/${target.reservationId}`;
-      }
+      const url = `${BASE_URL}/api/reservations/lectures/${lectureId}`;
 
       const response = await fetch(url, {
         method,

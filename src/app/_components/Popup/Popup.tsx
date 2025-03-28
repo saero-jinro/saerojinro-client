@@ -44,7 +44,9 @@ export const PopupComponent = ({
       className="w-[90%] xs:w-[285px] md:w-[388px] h-[177px] md:h-[202px] fixed left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 z-[1000] bg-white dark:bg-[#0F172B] flex flex-col justify-between items-center rounded-[4px] overflow-hidden"
     >
       <div className="flex w-full items-center justify-center flex-[1_0_0] p-4">
-        <span className="text-[#212121] dark:text-[#fff] text-sm md:text-lg">{contents}</span>
+        <span className="text-[#212121] dark:text-[#fff] text-sm whitespace-pre-line md:text-lg">
+          {contents}
+        </span>
       </div>
       <div className="self-stretch flex items-center h-12 w-full">
         {mode === 'choice' ? (
