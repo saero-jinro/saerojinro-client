@@ -29,7 +29,7 @@ export const MobileNavigation = () => {
     }
 
     if (role === 'admin') {
-      return <Link href="/admin">admin</Link>;
+      return <Link href="/admin">Admin</Link>;
     }
 
     return (
@@ -55,7 +55,7 @@ export const MobileNavigation = () => {
           />
         ))}
 
-        {role === 'user' && (
+        {(role === 'user' || role === 'admin') && (
           <MobileNavigationItem
             path="/mypage"
             title={name!}

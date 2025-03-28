@@ -39,33 +39,31 @@ const TrdSection = () => {
   return (
     <SectionWrapper
       aria-labelledby="conference-location"
-      className="max-w-7xl py-[52px] px-4 md:py-20 md:px-10 md:gap-6 flex flex-col text-[#212121] dark:text-[#fff]"
+      className="bg-[#fff] dark:bg-[#070A12] w-screen py-[52px] px-4 md:py-20 md:px-10 md:gap-6 flex flex-col text-[#212121] dark:text-[#fff]"
     >
-      {/* px-4 py-[52px] h-[413px] sec3:h-[550px] flex flex-col justify-center overflow-x-hidden" */}
-
-      {/* 제목 */}
-      <div>
-        <h2 id="conference-location" className="text-xl md:text-[32px] font-bold block">
-          컨퍼런스 위치
-        </h2>
-      </div>
-
-      {/* <div className="flex flex-col lg:grid lg:[grid-template-columns:400px_auto] self-stretch"> */}
-      {/* <div className="flex flex-row justify-between self-stretch sec3:flex-row"> */}
-      <div className="flex flex-col xl:flex-row justify-between w-full">
-        {/* 정보 */}
-        <div className="flex flex-col justify-center gap-10">
-          {info.map((item, idx) => (
-            <LocationList key={idx + item.title} {...item} />
-          ))}
+      <div className="max-w-7xl w-full mx-auto">
+        {/* 제목 */}
+        <div>
+          <h2 id="conference-location" className="text-xl md:text-[32px] font-bold block">
+            컨퍼런스 위치
+          </h2>
         </div>
 
-        {/* 지도 */}
-        <div
-          aria-label="location-map"
-          className="mt-13 xl:mt-6 w-full xl:w-auto xl:h-[387.563px] aspect-video bg-black "
-        >
-          <KakaoMap />
+        <div className="flex flex-col xl:flex-row justify-between w-full">
+          {/* 정보 */}
+          <div className="flex flex-col justify-center gap-10">
+            {info.map((item, idx) => (
+              <LocationList key={idx + item.title} {...item} />
+            ))}
+          </div>
+
+          {/* 지도 */}
+          <div
+            aria-label="location-map"
+            className="mt-13 xl:mt-6 w-full xl:w-auto xl:h-[387.563px] aspect-video bg-black "
+          >
+            <KakaoMap />
+          </div>
         </div>
       </div>
     </SectionWrapper>

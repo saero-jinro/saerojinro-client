@@ -18,12 +18,11 @@ interface WebNavListProps {
 const WebNavList = ({ children }: WebNavListProps) => {
   const role = useAuthStore((store) => store.state.role);
   const name = useAuthStore((store) => store.state.name);
-  const nickName = role === 'admin' ? 'admin' : name || '';
   const pathname = usePathname();
   const { web } = useNav(role);
 
   const path = {
-    admin: '/admin',
+    admin: '/mypage',
     user: '/mypage',
   };
 
@@ -37,8 +36,8 @@ const WebNavList = ({ children }: WebNavListProps) => {
             <WebNavItem key={props.title} {...props} />
           ))}
           {!pathname?.startsWith('/admin') && role !== 'guest' && (
-            <Link className="px-2 py-3" href={path[role]}>
-              {nickName}
+            <Link className="px-2 py-3 hover:brightness-90" href={path[role]}>
+              {name}
             </Link>
           )}
           {role === 'guest' && <LoginButton />}
