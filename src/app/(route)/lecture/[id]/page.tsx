@@ -3,8 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
-import useAuthStore from '@/_store/auth/useAuth';
-import useLoginModalStore from '@/_store/modal/useLoginModalStore';
 import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
 import useDownload from '@/_hooks/download/download';
 import TextViewer from '@/_components/TextViewer/TextViewer';
@@ -47,8 +45,6 @@ const LectureDetailPage = () => {
   const params = useParams();
   const lectureId = params.id as string;
   const [lecture, setLecture] = useState<LectureDetailProps>();
-  const accessToken = useAuthStore((store) => store.state.accessToken);
-  const { open: openLoginModal } = useLoginModalStore();
   const { toggleReservation, reservation, wishlist } = useTimetableStore();
   const isReserved = reservation.some((lec) => lec.lectureId === Number(lectureId));
   const isWished = wishlist.some((w) => w.lectureId === Number(lectureId));
@@ -140,19 +136,11 @@ const LectureDetailPage = () => {
           <LectureReserveButton
             isReserved={isReserved}
             className="w-full bg-[#155DFC] h-12 dark:bg-[#003AA5]"
-            onClick={async (e) => {
-              e.stopPropagation();
-
-              if (!accessToken) {
-                openLoginModal();
-                return;
-              }
-              try {
-                await toggleReservation(Number(lectureId), isReserved);
-              } catch (err) {
-                console.error('신청 실패:', err);
-              }
+            onConfirm={async () => {
+              await toggleReservation(Number(lectureId), isReserved);
             }}
+            startTime={lecture.startTime}
+            endTime={lecture.endTime}
           />
         </div>
       </div>

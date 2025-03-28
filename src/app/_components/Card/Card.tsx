@@ -14,6 +14,8 @@ interface CardProps {
   title: string;
   category: string;
   time: string;
+  startTime: string;
+  endTime: string;
   speakerName?: string;
   isWished: boolean;
   isProfile?: boolean;
@@ -26,6 +28,8 @@ const Card = ({
   title,
   category,
   time,
+  startTime,
+  endTime,
   speakerName,
   isWished,
   isProfile = false,
@@ -34,7 +38,7 @@ const Card = ({
   const router = useRouter();
   const accessToken = useAuthStore((store) => store.state.accessToken);
   const { open: openLoginModal } = useLoginModalStore();
-  const { fetchTimetable, toggleReservation } = useTimetableStore();
+  const { toggleReservation } = useTimetableStore();
 
   const handleClick = () => {
     router.push(`/lecture/${id}`);
@@ -93,20 +97,11 @@ const Card = ({
           <LectureReserveButton
             isReserved={isReserved}
             className="w-full bg-[#015AFF] dark:bg-[#003AA5] px-[94px] py-[13px] mt-3"
-            onClick={async (e) => {
-              e.stopPropagation();
-
-              if (!accessToken) {
-                openLoginModal();
-                return;
-              }
-              try {
-                await toggleReservation(id, isReserved ?? false);
-                await fetchTimetable();
-              } catch (err) {
-                console.error('신청 실패:', err);
-              }
+            onConfirm={async () => {
+              await toggleReservation(id, isReserved ?? false);
             }}
+            startTime={startTime}
+            endTime={endTime}
           />
         )}
       </div>
