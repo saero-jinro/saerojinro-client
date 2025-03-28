@@ -3,8 +3,8 @@ import { LogoutButton, UserDeleteButton } from './component/handleButton';
 
 const Page = () => {
   return (
-    <div className="flex overflow-hidden items-center justify-center md:h-[calc(100vh-80px)] w-screen max-w-[788px] mx-auto bg-white">
-      <div className="min-w-[343px] py-16 px-[40px] h-auto w-full flex flex-col mt-16 text-sm md:text-base">
+    <div className="flex overflow-hidden py-16 px-[40px] bg-white dark:bg-[#070A12] min-h-screen items-center justify-center md:h-auto w-screen max-w-[1280px] mx-auto ">
+      <div className="min-w-[343px] h-full w-full md:max-w-[788px] flex flex-col mt-16 text-sm md:text-base">
         {/* 정보 */}
         <div className="flex md:flex-row flex-col gap-6">
           <MyProileImage />

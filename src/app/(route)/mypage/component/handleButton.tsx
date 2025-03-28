@@ -29,13 +29,13 @@ export const LogoutButton = () => {
   };
 
   return (
-    <div className="w-full mt-[40px]">
+    <div className="w-full mt-[40px] text-[#757575] dark:text-[#62748E]">
       <span className="block">현재 계정에서 로그아웃합니다.</span>
       <span className="block">다시 로그인하려면 카카오 계정을 사용해 주세요</span>
       <ClickButton
         actionDesc="logout"
         onClick={onOpen}
-        className="block font-semibold px-4 py-2 mt-6 rounded-[4px] border border-solid text-[#9E9E9E] border-[#9E9E9E]"
+        className="block font-semibold px-4 py-2 mt-6 rounded-[4px] text-[#757575] dark:text-[#62748E] shadow-[0_0_0_1px_#9E9E9E] dark:shadow-[0_0_0_1px_#62748E]"
       >
         로그아웃
       </ClickButton>
@@ -70,7 +70,7 @@ export const UserDeleteButton = () => {
   };
 
   return (
-    <div className="w-full mt-[40px]">
+    <div className="w-full mt-[40px] text-[#757575] dark:text-[#62748E]">
       <span className="block">회원 탈퇴를 진행하시면 아래 내용이 적용됩니다.</span>
       <span className="block">1. 게정 정보 및 개인 데이터 삭제</span>
       <span className="block">2. 서비스 이용 기록 영구 삭제</span>
@@ -78,7 +78,7 @@ export const UserDeleteButton = () => {
       <ClickButton
         actionDesc="delete-user"
         onClick={onOpen}
-        className="block font-semibold px-4 py-2 mt-6 rounded-[4px] border border-solid text-[#9E9E9E] border-[#9E9E9E]"
+        className="block font-semibold px-4 py-2 mt-6 rounded-[4px] text-[#757575] dark:text-[#62748E] shadow-[0_0_0_1px_#9E9E9E] dark:shadow-[0_0_0_1px_#62748E]"
       >
         회원 탈퇴
       </ClickButton>
