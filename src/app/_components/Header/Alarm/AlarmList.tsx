@@ -50,6 +50,17 @@ const AlarmList = () => {
     scrollToBottom({ smooth: false });
   }, [isOpen, scrollToBottom]);
 
+  useEffect(() => {
+    const hasScroll = () => {
+      if (ulRef.current) setIsEnd(!(ulRef.current.scrollHeight > ulRef.current.clientHeight));
+    };
+
+    window.addEventListener('resize', hasScroll);
+    return () => {
+      window.removeEventListener('resize', hasScroll);
+    };
+  }, []);
+
   return (
     <ul
       onScroll={scrollHandler}
