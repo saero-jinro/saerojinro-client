@@ -1,0 +1,6 @@
+/* 최상단에 추가 */
+html,
+body {
+  height: 100%;
+  background-color: #e2e8f0;
+}
