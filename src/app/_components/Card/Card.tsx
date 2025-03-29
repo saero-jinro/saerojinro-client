@@ -46,7 +46,7 @@ const Card = ({
 
   return (
     <div
-      className="overflow-hidden w-[282px] h-[410px] bg-white dark:bg-[#070A12] border border-[#DEE2E6] dark:border-[#161F2E] rounded-xl cursor-pointer"
+      className="overflow-hidden w-[282px] h-[410px] max-md:w-[165px] max-md:h-[295px] bg-white dark:bg-[#070A12] border border-[#DEE2E6] dark:border-[#161F2E] rounded-lg max-md:rounded-sm cursor-pointer"
       onClick={handleClick}
     >
       <div className="relative">
@@ -55,14 +55,14 @@ const Card = ({
           alt={title}
           width={282}
           height={170}
-          className="w-full h-[188px] object-cover"
+          className="w-full h-[188px] object-cover max-md:h-[110px]"
           priority
         />
         <WishButton
           isWished={isWished}
           itemId={id}
           className="absolute top-2 right-2"
-          iconClassName="w-8 h-8 text-[#015AFF] dark:text-[#003AA5]"
+          iconClassName="w-10 h-10 p-1 text-[#015AFF] dark:text-[#003AA5] max-md:w-6 max-md:h-6"
           onBeforeToggle={() => {
             if (!accessToken) {
               openLoginModal();
@@ -72,23 +72,25 @@ const Card = ({
           }}
         />
       </div>
-      <div className="p-4">
-        <div className="h-[130px]">
-          <div className="w-full bg-white text-sm font-semibold leading-[140%] dark:bg-[#070A12] dark:text-[#CAD5E2]">
+      <div className="p-4 max-md:p-3">
+        <div className="h-[130px] max-md:h-[105px]">
+          <div className="w-full bg-white text-sm max-md:text-xs font-semibold leading-[140%] text-[#424242] dark:bg-[#070A12] dark:text-[#CAD5E2]">
             {time}
           </div>
-          <h3 className="text-[20px] font-bold leading-[140%] pt-[2px] overflow-hidden">{title}</h3>
+          <h3 className="text-[20px] font-bold leading-[140%] max-md:text-sm pt-[2px] overflow-hidden text-[#212121]">
+            {title}
+          </h3>
 
           {!isProfile && (
             <div className="flex items-center pt-1">
-              <p className="text-sm font-semibold leading-[140%] text-[#757575] dark:text-[#62748E]">
+              <p className="text-sm font-semibold leading-[140%] max-md:text-xs text-[#757575] dark:text-[#62748E]">
                 {speakerName}
               </p>
             </div>
           )}
 
           <div className="flex flex-wrap gap-1 pt-2">
-            <span className="text-sm font-semibold leading-[140%] text-[#2F78FF] dark:text-[#0140B5]">
+            <span className="text-sm font-semibold leading-[140%] max-md:text-xs text-[#2F78FF] dark:text-[#0140B5]">
               #{category}
             </span>
           </div>
@@ -96,7 +98,7 @@ const Card = ({
         {!isProfile && (
           <LectureReserveButton
             isReserved={isReserved}
-            className="w-full bg-[#015AFF] dark:bg-[#003AA5] px-[94px] py-[13px] mt-3"
+            className="w-full bg-[#015AFF] dark:bg-[#003AA5] py-[13px] max-md:py-[12px] mt-3"
             onConfirm={async () => {
               await toggleReservation(id, isReserved ?? false);
             }}
