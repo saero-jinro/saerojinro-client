@@ -1,22 +1,29 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { LectureListProps, useLectureStore } from '@/_store/LectureList/useLectureStore';
 import Card from '@/_components/Card/Card';
-// import DayTab from '@/_components/DayTab/DayTab';
+import DayTab from '@/_components/DayTab/DayTab';
 import { groupByDay, groupByTime } from '@/_components/DayTab/groupBy';
 import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
 import FilterSvg from '@/assets/LectureList/filter.svg';
 import XSvg from '@/assets/LectureList/X.svg';
 import ResetSvg from '@/assets/LectureList/arrow.svg';
-import DayTab from '@/_components/DayTab/DayTab.test';
 
-const LectureListPage = ({ day }: { day: string }) => {
+import { useRouter, useSearchParams } from 'next/navigation';
+
+const LectureListPage = ({
+  initDay,
+  initCategories,
+}: {
+  initDay: string;
+  initCategories?: string[];
+}) => {
   const { lecturelist, fetchLectures } = useLectureStore();
   const { wishlist, reservation } = useTimetableStore();
-  const [selectedDay, setSelectedDay] = useState<string>(day);
+  const [selectedDay, setSelectedDay] = useState<string>(initDay);
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(['ALL']);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(initCategories ?? ['ALL']);
 
   const dateList = ['2025-04-01', '2025-04-02', '2025-04-03'];
   const dateToDayMap = dateList.reduce(
@@ -34,6 +41,31 @@ const LectureListPage = ({ day }: { day: string }) => {
   useEffect(() => {
     fetchLectures(dayToDateMap[selectedDay]);
   }, [selectedDay]);
+
+  // 추가한 부분
+  //#region
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const updateQueryParams = useCallback(
+    (day: string, categories: string[]) => {
+      const params = new URLSearchParams(searchParams.toString());
+
+      if (day.includes('ALL')) params.delete('category');
+      else params.set('category', categories.join(','));
+
+      params.set('day', day);
+
+      router.replace(`?${params.toString()}`);
+    },
+    [router],
+  );
+
+  useEffect(() => {
+    updateQueryParams(selectedDay, selectedCategories);
+  }, [selectedCategories, selectedDay, updateQueryParams]);
+
+  //#endregion
 
   const lectures: LectureListProps[] = lecturelist;
 

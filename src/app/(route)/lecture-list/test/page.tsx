@@ -1,20 +1,51 @@
 import LectureList from '../component/list';
 import { redirect } from 'next/navigation';
 
-const Page = async ({ searchParams }: { searchParams: Promise<{ day?: string }> }) => {
-  const LIMITDAY = 3;
-  const { day } = await searchParams;
+const allowedCategories = [
+  'ALL',
+  'BACKEND',
+  'FRONTEND',
+  'AI',
+  'DATA',
+  'CLOUD',
+  'DEVOPS',
+  'UX_UI',
+  'SEC',
+  'PM',
+  'BLOCKCHAIN',
+  'MOBILE',
+];
 
+const Page = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ day?: string; category?: string }>;
+}) => {
+  const LIMITDAY = 3; // 컨퍼런스 진행일
+  const { day, category } = await searchParams;
+
+  // 날짜 유효성 체크
   if (!day) {
-    redirect('/lecture-list/test?day=Day1');
+    redirect(`/lecture-list/test?day=Day1&category=ALL`);
   }
 
-  const isValid = /^Day\d+$/.test(day);
+  const isValidDay = /^Day\d+$/.test(day);
   const dayNum = Number(day.replace('Day', ''));
 
-  if (!isValid || dayNum < 1 || dayNum > LIMITDAY) redirect('/');
+  // 날짜가 해당하는 날짜인지 확인
+  if (!isValidDay || dayNum < 1 || dayNum > LIMITDAY) {
+    redirect('/');
+  }
 
-  return <LectureList day={day} />;
+  const categories = category?.split(',') ?? ['ALL'];
+  const isValidCategories = categories.every((c) => allowedCategories.includes(c));
+
+  // 카테고리 유효성 체크
+  if (!isValidCategories) {
+    redirect(`/lecture-list/test?day=${day}&category=ALL`);
+  }
+
+  return <LectureList initDay={day} initCategories={categories} />;
 };
 
 export default Page;
