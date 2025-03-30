@@ -1,11 +1,11 @@
-import ThemeToggleButton from './ThemeToggleButton/ThemeToggleButton.client';
+import ThemeToggleButton from './component/ThemeToggleButton';
 import getTheme from '@/_utils/Header/getTheme.server';
-import HeaderNav from './HeaderNav/HeaderNav';
+import AdminTitle from './component/AdminTitle';
+import HeaderNav from './component/HeaderNav';
 import LoginModal from '../Login/LoginModal';
-import Alarm from './Alarm/AlarmWindow';
-import Link from 'next/link';
+import Alarm from '../Alarm/AlarmWindow';
 import Popup from '../Popup/Popup';
-import AdminTitle from './adminTitle';
+import Link from 'next/link';
 
 const Header = async () => {
   const theme = await getTheme();

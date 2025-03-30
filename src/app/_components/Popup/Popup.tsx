@@ -4,6 +4,7 @@ import { HTMLAttributes } from 'react';
 import ClickButton from '../ClickButton';
 import ToggleModal from '../ToggleModal';
 
+// 팝업 모달
 const Popup = () => {
   const { func, contents, isOpen, mode } = useHeaderStore((store) => store.popup.state);
   const closePopup = useHeaderStore((store) => store.popup.actions.closePopup);
@@ -24,7 +25,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   onClick?: () => void;
 }
 
-// 혹시 몰라서 독립적이게 구현
+// 팝업 컴포넌트
 export const PopupComponent = ({
   contents,
   onClose,

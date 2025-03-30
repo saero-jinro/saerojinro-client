@@ -1,23 +1,29 @@
 'use client';
 import { NavItem } from '@/_types/Header/Header.type';
-import { navInfo } from './navDto';
-import { useEffect, useMemo, useState } from 'react';
-import { usePathname } from 'next/navigation';
 import { UserRole } from '@/_types/Auth/auth.type';
+import { useMemo } from 'react';
+
+// 웹 네비게이션 목록
+const web: NavItem[] = [
+  { title: '강의 목록', path: '/lecture-list', roles: ['guest', 'user'] },
+  { title: '시간표 관리', path: '/timetable', roles: ['guest', 'user'] },
+  { title: '대시보드', path: '/admin', roles: ['admin'] },
+  { title: '알림관리', path: '/admin/alarm', roles: ['admin'] },
+];
+
+export const navInfo: { web: NavItem[] } = {
+  web,
+};
 
 const filterAccessibleNavItems = (items: NavItem[], userRole: UserRole) =>
   items.filter((item) => item.roles?.includes(userRole));
 
 // 권한에 따른 네비게이션 리스트 반환
 export const getUserNavigation = (userRole: UserRole) => {
-  const { web, mobile } = navInfo;
+  const { web } = navInfo;
 
   return {
     web: filterAccessibleNavItems(web, userRole),
-    mobile: mobile.flatMap((section) => {
-      const accessibleItems = filterAccessibleNavItems(section.items, userRole);
-      return accessibleItems.length ? [{ ...section, items: accessibleItems }] : [];
-    }),
   };
 };
 
@@ -25,41 +31,4 @@ export const useNav = (userRole: UserRole) => {
   return useMemo(() => {
     return getUserNavigation(userRole);
   }, [userRole]);
-};
-
-/* 
-1. path가 admin 경로면 admin 권한
-2. 액세스 토큰이 있다면 viewer
-3. 해당하지 않으면 no-login
-*/
-export interface HeaderRoleState {
-  role: UserRole;
-  pathname: string;
-}
-
-export const useHeaderRole = (): HeaderRoleState => {
-  const [role, setRole] = useState<UserRole>('guest');
-  const pathname = usePathname();
-
-  const findToken = (tokenName: string): boolean => {
-    if (typeof window === 'undefined') return false;
-
-    return document.cookie.split('; ').some((cookie) => cookie.startsWith(`${tokenName}=`));
-  };
-
-  useEffect(() => {
-    let newRole: UserRole = 'guest';
-
-    if (pathname.startsWith('/admin')) {
-      newRole = 'admin';
-    } else if (findToken('admin_token')) {
-      newRole = 'admin';
-    } else if (findToken('id_token')) {
-      newRole = 'user';
-    }
-
-    setRole((prevRole) => (prevRole !== newRole ? newRole : prevRole));
-  }, [pathname]);
-
-  return { role, pathname };
 };

@@ -6,11 +6,11 @@ import { produce } from 'immer';
 import { create } from 'zustand';
 
 interface AuthState {
-  accessToken: string | null;
   role: UserRole;
   name: string | null;
   email: string | null;
   pictrue: string | null;
+  accessToken: string | null;
 }
 
 interface AuthActions {

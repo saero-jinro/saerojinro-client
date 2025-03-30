@@ -1,6 +1,6 @@
 'use client';
 
-import AlarmButton from '@/_components/Header/Alarm/AlarmButton';
+import AlarmButton from '@/_components/Alarm/AlarmButton';
 import { NavItem } from '@/_types/Header/Header.type';
 import useAuthStore from '@/_store/auth/useAuth';
 import { usePathname } from 'next/navigation';

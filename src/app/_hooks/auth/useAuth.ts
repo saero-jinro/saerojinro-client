@@ -6,17 +6,22 @@ import useAuthStore from '@/_store/auth/useAuth';
 type ApiAuthRefreshResponse = ApiResponse<AuthRefreshResponse>;
 
 const useAuth = () => {
-  const accessToken = useAuthStore((store) => store.state.accessToken);
-  const setAuth = useAuthStore((store) => store.actions.setAuth);
-  const setUserInfo = useAuthStore((store) => store.actions.setUserInfo);
-  const role = useAuthStore((store) => store.state.role);
-  const [name, setName] = useState<string>('로그인');
-
+  /** API URL */
   const URL = {
     refresh: process.env.NEXT_PUBLIC_BASE_URL + `/api/auth/user/refresh`,
     mypage: process.env.NEXT_PUBLIC_BACKEND_API + `/api/users/me`,
   };
 
+  /** Auth Store */
+  const role = useAuthStore((store) => store.state.role);
+  const accessToken = useAuthStore((store) => store.state.accessToken);
+  const setAuth = useAuthStore((store) => store.actions.setAuth);
+  const setUserInfo = useAuthStore((store) => store.actions.setUserInfo);
+
+  /** 상태 */
+  const [name, setName] = useState<string>('로그인');
+
+  /** 유저 데이터 요청 */
   const getUserInfo = useCallback(() => {
     if (role === 'guest' || !accessToken) {
       return Promise.resolve({ ok: false, error: '토큰 없음' } as ApiResponse<{
@@ -36,7 +41,7 @@ const useAuth = () => {
     );
   }, [role, accessToken, URL.mypage]);
 
-  //  토큰 재발급 및 역할 설정
+  /** 토큰 재발급 및 역할 설정 */
   useEffect(() => {
     if (accessToken !== null) return;
     (async () => {
@@ -62,7 +67,7 @@ const useAuth = () => {
     })();
   }, []);
 
-  // 헤더에 보이는 이름 설정
+  /** 헤더 네임 설정 */
   useEffect(() => {
     if (role === 'guest') {
       setUserInfo('로그인', null, null);

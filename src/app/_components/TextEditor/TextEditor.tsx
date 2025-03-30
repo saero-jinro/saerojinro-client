@@ -43,8 +43,3 @@ const TextEditor = ({ desc, content, editor, setEditorContent, ...props }: Props
 };
 
 export default TextEditor;
-
-// tiptap 데이터 JSON 변환
-// const jsonData = editor.getJSON();
-// tiptap 데이터 JSON -> tiptap에 할당
-// editor.commands.setContent(jsonData);
