@@ -258,7 +258,10 @@ const NotificationPage = () => {
               ),
             },
           ].map(({ label, element }, idx) => (
-            <div key={idx} className="grid grid-cols-[150px_1fr] border-b border-gray-200 dark:border-gray-700">
+            <div
+              key={idx}
+              className="grid grid-cols-[150px_1fr] border-b border-gray-200 dark:border-gray-700"
+            >
               <div className="bg-[#015AFF] text-white font-semibold flex items-center px-4 py-3 text-center justify-center h-[80px] w-[78px] whitespace-nowrap">
                 {label}
               </div>
