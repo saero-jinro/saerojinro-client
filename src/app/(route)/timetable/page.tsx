@@ -18,6 +18,8 @@ const TimetablePage = () => {
   const [showWishlist, setShowWishlist] = useState<boolean>(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [showBottomSheet, setShowBottomSheet] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
 
   const { reservation, wishlist, fetchTimetable, baseDate } = useTimetableStore();
   const accessToken = useAuthStore((store) => store.state.accessToken);
@@ -38,6 +40,12 @@ const TimetablePage = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    if ((selectedTime || showWishlist) && isMobile) {
+      setShowBottomSheet(true);
+    }
+  }, [selectedTime, showWishlist, isMobile]);
 
   const fetchTimeWish = async (startTime: string) => {
     try {
@@ -95,6 +103,16 @@ const TimetablePage = () => {
     )}`;
     fetchTimeWish(startTimeISO);
     fetchTimeRecommand(startTimeISO);
+  };
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setShowBottomSheet(false);
+      setIsClosing(false);
+      setSelectedTime(null);
+      setShowWishlist(false);
+    }, 300);
   };
 
   const filteredLectures = reservation.filter((lecture) => `Day${lecture.day}` === selectedDay);
@@ -288,18 +306,39 @@ const TimetablePage = () => {
           </div>
         )}
 
-        {(selectedTime || showWishlist) && isMobile && (
-          <div
-            className="fixed inset-0 z-40 bg-[#000000B2]"
-            onClick={() => {
-              setSelectedTime(null);
-              setShowWishlist(false);
-            }}
-          >
+        {showBottomSheet && (
+          <div className="fixed inset-0 z-40 bg-[#000000B2]" onClick={handleClose}>
             <div
-              className="fixed bottom-0 left-0 w-full max-h-[70vh] bg-[#F8FAFC] dark:bg-[#02050C] rounded-t-[20px] px-4 py-6 z-50 overflow-y-auto"
+              className={`fixed bottom-0 left-0 w-full max-h-[70vh] bg-[#F8FAFC] dark:bg-[#02050C] rounded-t-[20px] px-4 py-6 z-50 overflow-y-auto ${isClosing ? 'animate-slide-down' : 'animate-slide-up'}`}
               onClick={(e) => e.stopPropagation()}
             >
+              <style jsx>{`
+                @keyframes slide-up {
+                  from {
+                    transform: translateY(100%);
+                  }
+                  to {
+                    transform: translateY(0);
+                  }
+                }
+
+                @keyframes slide-down {
+                  from {
+                    transform: translateY(0);
+                  }
+                  to {
+                    transform: translateY(100%);
+                  }
+                }
+
+                .animate-slide-up {
+                  animation: slide-up 0.5s ease-out forwards;
+                }
+
+                .animate-slide-down {
+                  animation: slide-down 0.3s ease-in forwards;
+                }
+              `}</style>
               {selectedTime && (
                 <>
                   <h3 className="font-bold text-lg pb-4">즐겨찾기 목록</h3>
