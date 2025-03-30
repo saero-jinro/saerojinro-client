@@ -6,16 +6,19 @@ import useAlarmStore from '@/_store/Header/useAlarmStore';
 import useAuthStore from '@/_store/auth/useAuth';
 
 const useAlarm = () => {
+  /* Constants */
   const POLLING_SEC = 1000 * 7;
   const BACK_URL = process.env.NEXT_PUBLIC_BACKEND_API;
-
   const URL = {
     fetchUserAlarms: `${BACK_URL}/api/notifications/me`,
   };
 
+  /** Auth Store */
   const accessToken = useAuthStore((store) => store.state.accessToken);
   const setAuth = useAuthStore((store) => store.actions.setAuth);
   const role = useAuthStore((store) => store.state.role);
+
+  /** Alarm Store */
   const isOpen = useAlarmStore((store) => store.isOpen.state.isOpen);
   const isNewMessage = useAlarmStore((store) => store.isNewMessage.state.isNewMessage);
   const loadInitAlarms = useAlarmStore((store) => store.alarms.actions.loadInitAlarms);
@@ -23,13 +26,11 @@ const useAlarm = () => {
     (store) => store.isNewMessage.actions.setNewMessageState,
   );
 
+  /** Refs */
   const prevAlarmCountRef = useRef(0); // 이전 알림 개수
   const hasInitializedRef = useRef(false); // 초기 로딩 여부
 
-  /** 함수 **/
-  //#region
-
-  // API 호출
+  /** API 요청 */
   const getNotifications = useCallback(() => {
     if (role !== 'user' || !accessToken) {
       return Promise.resolve({ ok: false, error: '토큰 없음' } as ApiResponse<Alarm[]>);
@@ -44,7 +45,7 @@ const useAlarm = () => {
     );
   }, [role, accessToken, URL.fetchUserAlarms]);
 
-  // 데이터 패치
+  /** 알림 패치 */
   const fetchNotifications = useCallback(async () => {
     if (!accessToken || role !== 'user') return;
 
@@ -58,7 +59,7 @@ const useAlarm = () => {
       loadInitAlarms(data);
 
       if (!hasInitializedRef.current) {
-        hasInitializedRef.current = true; // 최초 실행 ㅇㅇ
+        hasInitializedRef.current = true; // 최초 실행
         prevAlarmCountRef.current = len; // 알림 수 저장
         if (len !== 0) setNewMessageState(true);
         return;
@@ -78,18 +79,13 @@ const useAlarm = () => {
     }
   }, [accessToken, role, isOpen, loadInitAlarms, getNotifications, setNewMessageState, setAuth]);
 
-  //#endregion
-
-  /** useEffect **/
-  //#region
-
-  // 알림 창 open시 새 메시지 상태 초기화
+  /** 알림 창이 열리면 새 메시지 상태 false로 변경 */
   useEffect(() => {
     if (!isOpen) return;
     setNewMessageState(false);
   }, [isOpen, setNewMessageState, isNewMessage]);
 
-  // 폴링 실행 useEffect
+  /** 폴링 시작 및 중단 관리 */
   useEffect(() => {
     let interval: NodeJS.Timeout;
 

@@ -2,7 +2,6 @@
 
 import useAuthStore from '@/_store/auth/useAuth';
 import { useState, useEffect, useMemo } from 'react';
-//import '../../_styles/admin.css';
 
 interface Lecture {
   lectureId: number;

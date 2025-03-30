@@ -1,6 +1,5 @@
 'use client';
-
-import { MobileNavigation } from '@/_components/Nav/HeaderNav.mobile';
+import MobileNavList from '@/_components/Nav/HeaderNav.mobile';
 import WebNavList from '@/_components/Nav/HeaderNav.web';
 import useHeaderStore from '@/_store/Header/useHeaderStore';
 import ToggleModal from '@/_components/ToggleModal';
@@ -25,21 +24,14 @@ const HeaderNav = ({ children }: Props) => {
   useAlarm();
   useAuth();
 
-  // web이면 메뉴 닫음
   useEffect(() => {
     if (viewmode === 'web') closeMobileNav();
   }, [viewmode, closeMobileNav]);
 
-  /** 웹 모드 **/
   if (viewmode === 'web') {
-    return (
-      <>
-        <WebNavList>{children}</WebNavList>
-      </>
-    );
+    return <WebNavList>{children}</WebNavList>;
   }
 
-  /** 모바일 모드 **/
   return (
     <>
       <ToggleModal
@@ -48,11 +40,9 @@ const HeaderNav = ({ children }: Props) => {
         onClose={closeMobileNav}
         isOpen={isMobileNavOpen}
       >
-        <MobileNavigation />
-        {/* <MobileNavigation /> */}
+        <MobileNavList />
       </ToggleModal>
       {!isMobileNavOpen && <MenuButton onClickHandler={openMobileNav} />}
-      {/* Toggle */}
     </>
   );
 };
