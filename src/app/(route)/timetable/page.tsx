@@ -17,6 +17,7 @@ const TimetablePage = () => {
   const [timeWish, setTimeWish] = useState<TimeWishProps[]>([]);
   const [showWishlist, setShowWishlist] = useState<boolean>(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const { reservation, wishlist, fetchTimetable, baseDate } = useTimetableStore();
   const accessToken = useAuthStore((store) => store.state.accessToken);
@@ -28,6 +29,15 @@ const TimetablePage = () => {
     fetchTimetable();
     setIsLoggedIn(!!accessToken);
   }, [accessToken]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const fetchTimeWish = async (startTime: string) => {
     try {
@@ -244,7 +254,7 @@ const TimetablePage = () => {
           )}
         </div>
 
-        {selectedTime && (
+        {selectedTime && !isMobile && (
           <div className="w-[280px] flex-shrink-0 px-6 pt-11 h-full">
             <h3 className="font-bold text-xl leading-[140%] pb-6">즐겨찾기 목록</h3>
             <div className="h-1/3 overflow-auto">
@@ -265,7 +275,7 @@ const TimetablePage = () => {
           </div>
         )}
 
-        {showWishlist && (
+        {showWishlist && !isMobile && (
           <div className="w-[280px] flex-shrink-0 px-6 pt-11 h-full">
             <h3 className="font-bold text-xl leading-[140%] pb-6">즐겨찾기 목록</h3>
             <div className="h-full overflow-auto">
@@ -273,6 +283,49 @@ const TimetablePage = () => {
                 <ListCard lectureList={wishlist} />
               ) : (
                 <p className="text-gray-500 text-sm mb-3">즐겨찾기한 강의가 없습니다.</p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {(selectedTime || showWishlist) && isMobile && (
+          <div
+            className="fixed inset-0 z-40 bg-[#000000B2]"
+            onClick={() => {
+              setSelectedTime(null);
+              setShowWishlist(false);
+            }}
+          >
+            <div
+              className="fixed bottom-0 left-0 w-full max-h-[70vh] bg-[#F8FAFC] dark:bg-[#02050C] rounded-t-[20px] px-4 py-6 z-50 overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {selectedTime && (
+                <>
+                  <h3 className="font-bold text-lg pb-4">즐겨찾기 목록</h3>
+                  {timeWish.length > 0 ? (
+                    <ListCard lectureList={timeWish} />
+                  ) : (
+                    <p className="text-gray-500 text-sm">해당 시간에 즐겨찾기한 강의가 없습니다.</p>
+                  )}
+                  <h3 className="pt-6 pb-4 font-bold text-lg">공석 추천 목록</h3>
+                  {recommandLectures.length > 0 ? (
+                    <ListCard lectureList={recommandLectures} />
+                  ) : (
+                    <p className="text-gray-500 text-sm mb-3">해당 시간에 추천 강의가 없습니다.</p>
+                  )}
+                </>
+              )}
+
+              {showWishlist && (
+                <>
+                  <h3 className="font-bold text-lg pb-4">즐겨찾기 목록</h3>
+                  {wishlist.length > 0 ? (
+                    <ListCard lectureList={wishlist} />
+                  ) : (
+                    <p className="text-gray-500 text-sm mb-3">즐겨찾기한 강의가 없습니다.</p>
+                  )}
+                </>
               )}
             </div>
           </div>
