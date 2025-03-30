@@ -27,7 +27,7 @@ const ListCard = ({ lectureList }: ListCardProps) => {
   const { open: openLoginModal } = useLoginModalStore();
 
   return (
-    <ul className="flex flex-col gap-4">
+    <ul className="flex flex-col gap-4 max-md:gap-3">
       {lectureList.map((lecture) => {
         const lectureId = getLectureId(lecture);
         const isReserved = reservation.some((r) => r.lectureId === lectureId);
@@ -35,9 +35,9 @@ const ListCard = ({ lectureList }: ListCardProps) => {
         return (
           <li
             key={getLectureId(lecture)}
-            className="flex flex-col px-5 py-5 border border-[#E2E8F0] dark:border-[#161F2E] rounded-sm bg-white dark:bg-[#070A12]"
+            className="flex flex-col p-5 max-md:p-4 border border-[#E2E8F0] dark:border-[#161F2E] rounded-sm bg-white dark:bg-[#070A12]"
           >
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 max-md:gap-1">
               <p className="w-fit text-[#001F85] dark:text-[#2E4BAE] py-[1px] font-semibold text-sm leading-[140%]">
                 {lecture.location}
               </p>
