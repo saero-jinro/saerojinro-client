@@ -74,29 +74,29 @@ const NotificationPage = () => {
             contents: message,
           }),
         });
-
+  
         if (!res.ok) {
           throw new Error('알림 전송 실패');
         }
-
+  
         alert('긴급 공지가 성공적으로 전송되었습니다!');
       } else if (isEdit || isCancel) {
         const selectedLecture = lectureList.find((lec) => lec.title === lecture);
-
+  
         if (!selectedLecture) {
           alert('선택한 강의 정보를 찾을 수 없습니다.');
           return;
         }
-
+  
         const lectureId = selectedLecture.id;
         const contents = `
-[카테고리] ${category}
-[변경 날짜] ${date || '미지정'}
-[변경 시간] ${time || '미지정'}
-[변경 장소] ${room || '미지정'}
-[비고] ${message || '없음'}
+  [카테고리] ${category}
+  [변경 날짜] ${date || '미지정'}
+  [변경 시간] ${time || '미지정'}
+  [변경 장소] ${room || '미지정'}
+  [비고] ${message || '없음'}
         `.trim();
-
+  
         const res = await fetch(
           `https://admin.saerojinro.site/api/notifications/lectures/${lectureId}`,
           {
@@ -111,20 +111,31 @@ const NotificationPage = () => {
             }),
           },
         );
-
+  
         if (!res.ok) {
           throw new Error('알림 전송 실패');
         }
-
+  
         alert(`${category} 알림이 성공적으로 전송되었습니다!`);
       } else {
         alert('카테고리를 선택해주세요.');
+        return;
       }
+  
+      // ✅ 전송 성공 시 모든 입력값 초기화
+      setCategory('');
+      setLecture('');
+      setDate('');
+      setTime('');
+      setRoom('');
+      setMessage('');
+      setPlaceholder('내용을 입력하세요');
     } catch (error) {
       console.error('알림 전송 중 오류:', error);
       alert('알림 전송 중 오류가 발생했습니다.');
     }
   };
+  
 
   return (
     <div className="flex flex-col items-center p-8 min-h-screen">
