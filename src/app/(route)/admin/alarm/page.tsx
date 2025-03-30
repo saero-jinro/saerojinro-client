@@ -90,11 +90,11 @@ const NotificationPage = () => {
 
         const lectureId = selectedLecture.id;
         const contents = `
-[카테고리] ${category}
-[변경 날짜] ${date || '미지정'}
-[변경 시간] ${time || '미지정'}
-[변경 장소] ${room || '미지정'}
-[비고] ${message || '없음'}
+  [카테고리] ${category}
+  [변경 날짜] ${date || '미지정'}
+  [변경 시간] ${time || '미지정'}
+  [변경 장소] ${room || '미지정'}
+  [비고] ${message || '없음'}
         `.trim();
 
         const res = await fetch(
@@ -119,7 +119,17 @@ const NotificationPage = () => {
         alert(`${category} 알림이 성공적으로 전송되었습니다!`);
       } else {
         alert('카테고리를 선택해주세요.');
+        return;
       }
+
+      // ✅ 전송 성공 시 모든 입력값 초기화
+      setCategory('');
+      setLecture('');
+      setDate('');
+      setTime('');
+      setRoom('');
+      setMessage('');
+      setPlaceholder('내용을 입력하세요');
     } catch (error) {
       console.error('알림 전송 중 오류:', error);
       alert('알림 전송 중 오류가 발생했습니다.');
