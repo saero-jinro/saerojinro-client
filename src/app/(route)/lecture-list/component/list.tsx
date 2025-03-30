@@ -42,8 +42,6 @@ const LectureListPage = ({
     fetchLectures(dayToDateMap[selectedDay]);
   }, [selectedDay]);
 
-  // 추가한 부분
-  //#region
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -64,8 +62,6 @@ const LectureListPage = ({
   useEffect(() => {
     updateQueryParams(selectedDay, selectedCategories);
   }, [selectedCategories, selectedDay, updateQueryParams]);
-
-  //#endregion
 
   const lectures: LectureListProps[] = lecturelist;
 
