@@ -2,7 +2,7 @@
 
 import useAuthStore from '@/_store/auth/useAuth';
 import { useEffect, useState } from 'react';
-import '../../../_styles/admin.css';
+//import '../../../_styles/admin.css';
 
 interface Lecture {
   id: number;
@@ -131,7 +131,7 @@ const NotificationPage = () => {
       <div className="w-full max-w-[1122px] mx-auto pt-[64px] pb-[360px]">
         <h1 className="text-2xl font-bold mb-6">알림 관리</h1>
 
-        <div className="bg-white shadow overflow-hidden w-[1122px] h-[480px]">
+        <div className="bg-white dark:bg-[#1A1A1A] shadow overflow-hidden w-[1122px] h-[480px]">
           {[
             {
               label: '카테고리',
@@ -139,7 +139,7 @@ const NotificationPage = () => {
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-[383px] h-[38px] border rounded-md"
+                  className="w-[383px] h-[38px] border rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600"
                 >
                   <option disabled value="" className="text-gray-400">
                     카테고리를 선택하세요
@@ -157,7 +157,7 @@ const NotificationPage = () => {
                   value={lecture}
                   onChange={(e) => setLecture(e.target.value)}
                   disabled={!isInit && isEmergency}
-                  className={`w-[383px] h-[38px] border p-2 rounded-md ${
+                  className={`w-[383px] h-[38px] border p-2 rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600 ${
                     !isInit && isEmergency ? 'bg-gray-100 text-gray-400' : ''
                   }`}
                 >
@@ -179,7 +179,7 @@ const NotificationPage = () => {
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                   disabled={!isInit && !isEdit}
-                  className={`w-[383px] h-[38px] border p-2 rounded-md ${
+                  className={`w-[383px] h-[38px] border p-2 rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600 ${
                     !isInit && !isEdit ? 'bg-gray-100 text-gray-400' : ''
                   }`}
                 >
@@ -199,7 +199,7 @@ const NotificationPage = () => {
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
                   disabled={!isInit && !isEdit}
-                  className={`w-[383px] h-[38px] border p-2 rounded-md ${
+                  className={`w-[383px] h-[38px] border p-2 rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600 ${
                     !isInit && !isEdit ? 'bg-gray-100 text-gray-400' : ''
                   }`}
                 >
@@ -224,7 +224,7 @@ const NotificationPage = () => {
                   value={room}
                   onChange={(e) => setRoom(e.target.value)}
                   disabled={!isInit && !isEdit}
-                  className={`w-[383px] h-[38px] border p-2 rounded-md ${
+                  className={`w-[383px] h-[38px] border p-2 rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600 ${
                     !isInit && !isEdit ? 'bg-gray-100 text-gray-400' : ''
                   }`}
                 >
@@ -251,14 +251,14 @@ const NotificationPage = () => {
                     setPlaceholder(message === '' ? '내용을 입력하세요' : '')
                   }
                   onChange={(e) => setMessage(e.target.value)}
-                  className={`w-[383px] h-[48px] border p-2 rounded-md ${
+                  className={`w-[383px] h-[48px] border p-2 rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600 ${
                     !isInit && !isEmergency ? 'bg-gray-100 text-gray-400' : ''
                   }`}
                 />
               ),
             },
           ].map(({ label, element }, idx) => (
-            <div key={idx} className="grid grid-cols-[150px_1fr] border-b border-gray-200">
+            <div key={idx} className="grid grid-cols-[150px_1fr] border-b border-gray-200 dark:border-gray-700">
               <div className="bg-[#015AFF] text-white font-semibold flex items-center px-4 py-3 text-center justify-center h-[80px] w-[78px] whitespace-nowrap">
                 {label}
               </div>

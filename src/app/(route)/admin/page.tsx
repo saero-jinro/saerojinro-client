@@ -2,7 +2,7 @@
 
 import useAuthStore from '@/_store/auth/useAuth';
 import { useState, useEffect, useMemo } from 'react';
-import '../../_styles/admin.css';
+//import '../../_styles/admin.css';
 
 interface Lecture {
   lectureId: number;
@@ -64,16 +64,16 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="bg-[#E2E8F0] w-full min-h-screen">
+    <div className="bg-[#F8FAFC] dark:bg-[#02050C] text-black dark:text-white w-full h-screen">
       <div className="w-[1200px] mx-auto pt-[109px] pb-[109px] mb-[84px]">
         <div className="flex gap-[24px]">
           {/* Crowd Forecast */}
           <div className="w-[494px]">
             <h1 className="text-lg font-bold mb-[12px] text-[20px]">Crowd Forecast</h1>
-            <div className="border border-gray-300 rounded-md bg-white">
+            <div className="border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1A1A1A]">
               <table className="w-full table-auto border-collapse">
                 <thead>
-                  <tr className="bg-[#00249C] font-bold text-white text-center h-[46px] px-[16px] py-[12px]">
+                  <tr className="bg-[#00249C] dark:bg-[#1E3A8A] font-bold text-white text-center h-[46px] px-[16px] py-[12px]">
                     <th className="px-[16px] py-[8px] whitespace-nowrap">순위</th>
                     <th className="px-[16px] py-[8px]">날짜</th>
                     <th className="px-[16px] py-[8px]">시간</th>
@@ -84,7 +84,7 @@ const AdminDashboard = () => {
                   {timeRank.map((time, index) => (
                     <tr
                       key={index}
-                      className="border-b border-b-gray-200 h-[54px] px-[16px] py-[12px] text-center"
+                      className="border-b border-b-gray-200 dark:border-gray-700 text-center h-[54px] px-[16px] py-[12px] text-center"
                     >
                       <td className="px-[16px] py-[8px] whitespace-nowrap ">{time.rank}</td>
                       <td className="px-[16px] py-[8px] whitespace-nowrap">{time.day}</td>
@@ -104,10 +104,10 @@ const AdminDashboard = () => {
             <div className="flex justify-between items-center mb-[12px]">
               <h1 className="text-lg font-bold text-[20px]">Lecture Tracker</h1>
             </div>
-            <div className="border border-gray-300 rounded-md bg-white">
+            <div className="border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1A1A1A]">
               <table className="w-full table-auto border-collapse">
                 <thead>
-                  <tr className="bg-[#00249C] text-bold text-white h-[46px] px-[16px] py-[12px]">
+                  <tr className="bg-[#00249C] dark:bg-[#1E3A8A] text-bold text-white h-[46px] px-[16px] py-[12px]">
                     <th className="px-[16px] py-[8px] whitespace-nowrap" onClick={toggleSort}>
                       {isLowToHigh ? '높은 순▲' : '낮은 순▼'}
                     </th>
@@ -123,7 +123,7 @@ const AdminDashboard = () => {
                   {sortedLectures.map((lecture) => (
                     <tr
                       key={lecture.lectureId}
-                      className="border-b border-b-gray-200 h-[54px] px-[16px] py-[12px]"
+                      className="border-b border-b-gray-200 dark:border-gray-700 h-[54px] px-[16px] py-[12px]"
                     >
                       <td className="px-[16px] py-[8px] whitespace-nowrap text-center">
                         {lecture.rank}
