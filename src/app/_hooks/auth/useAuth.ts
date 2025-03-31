@@ -2,6 +2,7 @@ import { ApiResponse, AuthRefreshResponse } from '@/_types/Auth/auth.type';
 import { useCallback, useEffect, useState } from 'react';
 import { wrapApiResponse } from '@/_utils/api/response';
 import useAuthStore from '@/_store/auth/useAuth';
+import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
 
 type ApiAuthRefreshResponse = ApiResponse<AuthRefreshResponse>;
 
@@ -18,8 +19,16 @@ const useAuth = () => {
   const setAuth = useAuthStore((store) => store.actions.setAuth);
   const setUserInfo = useAuthStore((store) => store.actions.setUserInfo);
 
+  /** timetable */
+  const { fetchTimetable } = useTimetableStore();
+
   /** 상태 */
   const [name, setName] = useState<string>('로그인');
+
+  /** timetable ynchronization */
+  useEffect(() => {
+    if (accessToken || role === 'user') fetchTimetable();
+  }, [accessToken, role, fetchTimetable]);
 
   /** 유저 데이터 요청 */
   const getUserInfo = useCallback(() => {

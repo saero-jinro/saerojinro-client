@@ -26,10 +26,12 @@ const LectureListPage = ({
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(initCategories ?? ['ALL']);
 
-  const { fetchTimetable } = useTimetableStore();
+  /** zustand */
   const accessToken = useAuthStore((store) => store.state.accessToken);
   const role = useAuthStore((store) => store.state.role);
+  const { fetchTimetable } = useTimetableStore();
 
+  /** timetable ynchronization */
   useEffect(() => {
     if (accessToken || role === 'user') fetchTimetable();
   }, [accessToken, role, fetchTimetable]);
