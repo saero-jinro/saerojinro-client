@@ -29,7 +29,7 @@ const NotificationPage = () => {
   useEffect(() => {
     const fetchLectures = async () => {
       try {
-        const res = await fetch('https://admin.saerojinro.site/api/lectures', {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADMIN_API}/api/lectures`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
             'Content-Type': 'application/json',
@@ -62,17 +62,40 @@ const NotificationPage = () => {
   const handleSendNotification = async () => {
     try {
       if (isEmergency) {
-        const res = await fetch('https://admin.saerojinro.site/api/notifications/all', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
+        if (!message.trim()) {
+          alert('내용을 입력해주세요.');
+          return;
+        }
+      } else if (isEdit) {
+        if (!lecture || !date || !time || !room) {
+          alert('변경 정보를 모두 선택해주세요.');
+          return;
+        }
+      } else if (isCancel) {
+        if (!lecture) {
+          alert('강의명을 선택해주세요.');
+          return;
+        }
+      } else {
+        alert('카테고리를 선택해주세요.');
+        return;
+      }
+
+      if (isEmergency) {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_ADMIN_API}/api/notifications/all`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              title: '긴급 공지',
+              contents: message,
+            }),
           },
-          body: JSON.stringify({
-            title: '긴급 공지',
-            contents: message,
-          }),
-        });
+        );
 
         if (!res.ok) {
           throw new Error('알림 전송 실패');
@@ -89,15 +112,15 @@ const NotificationPage = () => {
 
         const lectureId = selectedLecture.id;
         const contents = `
-  [카테고리] ${category}
-  [변경 날짜] ${date || '미지정'}
-  [변경 시간] ${time || '미지정'}
-  [변경 장소] ${room || '미지정'}
-  [비고] ${message || '없음'}
-        `.trim();
+[카테고리] ${category}
+[변경 날짜] ${date || '미지정'}
+[변경 시간] ${time || '미지정'}
+[변경 장소] ${room || '미지정'}
+[비고] ${message || '없음'}
+      `.trim();
 
         const res = await fetch(
-          `https://admin.saerojinro.site/api/notifications/lectures/${lectureId}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_ADMIN_API}/api/notifications/lectures/${lectureId}`,
           {
             method: 'POST',
             headers: {
@@ -148,7 +171,7 @@ const NotificationPage = () => {
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-[383px] h-[38px] border rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600"
+                  className="w-[383px] h-[38px] border-none rounded-md bg-[#F1F5F9] text-[#BDBDBD] dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600"
                 >
                   <option disabled value="" className="text-gray-400">
                     카테고리를 선택하세요
@@ -166,7 +189,7 @@ const NotificationPage = () => {
                   value={lecture}
                   onChange={(e) => setLecture(e.target.value)}
                   disabled={!isInit && isEmergency}
-                  className={`w-[383px] h-[38px] border p-2 rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600 ${
+                  className={`w-[383px] h-[38px] border-none rounded-md bg-[#F1F5F9] text-[#BDBDBD] p-2 rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600 ${
                     !isInit && isEmergency ? 'bg-gray-100 text-gray-400' : ''
                   }`}
                 >
@@ -188,16 +211,16 @@ const NotificationPage = () => {
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                   disabled={!isInit && !isEdit}
-                  className={`w-[383px] h-[38px] border p-2 rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600 ${
+                  className={`w-[383px] h-[38px] border-none rounded-md bg-[#F1F5F9] text-[#BDBDBD] p-2 rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600 ${
                     !isInit && !isEdit ? 'bg-gray-100 text-gray-400' : ''
                   }`}
                 >
                   <option disabled value="" className="text-gray-400">
                     날짜를 선택하세요
                   </option>
-                  <option value="03월 06일">03월 06일</option>
-                  <option value="03월 07일">03월 07일</option>
-                  <option value="03월 08일">03월 08일</option>
+                  <option value="03월 06일">04월 01일</option>
+                  <option value="03월 07일">04월 02일</option>
+                  <option value="03월 08일">04월 03일</option>
                 </select>
               ),
             },
@@ -208,7 +231,7 @@ const NotificationPage = () => {
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
                   disabled={!isInit && !isEdit}
-                  className={`w-[383px] h-[38px] border p-2 rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600 ${
+                  className={`w-[383px] h-[38px] border-none rounded-md bg-[#F1F5F9] text-[#BDBDBD] p-2 rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600 ${
                     !isInit && !isEdit ? 'bg-gray-100 text-gray-400' : ''
                   }`}
                 >
@@ -233,7 +256,7 @@ const NotificationPage = () => {
                   value={room}
                   onChange={(e) => setRoom(e.target.value)}
                   disabled={!isInit && !isEdit}
-                  className={`w-[383px] h-[38px] border p-2 rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600 ${
+                  className={`w-[383px] h-[38px] border-none rounded-md bg-[#F1F5F9] text-[#BDBDBD] p-2 rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600 ${
                     !isInit && !isEdit ? 'bg-gray-100 text-gray-400' : ''
                   }`}
                 >
@@ -243,6 +266,7 @@ const NotificationPage = () => {
                   <option>Room-A1</option>
                   <option>Room-B2</option>
                   <option>Room-C3</option>
+                  <option>Online</option>
                 </select>
               ),
             },
@@ -260,7 +284,7 @@ const NotificationPage = () => {
                     setPlaceholder(message === '' ? '내용을 입력하세요' : '')
                   }
                   onChange={(e) => setMessage(e.target.value)}
-                  className={`w-[383px] h-[48px] border p-2 rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600 ${
+                  className={`w-[383px] h-[48px] border-none rounded-md bg-[#F1F5F9] text-[#BDBDBD] p-2 rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600 ${
                     !isInit && !isEmergency ? 'bg-gray-100 text-gray-400' : ''
                   }`}
                 />

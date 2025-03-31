@@ -9,7 +9,7 @@
 @layer components {
   .btn {
     color: #fff;
-    background-color: var(--color-bg-interactive-primary, #015AFF);
+    background-color: var(--color-bg-interactive-primary, #015aff);
   }
 
   .dark .btn {
@@ -18,7 +18,7 @@
   }
 
   .bg-primary {
-    background-color: var(--color-bg-interactive-primary, #015AFF);
+    background-color: var(--color-bg-interactive-primary, #015aff);
   }
 
   .dark .bg-primary {
@@ -40,7 +40,7 @@
 }
 
 :root {
-  --background: #F8FAFC;
+  --background: #f8fafc;
   --foreground: #02050c;
 }
 html {
