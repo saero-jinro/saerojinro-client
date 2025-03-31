@@ -134,8 +134,10 @@ const TimetablePage = () => {
 
   return (
     <div className="py-16 px-10 max-md:py-8 max-md:px-4">
-      <div className="w-full flex justify-between items-center pb-10 max-md:pb-5">
-        <h1 className="text-[32px] font-bold max-md:text-xl">컨퍼런스 시간표</h1>
+      <div className="w-full flex justify-between items-center pb-8 max-md:pb-5">
+        <h1 className="text-[#212121] dark:text-white text-[32px] font-bold max-md:text-xl">
+          컨퍼런스 시간표
+        </h1>
         {isLoggedIn ? (
           <button className="cursor-pointer p-1" onClick={handleWishlistClick}>
             {showWishlist || selectedTime ? (
@@ -148,9 +150,9 @@ const TimetablePage = () => {
           <div></div>
         )}
       </div>
-      <div className="flex gap-8 w-full ">
+      <div className="flex gap-6 w-full ">
         <div className="flex-grow">
-          <div className="pb-8 max-md:pb-4">
+          <div className="pb-6 max-md:pb-4">
             <DayTab
               days={['Day1', 'Day2', 'Day3']}
               selectedDay={selectedDay}
@@ -167,7 +169,7 @@ const TimetablePage = () => {
                   return (
                     <div
                       key={`empty-${start}`}
-                      className="flex justify-center items-center border border-[#E2E8F0] px-5 py-6 max-md:p-4 h-full text-center font-semibold text-base max-md:text-sm leading-[140%] text-[#757575] dark:bg-[#070A12] dark:border-[#161F2E] dark:text-[#62748E]"
+                      className="flex justify-center items-center border border-[#E2E8F0] px-5 py-6 bg-white max-md:p-4 h-full text-center font-semibold text-base max-md:text-sm leading-[140%] text-[#757575] dark:bg-[#070A12] dark:border-[#161F2E] dark:text-[#62748E]"
                     >
                       {start}
                       <br />-<br />
@@ -273,7 +275,7 @@ const TimetablePage = () => {
         </div>
 
         {selectedTime && !isMobile && (
-          <div className="w-[280px] flex-shrink-0 px-6 pt-11 h-full">
+          <div className="w-[280px] flex-shrink-0 px-0 pt-10 h-full">
             <h3 className="font-bold text-xl leading-[140%] pb-6">즐겨찾기 목록</h3>
             <div className="h-1/3 overflow-auto">
               {timeWish.length > 0 ? (
@@ -294,7 +296,7 @@ const TimetablePage = () => {
         )}
 
         {showWishlist && !isMobile && (
-          <div className="w-[280px] flex-shrink-0 px-6 pt-11 h-full">
+          <div className="w-[280px] flex-shrink-0 px-0 pt-10 h-full">
             <h3 className="font-bold text-xl leading-[140%] pb-6">즐겨찾기 목록</h3>
             <div className="h-full overflow-auto">
               {wishlist.length > 0 ? (

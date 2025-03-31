@@ -85,7 +85,9 @@ const LectureDetailPage = () => {
               {dayText} | {timeText} | {lecture.location}
             </span>
           </time>
-          <h1 className="font-bold text-[32px] max-md:text-2xl">{lecture.title}</h1>
+          <h1 className="text-[#212121] dark:text-white font-bold text-[32px] max-md:text-2xl">
+            {lecture.title}
+          </h1>
           <div className="flex items-center gap-[8px]">
             <span className="font-semibold text-base text-[#2F78FF] dark:text-[#0140B5] max-md:font-medium max-md:text-sm">
               #{lecture.category}
@@ -153,7 +155,7 @@ const LectureDetailPage = () => {
             <WishButton
               isWished={isWished}
               itemId={Number(lectureId)}
-              className="pt-1"
+              className="w-12 h-12"
               iconClassName="w-6 h-6 text-[#015AFF] dark:text-[#014DD9]"
               onBeforeToggle={() => {
                 if (!accessToken) {
