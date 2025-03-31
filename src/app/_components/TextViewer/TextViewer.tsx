@@ -25,7 +25,7 @@ const TextViewer = ({ desc, content, ...props }: Props) => {
       <EditorContent
         editor={editor}
         id="tiptap-editor"
-        className="prose prose-lg max-w-none p-4rounded-lg"
+        className="text-[#212121] dark:text-white prose prose-lg max-w-none p-4rounded-lg"
       />
     </div>
   );
