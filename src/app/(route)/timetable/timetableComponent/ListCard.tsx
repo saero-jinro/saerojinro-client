@@ -41,7 +41,7 @@ const ListCard = ({ lectureList }: ListCardProps) => {
               <p className="w-fit text-[#001F85] dark:text-[#2E4BAE] py-[1px] font-semibold text-sm leading-[140%]">
                 {lecture.location}
               </p>
-              <BarSvg />
+              <BarSvg className="text-[#001F85] dark:text-[#2E4BAE]" />
               <span className="font-semibold text-sm leading-[140%] text-[#001F85] dark:text-[#2E4BAE]">
                 {new Date(lecture?.startTime).toLocaleTimeString('ko-KR', {
                   hour: '2-digit',
@@ -56,17 +56,15 @@ const ListCard = ({ lectureList }: ListCardProps) => {
                 })}
               </span>
             </div>
-            <span className="pt-3 pb-2 font-semibold text-base leading-[140%]">
-              {lecture?.title}
-            </span>
-            <p className="pb-4 text-[#757575] dark:text-[#62748E] font-medium text-sm leading-[140%]">
+            <span className="py-2 font-semibold text-base leading-[140%]">{lecture?.title}</span>
+            <p className="pb-5 text-[#757575] dark:text-[#62748E] font-medium text-sm leading-[140%]">
               {lecture.speakerName}
             </p>
-            <div className="flex w-full items-center gap-2">
+            <div className="flex w-full items-center gap-1">
               <WishButton
                 isWished={wishlist.some((w) => w.lectureId === getLectureId(lecture))}
                 itemId={getLectureId(lecture)}
-                className="w-11 h-11 bg-[#F1F5F9] dark:bg-[#0D121E]"
+                className="w-11 h-11 shrink-0 bg-[#F1F5F9] dark:bg-[#0D121E]"
                 iconClassName="w-6 h-6 text-[#00249C] dark:text-[#001A6F]"
                 onBeforeToggle={() => {
                   if (!accessToken) {
