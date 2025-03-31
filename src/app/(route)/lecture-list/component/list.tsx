@@ -11,6 +11,7 @@ import XSvg from '@/assets/LectureList/X.svg';
 import ResetSvg from '@/assets/LectureList/arrow.svg';
 
 import { useRouter, useSearchParams } from 'next/navigation';
+import useAuthStore from '@/_store/auth/useAuth';
 
 const LectureListPage = ({
   initDay,
@@ -24,6 +25,16 @@ const LectureListPage = ({
   const [selectedDay, setSelectedDay] = useState<string>(initDay);
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(initCategories ?? ['ALL']);
+
+  /** zustand */
+  const accessToken = useAuthStore((store) => store.state.accessToken);
+  const role = useAuthStore((store) => store.state.role);
+  const { fetchTimetable } = useTimetableStore();
+
+  /** timetable ynchronization */
+  useEffect(() => {
+    if (accessToken || role === 'user') fetchTimetable();
+  }, [accessToken, role, fetchTimetable]);
 
   const dateList = ['2025-04-01', '2025-04-02', '2025-04-03'];
   const dateToDayMap = dateList.reduce(
