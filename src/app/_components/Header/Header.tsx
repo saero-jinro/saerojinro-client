@@ -1,5 +1,5 @@
-import ThemeToggleButton from './component/ThemeToggleButton';
-import getTheme from '@/_utils/Header/getTheme.server';
+// import ThemeToggleButton from './component/ThemeToggleButton';
+// import getTheme from '@/_utils/Header/getTheme.server';
 import AdminTitle from './component/AdminTitle';
 import HeaderNav from './component/HeaderNav';
 import LoginModal from '../Login/LoginModal';
@@ -8,7 +8,7 @@ import Popup from '../Popup/Popup';
 import Link from 'next/link';
 
 const Header = async () => {
-  const theme = await getTheme();
+  // const theme = await getTheme();
 
   return (
     <>
@@ -18,9 +18,8 @@ const Header = async () => {
             <span className="mr-3">IT TIME</span>
             <AdminTitle />
           </Link>
-          <HeaderNav>
-            <ThemeToggleButton theme={theme} />
-          </HeaderNav>
+          {/* <HeaderNav><ThemeToggleButton theme={theme} /></HeaderNav>*/}
+          <HeaderNav />
         </nav>
         <LoginModal />
         <Alarm />

@@ -1,14 +1,13 @@
 'use client';
 
+import useLoginModalStore from '@/_store/modal/useLoginModalStore';
 import AlarmButton from '@/_components/Alarm/AlarmButton';
-import { NavItem } from '@/_types/Header/Header.type';
 import useAuthStore from '@/_store/auth/useAuth';
-import { usePathname } from 'next/navigation';
+import ClickButton from '../ClickButton';
+import { NavItem } from '@/_types/Header/Header.type';
 import { useNav } from '@/_hooks/nav/useNav';
 import { ReactNode } from 'react';
 import Link from 'next/link';
-import useLoginModalStore from '@/_store/modal/useLoginModalStore';
-import ClickButton from '../ClickButton';
 
 interface WebNavListProps {
   children?: ReactNode;
@@ -18,7 +17,6 @@ interface WebNavListProps {
 const WebNavList = ({ children }: WebNavListProps) => {
   const role = useAuthStore((store) => store.state.role);
   const name = useAuthStore((store) => store.state.name);
-  const pathname = usePathname();
   const { web } = useNav(role);
 
   const path = {
@@ -35,7 +33,7 @@ const WebNavList = ({ children }: WebNavListProps) => {
           {web.map((props) => (
             <WebNavItem key={props.title} {...props} />
           ))}
-          {!pathname?.startsWith('/admin') && role !== 'guest' && (
+          {role !== 'guest' && (
             <Link className="px-2 py-3 hover:brightness-90" href={path[role]}>
               {name}
             </Link>

@@ -77,7 +77,7 @@ const Card = ({
           <div className="w-full bg-white text-sm max-md:text-xs font-semibold leading-[140%] text-[#424242] dark:bg-[#070A12] dark:text-[#CAD5E2]">
             {time}
           </div>
-          <h3 className="text-[20px] font-bold leading-[140%] max-md:text-sm pt-[2px] overflow-hidden text-[#212121]">
+          <h3 className="text-[20px] font-bold leading-[140%] max-md:text-sm pt-[2px] overflow-hidden text-[#212121] dark:text-[#fff]">
             {title}
           </h3>
 
