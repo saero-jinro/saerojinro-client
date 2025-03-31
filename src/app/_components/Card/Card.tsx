@@ -98,7 +98,7 @@ const Card = ({
         {!isProfile && (
           <LectureReserveButton
             isReserved={isReserved}
-            className="w-full bg-[#015AFF] dark:bg-[#003AA5] py-[13px] max-md:py-[12px] mt-3"
+            className="w-full bg-[#015AFF] max-md:text-sm dark:bg-[#003AA5] py-[13px] max-md:py-[12px] mt-3"
             onConfirm={async () => {
               await toggleReservation(id, isReserved ?? false);
             }}

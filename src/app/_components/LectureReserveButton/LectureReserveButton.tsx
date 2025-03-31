@@ -69,7 +69,7 @@ const LectureReserveButton = ({
 
   return (
     <button
-      className={`font-semibold text-[16px] text-white leading-[140%] rounded-xs cursor-pointer ${className}`}
+      className={`font-semibold text-base text-white leading-[140%] rounded-xs cursor-pointer ${className}`}
       onClick={handleClick}
     >
       {isReserved ? '강의 취소' : '강의 신청'}
