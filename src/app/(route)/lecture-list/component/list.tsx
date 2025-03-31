@@ -104,6 +104,7 @@ const LectureListPage = ({
   }
 
   const categories = Array.from(new Set(lectures.map((lecture) => lecture.category)));
+  const totalFilteredCount = Object.values(filteredLectures).flat().length;
 
   return (
     <div className="px-10 py-16 max-md:px-4 max-md:py-8">
@@ -119,9 +120,7 @@ const LectureListPage = ({
       />
       <div className="relative flex justify-between items-center h-10 mt-10 max-md:mt-5">
         <h1 className="text-[#212121] text-lg font-medium leading-[140%] max-md:text-sm">
-          <span className="text-[#015AFF] dark:text-[#014DD9]">
-            {groupedByDay[selectedDate]?.length || 0}
-          </span>{' '}
+          <span className="text-[#015AFF] dark:text-[#014DD9]">{totalFilteredCount || 0}</span>{' '}
           lecture
         </h1>
         <button
@@ -200,31 +199,37 @@ const LectureListPage = ({
 
       <div className="space-y-8  max-md:space-y-4">
         {sortedTime.length > 0 ? (
-          sortedTime.map((time) => (
-            <div key={time}>
-              <h2 className="text-[#212121] text-2xl font-bold mt-8 mb-4 max-md:text-lg max-md:my-4">
-                {time}
-              </h2>
-              <ul className="flex flex-wrap gap-6 max-md:gap-3">
-                {filteredLectures[time].map((lecture) => (
-                  <Card
-                    key={lecture.id}
-                    id={lecture.id}
-                    image={lecture.thumbnailUri}
-                    title={lecture.title}
-                    category={lecture.category}
-                    time={`${formatTime(lecture.startTime)} ~ ${formatTime(lecture.endTime)}`}
-                    startTime={lecture.startTime}
-                    endTime={lecture.endTime}
-                    speakerName={lecture.speakerName}
-                    isWished={wishlist.some((w) => w.lectureId === lecture.id)}
-                    isProfile={false}
-                    isReserved={reservation.some((r) => r.lectureId === lecture.id)}
-                  />
-                ))}
-              </ul>
-            </div>
-          ))
+          sortedTime.map((time) => {
+            const lecturesForTime = filteredLectures[time] || [];
+
+            if (lecturesForTime.length === 0) return null;
+
+            return (
+              <div key={time}>
+                <h2 className="text-[#212121] text-2xl font-bold mt-8 mb-4 max-md:text-lg max-md:my-4">
+                  {time}
+                </h2>
+                <ul className="flex flex-wrap gap-6 max-md:gap-3">
+                  {filteredLectures[time].map((lecture) => (
+                    <Card
+                      key={lecture.id}
+                      id={lecture.id}
+                      image={lecture.thumbnailUri}
+                      title={lecture.title}
+                      category={lecture.category}
+                      time={`${formatTime(lecture.startTime)} ~ ${formatTime(lecture.endTime)}`}
+                      startTime={lecture.startTime}
+                      endTime={lecture.endTime}
+                      speakerName={lecture.speakerName}
+                      isWished={wishlist.some((w) => w.lectureId === lecture.id)}
+                      isProfile={false}
+                      isReserved={reservation.some((r) => r.lectureId === lecture.id)}
+                    />
+                  ))}
+                </ul>
+              </div>
+            );
+          })
         ) : (
           <p className="text-center text-gray-500 text-lg py-12">선택한 날짜에 강의가 없습니다.</p>
         )}
