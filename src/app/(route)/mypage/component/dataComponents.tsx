@@ -103,6 +103,7 @@ export const MyProfileEmail = () => {
   const updateUserInfoData = useAuthStore((store) => store.actions.updateUserInfo);
   const name = useAuthStore((store) => store.state.name);
   const email = useAuthStore((store) => store.state.email);
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   return (
     <EditableField
@@ -110,6 +111,10 @@ export const MyProfileEmail = () => {
       label="이메일"
       value={email ?? ''}
       onSave={async (next) => {
+        if (!emailRegex.test(next)) {
+          alert('유효한 이메일 형식을 입력해주세요.');
+          return false;
+        }
         try {
           if (!name) throw new Error('이름을 입력하세요');
           if (!accessToken) throw new Error('액세스 토큰이 존재하지 않습니다');
@@ -139,6 +144,9 @@ export const MyProfileName = () => {
   const updateUserInfoData = useAuthStore((store) => store.actions.updateUserInfo);
   const name = useAuthStore((store) => store.state.name);
   const email = useAuthStore((store) => store.state.email);
+  const isKorean = /^[가-힣]+$/;
+  const isEnglish = /^[a-zA-Z]+$/;
+  const hasInvalidChar = /[^a-zA-Z가-힣]/;
 
   return (
     <EditableField
@@ -146,13 +154,30 @@ export const MyProfileName = () => {
       label="이름"
       value={name ?? ''}
       onSave={async (next) => {
+        if (!next.trim()) {
+          alert('이름을 입력해주세요.');
+          return false;
+        }
+
+        if (hasInvalidChar.test(next)) {
+          alert('이름에는 특수문자나 숫자를 사용할 수 없습니다.');
+          return false;
+        }
+
+        if (!(isKorean.test(next) || isEnglish.test(next))) {
+          alert('이름은 한글 또는 영어만 사용할 수 있습니다. (혼용 불가)');
+          return false;
+        }
+
         if (!email || !accessToken) return false;
+
         const res = await updateUserInfo(next, email, accessToken);
         if (res.ok) {
           alert('이름이 변경되었습니다!');
           updateUserInfoData({ name: next });
           return true;
         }
+
         alert(res.error || '이름 변경에 실패했습니다.');
         return false;
       }}

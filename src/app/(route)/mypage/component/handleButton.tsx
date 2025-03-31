@@ -29,7 +29,7 @@ export const LogoutButton = () => {
   };
 
   return (
-    <div className="w-full mt-[40px] text-[#757575] dark:text-[#62748E]">
+    <div className="w-full text-[#757575] dark:text-[#62748E]">
       <span className="block">현재 계정에서 로그아웃합니다.</span>
       <span className="block">다시 로그인하려면 카카오 계정을 사용해 주세요</span>
       <ClickButton
@@ -70,7 +70,7 @@ export const UserDeleteButton = () => {
   };
 
   return (
-    <div className="w-full mt-[40px] text-[#757575] dark:text-[#62748E]">
+    <div className="w-full text-[#757575] dark:text-[#62748E]">
       <span className="block">회원 탈퇴를 진행하시면 아래 내용이 적용됩니다.</span>
       <span className="block">1. 게정 정보 및 개인 데이터 삭제</span>
       <span className="block">2. 서비스 이용 기록 영구 삭제</span>

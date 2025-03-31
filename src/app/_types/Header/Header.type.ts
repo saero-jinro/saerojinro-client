@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+// import { ReactNode } from 'react';
 import { UserRole } from '../Auth/auth.type';
 
 export type Theme = 'light' | 'dark';
@@ -11,24 +11,24 @@ export type NavItem = {
   roles?: UserRole[];
 };
 
-export type NavGroup = {
-  title: string;
-  items: NavItem[];
-};
+// export type NavGroup = {
+//   title: string;
+//   items: NavItem[];
+// };
 
-export type NavigationConfig = {
-  web: NavItem[];
-  mobile: NavGroup[];
-};
+// export type NavigationConfig = {
+//   web: NavItem[];
+//   mobile: NavGroup[];
+// };
 
-export type RenderItem<T = NavItem> = (item: T) => ReactNode;
+// export type RenderItem<T = NavItem> = (item: T) => ReactNode;
 
-export type RenderSection<T = NavItem> = (
-  section: NavGroup,
-  renderItem: RenderItem<T>,
-) => ReactNode;
+// export type RenderSection<T = NavItem> = (
+//   section: NavGroup,
+//   renderItem: RenderItem<T>,
+// ) => ReactNode;
 
-export interface NavSectionProps {
-  section: NavGroup;
-  renderItem: RenderItem;
-}
+// export interface NavSectionProps {
+//   section: NavGroup;
+//   renderItem: RenderItem;
+// }

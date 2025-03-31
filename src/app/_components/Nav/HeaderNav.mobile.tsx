@@ -1,5 +1,5 @@
 'use client';
-import AlarmButton from '@/_components/Header/Alarm/AlarmButton';
+import AlarmButton from '@/_components/Alarm/AlarmButton';
 import { NavItem } from '@/_types/Header/Header.type';
 import { usePathname } from 'next/navigation';
 import { useNav } from '@/_hooks/nav/useNav';
@@ -7,7 +7,7 @@ import useHeaderStore from '@/_store/Header/useHeaderStore';
 import useAuthStore from '@/_store/auth/useAuth';
 import Link from 'next/link';
 
-export const MobileNavigation = () => {
+const MobileNavList = () => {
   const onClose = useHeaderStore((store) => store.mobileNavOpen.actions.setClose);
   const role = useAuthStore((store) => store.state.role);
   const name = useAuthStore((store) => store.state.name);
@@ -67,6 +67,8 @@ export const MobileNavigation = () => {
     </nav>
   );
 };
+
+export default MobileNavList;
 
 interface ItemProps extends NavItem {
   thisPath: boolean;

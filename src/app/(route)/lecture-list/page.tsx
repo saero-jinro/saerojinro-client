@@ -1,174 +1,51 @@
-'use client';
+import LectureList from './component/list';
+import { redirect } from 'next/navigation';
 
-import { useEffect, useState } from 'react';
-import { LectureListProps, useLectureStore } from '@/_store/LectureList/useLectureStore';
-import Card from '@/_components/Card/Card';
-import DayTab from '@/_components/DayTab/DayTab';
-import { groupByDay, groupByTime } from '@/_components/DayTab/groupBy';
-import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
-import FilterSvg from '@/assets/LectureList/filter.svg';
-import XSvg from '@/assets/LectureList/X.svg';
-import ResetSvg from '@/assets/LectureList/arrow.svg';
+const allowedCategories = [
+  'ALL',
+  'BACKEND',
+  'FRONTEND',
+  'AI',
+  'DATA',
+  'CLOUD',
+  'DEVOPS',
+  'UX_UI',
+  'SEC',
+  'PM',
+  'BLOCKCHAIN',
+  'MOBILE',
+];
 
-const LectureListPage = () => {
-  const { lecturelist, fetchLectures } = useLectureStore();
-  const { wishlist, reservation } = useTimetableStore();
-  const [selectedDay, setSelectedDay] = useState<string>('Day1');
-  const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(['ALL']);
+const Page = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ day?: string; category?: string }>;
+}) => {
+  const LIMITDAY = 3; // 컨퍼런스 진행일
+  const { day, category } = await searchParams;
 
-  const dateList = ['2025-04-01', '2025-04-02', '2025-04-03'];
-  const dateToDayMap = dateList.reduce(
-    (acc, date, index) => {
-      acc[date] = `Day${index + 1}`;
-      return acc;
-    },
-    {} as Record<string, string>,
-  );
-
-  const dayToDateMap = Object.fromEntries(
-    Object.entries(dateToDayMap).map(([date, day]) => [day, date]),
-  );
-
-  useEffect(() => {
-    fetchLectures(dayToDateMap[selectedDay]);
-  }, [selectedDay]);
-
-  const lectures: LectureListProps[] = lecturelist;
-
-  const groupedByDay = groupByDay(lectures);
-  const selectedDate = dayToDateMap[selectedDay];
-  const groupedByTime = selectedDate ? groupByTime(groupedByDay[selectedDate] || []) : {};
-
-  const filteredLectures: Record<string, LectureListProps[]> = selectedCategories.includes('ALL')
-    ? groupedByTime
-    : Object.fromEntries(
-        Object.entries(groupedByTime).map(([time, lectures]) => [
-          time,
-          (Array.isArray(lectures) ? lectures : []).filter((lecture) =>
-            selectedCategories.includes(lecture.category),
-          ),
-        ]),
-      );
-
-  const sortedTime = Object.keys(filteredLectures).sort((a, b) => {
-    const getHour = (timeRange: string) => parseInt(timeRange.split(':')[0], 10);
-    return getHour(a) - getHour(b);
-  });
-
-  function formatTime(time: string): string {
-    const date = new Date(time);
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  // 날짜 유효성 체크
+  if (!day) {
+    redirect(`/lecture-list/?day=Day1&category=ALL`);
   }
 
-  const categories = Array.from(new Set(lectures.map((lecture) => lecture.category)));
+  const isValidDay = /^Day\d+$/.test(day);
+  const dayNum = Number(day.replace('Day', ''));
 
-  return (
-    <div className="px-10 py-16">
-      <DayTab
-        days={Object.values(dateToDayMap)}
-        selectedDay={selectedDay}
-        onSelectDay={setSelectedDay}
-      />
-      <div className="relative flex justify-between items-center h-10 mt-10">
-        <h1 className="text-lg font-medium leading-[140%]">
-          <span className="text-[#015AFF] dark:text-[#014DD9]">
-            {groupedByDay[selectedDate]?.length || 0}
-          </span>{' '}
-          lecture
-        </h1>
-        <button onClick={() => setIsFilterOpen((prev) => !prev)} className="cursor-pointer">
-          <FilterSvg />
-        </button>
+  // 날짜가 해당하는 날짜인지 확인
+  if (!isValidDay || dayNum < 1 || dayNum > LIMITDAY) {
+    redirect('/');
+  }
 
-        {isFilterOpen && (
-          <div className="absolute top-10 right-0 z-10">
-            <div className="bg-[#fff] dark:bg-[#070A12] p-6 w-75 shadow-[0px_4px_8px_0px_rgba(0,0,0,0.15)]">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold leading-[140%]">카테고리</h2>
-                <div className="flex justify-end space-x-2">
-                  <button onClick={() => setSelectedCategories(['ALL'])} className="cursor-pointer">
-                    <ResetSvg />
-                  </button>
-                  <button onClick={() => setIsFilterOpen(false)} className="cursor-pointer">
-                    <XSvg />
-                  </button>
-                </div>
-              </div>
-              <div className="space-y-4">
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={selectedCategories.includes('ALL')}
-                    onChange={() => setSelectedCategories(['ALL'])}
-                    className="mr-[10px] w-5 h-5 accent-[#015AFF] dark:accent-[#003AA5]"
-                  />
-                  <span className="text-base font-medium leading-[140%] text-[#212121] dark:text-white">
-                    ALL
-                  </span>
-                </label>
-                {categories.map((category) => (
-                  <label key={category} className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={selectedCategories.includes(category)}
-                      onChange={() => {
-                        if (selectedCategories.includes('ALL')) {
-                          setSelectedCategories([category]);
-                        } else {
-                          setSelectedCategories((prev) =>
-                            prev.includes(category)
-                              ? prev.filter((c) => c !== category)
-                              : [...prev, category],
-                          );
-                        }
-                      }}
-                      className="mr-[10px] w-5 h-5 accent-[#015AFF] dark:accent-[#003AA5]"
-                    />
-                    <span className="text-base font-medium leading-[140%] text-[#212121] dark:text-white">
-                      {category}
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+  const categories = category?.split(',') ?? ['ALL'];
+  const isValidCategories = categories.every((c) => allowedCategories.includes(c));
 
-      <div className="space-y-8">
-        {sortedTime.length > 0 ? (
-          sortedTime.map((time) => (
-            <div key={time}>
-              <h2 className="text-2xl font-bold mt-8 mb-4">{time}</h2>
-              <ul className="flex flex-wrap gap-6">
-                {filteredLectures[time].map((lecture) => (
-                  <Card
-                    key={lecture.id}
-                    id={lecture.id}
-                    image={lecture.thumbnailUri}
-                    title={lecture.title}
-                    category={lecture.category}
-                    time={`${formatTime(lecture.startTime)} ~ ${formatTime(lecture.endTime)}`}
-                    startTime={lecture.startTime}
-                    endTime={lecture.endTime}
-                    speakerName={lecture.speakerName}
-                    isWished={wishlist.some((w) => w.lectureId === lecture.id)}
-                    isProfile={false}
-                    isReserved={reservation.some((r) => r.lectureId === lecture.id)}
-                  />
-                ))}
-              </ul>
-            </div>
-          ))
-        ) : (
-          <p className="text-center text-gray-500 text-lg py-12">선택한 날짜에 강의가 없습니다.</p>
-        )}
-      </div>
-    </div>
-  );
+  // 카테고리 유효성 체크
+  if (!isValidCategories) {
+    redirect(`/lecture-list/?day=${day}&category=ALL`);
+  }
+
+  return <LectureList initDay={day} initCategories={categories} />;
 };
 
-export default LectureListPage;
+export default Page;

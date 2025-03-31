@@ -12,7 +12,7 @@ export interface LectureListProps {
 
 interface LectureStore {
   lecturelist: LectureListProps[];
-  prevLecturelist: Record<string, LectureListProps[]>; // 캐싱
+  prevLecturelist: Record<string, LectureListProps[]>; // 메모제이션
   fetchLectures: (date: string) => void;
 }
 
@@ -40,7 +40,7 @@ export const useLectureStore = create<LectureStore>((set, get) => ({
       const data = await response.json();
       const lectures = data.lectures as LectureListProps[];
 
-      // 상태 업데이트 뒤 캐시 저장
+      // 상태 업데이트 뒤 메모제이션
       set((state) => ({
         lecturelist: lectures,
         prevLecturelist: {
