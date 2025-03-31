@@ -118,7 +118,7 @@ const LectureListPage = ({
         onSelectDay={setSelectedDay}
       />
       <div className="relative flex justify-between items-center h-10 mt-10 max-md:mt-5">
-        <h1 className="text-lg font-medium leading-[140%] max-md:text-sm">
+        <h1 className="text-[#212121] text-lg font-medium leading-[140%] max-md:text-sm">
           <span className="text-[#015AFF] dark:text-[#014DD9]">
             {groupedByDay[selectedDate]?.length || 0}
           </span>{' '}
@@ -133,7 +133,7 @@ const LectureListPage = ({
 
         {isFilterOpen && (
           <div
-            className="absolute top-10 right-0 z-10 max-md:fixed max-md:inset-0 max-md:top-16 max-md:bg-[#000000B2]"
+            className="absolute top-10 right-0 z-10 rounded-sm max-md:fixed max-md:inset-0 max-md:top-16 max-md:bg-[#000000B2]"
             onClick={() => setIsFilterOpen(false)}
           >
             <div
@@ -202,7 +202,9 @@ const LectureListPage = ({
         {sortedTime.length > 0 ? (
           sortedTime.map((time) => (
             <div key={time}>
-              <h2 className="text-2xl font-bold mt-8 mb-4 max-md:text-lg max-md:my-4">{time}</h2>
+              <h2 className="text-[#212121] text-2xl font-bold mt-8 mb-4 max-md:text-lg max-md:my-4">
+                {time}
+              </h2>
               <ul className="flex flex-wrap gap-6 max-md:gap-3">
                 {filteredLectures[time].map((lecture) => (
                   <Card
