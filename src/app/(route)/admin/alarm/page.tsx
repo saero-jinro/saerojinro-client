@@ -2,7 +2,7 @@
 
 import useAuthStore from '@/_store/auth/useAuth';
 import { useEffect, useState } from 'react';
-import '../../../_styles/admin.css';
+//import '../../../_styles/admin.css';
 
 interface Lecture {
   id: number;
@@ -30,7 +30,7 @@ const NotificationPage = () => {
   useEffect(() => {
     const fetchLectures = async () => {
       try {
-        const res = await fetch('https://admin.saerojinro.site/api/lectures', {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADMIN_API}/api/lectures`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
             'Content-Type': 'application/json',
@@ -63,17 +63,40 @@ const NotificationPage = () => {
   const handleSendNotification = async () => {
     try {
       if (isEmergency) {
-        const res = await fetch('https://admin.saerojinro.site/api/notifications/all', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
+        if (!message.trim()) {
+          alert('내용을 입력해주세요.');
+          return;
+        }
+      } else if (isEdit) {
+        if (!lecture || !date || !time || !room) {
+          alert('변경 정보를 모두 선택해주세요.');
+          return;
+        }
+      } else if (isCancel) {
+        if (!lecture) {
+          alert('강의명을 선택해주세요.');
+          return;
+        }
+      } else {
+        alert('카테고리를 선택해주세요.');
+        return;
+      }
+
+      if (isEmergency) {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_ADMIN_API}/api/notifications/all`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              title: '긴급 공지',
+              contents: message,
+            }),
           },
-          body: JSON.stringify({
-            title: '긴급 공지',
-            contents: message,
-          }),
-        });
+        );
 
         if (!res.ok) {
           throw new Error('알림 전송 실패');
@@ -90,15 +113,15 @@ const NotificationPage = () => {
 
         const lectureId = selectedLecture.id;
         const contents = `
-  [카테고리] ${category}
-  [변경 날짜] ${date || '미지정'}
-  [변경 시간] ${time || '미지정'}
-  [변경 장소] ${room || '미지정'}
-  [비고] ${message || '없음'}
-        `.trim();
+[카테고리] ${category}
+[변경 날짜] ${date || '미지정'}
+[변경 시간] ${time || '미지정'}
+[변경 장소] ${room || '미지정'}
+[비고] ${message || '없음'}
+      `.trim();
 
         const res = await fetch(
-          `https://admin.saerojinro.site/api/notifications/lectures/${lectureId}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_ADMIN_API}/api/notifications/lectures/${lectureId}`,
           {
             method: 'POST',
             headers: {
@@ -196,9 +219,9 @@ const NotificationPage = () => {
                   <option disabled value="" className="text-gray-400">
                     날짜를 선택하세요
                   </option>
-                  <option value="03월 06일">03월 06일</option>
-                  <option value="03월 07일">03월 07일</option>
-                  <option value="03월 08일">03월 08일</option>
+                  <option value="03월 06일">04월 01일</option>
+                  <option value="03월 07일">04월 02일</option>
+                  <option value="03월 08일">04월 03일</option>
                 </select>
               ),
             },
@@ -244,6 +267,7 @@ const NotificationPage = () => {
                   <option>Room-A1</option>
                   <option>Room-B2</option>
                   <option>Room-C3</option>
+                  <option>Online</option>
                 </select>
               ),
             },

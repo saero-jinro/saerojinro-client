@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
+import useAuthStore from '@/_store/auth/useAuth';
 import '../../_styles/admin.css';
 
 interface Lecture {
@@ -24,14 +25,27 @@ const AdminDashboard = () => {
   const [lecturesRaw, setLecturesRaw] = useState<Lecture[]>([]);
   const [timeRank, setTimeRank] = useState<TimeRank[]>([]);
 
+  const accessToken = useAuthStore((store) => store.state.accessToken);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://admin.saerojinro.site/api/dashboard');
+        if (!accessToken) {
+          console.warn('❗ accessToken이 없습니다. 로그인 후 시도해주세요.');
+          return;
+        }
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ADMIN_API}/api/dashboard`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        console.log('API 주소:', process.env.NEXT_PUBLIC_BACKEND_ADMIN_API);
         if (!response.ok) throw new Error('API 호출 실패');
         const data = await response.json();
 
-        setLecturesRaw(data.lectureHighRank.concat(data.lectureLowRank)); // 전체 데이터를 한번에 받는다고 가정
+        setLecturesRaw(data.lectureHighRank.concat(data.lectureLowRank));
         setTimeRank(data.timeRank.slice(0, 10));
       } catch (error) {
         console.error('데이터 로딩 실패:', error);
@@ -39,7 +53,7 @@ const AdminDashboard = () => {
     };
 
     fetchData();
-  }, []);
+  }, [accessToken]);
 
   const toggleSort = () => {
     setIsLowToHigh((prev) => !prev);
