@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LectureListProps, useLectureStore } from '@/_store/LectureList/useLectureStore';
 import Card from '@/_components/Card/Card';
 import DayTab from '@/_components/DayTab/DayTab';
@@ -9,9 +9,8 @@ import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
 import FilterSvg from '@/assets/LectureList/filter.svg';
 import XSvg from '@/assets/LectureList/X.svg';
 import ResetSvg from '@/assets/LectureList/arrow.svg';
-
-import { useRouter, useSearchParams } from 'next/navigation';
 import useAuthStore from '@/_store/auth/useAuth';
+import useQueryString from '@/_hooks/queryString/useQueryString';
 
 const LectureListPage = ({
   initDay,
@@ -25,13 +24,14 @@ const LectureListPage = ({
   const [selectedDay, setSelectedDay] = useState<string>(initDay);
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(initCategories ?? ['ALL']);
+  const { setQueryDayCategory } = useQueryString();
 
   /** zustand */
   const accessToken = useAuthStore((store) => store.state.accessToken);
   const role = useAuthStore((store) => store.state.role);
   const { fetchTimetable } = useTimetableStore();
 
-  /** timetable ynchronization */
+  /** timetable synchronization */
   useEffect(() => {
     if (accessToken || role === 'user') fetchTimetable();
   }, [accessToken, role, fetchTimetable]);
@@ -53,26 +53,10 @@ const LectureListPage = ({
     fetchLectures(dayToDateMap[selectedDay]);
   }, [selectedDay]);
 
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
-  const updateQueryParams = useCallback(
-    (day: string, categories: string[]) => {
-      const params = new URLSearchParams(searchParams.toString());
-
-      if (day.includes('ALL')) params.delete('category');
-      else params.set('category', categories.join(','));
-
-      params.set('day', day);
-
-      router.replace(`?${params.toString()}`);
-    },
-    [router],
-  );
-
+  /** set queryString */
   useEffect(() => {
-    updateQueryParams(selectedDay, selectedCategories);
-  }, [selectedCategories, selectedDay, updateQueryParams]);
+    setQueryDayCategory(selectedDay, selectedCategories);
+  }, [selectedCategories, selectedDay, setQueryDayCategory]);
 
   const lectures: LectureListProps[] = lecturelist;
 

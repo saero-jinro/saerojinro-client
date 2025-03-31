@@ -5,8 +5,12 @@ import { useMemo } from 'react';
 
 // 웹 네비게이션 목록
 const web: NavItem[] = [
-  { title: '강의 목록', path: '/lecture-list', roles: ['guest', 'user'] },
-  { title: '시간표 관리', path: '/timetable', roles: ['guest', 'user'] },
+  { title: '강의 목록', path: '/lecture-list/?day=Day1&category=ALL', roles: ['guest', 'user'] },
+  {
+    title: '시간표 관리',
+    path: '/timetable?day=Day1&showWishlist=false',
+    roles: ['guest', 'user'],
+  },
   { title: '대시보드', path: '/admin', roles: ['admin'] },
   { title: '알림관리', path: '/admin/alarm', roles: ['admin'] },
 ];
