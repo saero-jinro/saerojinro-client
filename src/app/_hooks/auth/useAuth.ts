@@ -67,7 +67,6 @@ const useAuth = () => {
         if (!dto.ok || !dto.data) return;
 
         const { accessToken, role } = dto.data;
-        console.log(accessToken);
 
         setAuth(accessToken, role);
       } catch (err: unknown) {
