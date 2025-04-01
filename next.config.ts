@@ -13,20 +13,11 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
+        protocol: 'http',
+        hostname: '**',
+      }, {
         protocol: 'https',
-        hostname: 'dyns.co.kr',
-      },
-      {
-        protocol: 'https',
-        hostname: 'saerojinro-bucket.s3.ap-northeast-2.amazonaws.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'img1.kakaocdn.net',
-      },
-      {
-        protocol: 'https',
-        hostname: 'k.kakaocdn.net',
+        hostname: '**',
       },
     ],
   },

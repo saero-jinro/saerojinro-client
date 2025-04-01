@@ -78,7 +78,7 @@ const LectureDetailPage = () => {
   const { dayText, timeText } = formatLectureDate(lecture.startTime, lecture.endTime);
 
   return (
-    <div className="w-full px-[40px] py-16 flex flex-col gap-[40px] max-md:py-8 max-md:px-4 max-md:gap-8 dark:bg-[#070A12]">
+    <main className="w-full px-[40px] py-16 flex flex-col gap-[40px] max-md:py-8 max-md:px-4 max-md:gap-8 dark:bg-[#070A12]">
       <header className="flex flex-col items-start self-stretch border-b border-b-[#E2E8F0] dark:border-b-[#161F2E] pb-10 max-md:pb-8">
         <div className="flex flex-col gap-3 max-md:gap-2">
           <time>
@@ -186,7 +186,7 @@ const LectureDetailPage = () => {
           />
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
