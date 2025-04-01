@@ -56,7 +56,7 @@ const useAlarm = () => {
 
       const data = res.data;
       const len = data.length;
-      loadInitAlarms(data);
+      loadInitAlarms(data.reverse());
 
       if (!hasInitializedRef.current) {
         hasInitializedRef.current = true; // 최초 실행

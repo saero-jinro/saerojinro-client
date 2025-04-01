@@ -26,7 +26,6 @@ const Alarm = () => {
         <div className="right-0 h-16 md:h-[80px] px-4 flex justify-between items-center font-bold text-2xl bg-black dark:bg-[#0F172B] text-white">
           <ClickButton actionDesc="modal-close" onClick={closeModal}>
             <RightSvg />
-            {/* <Image alt="left-icon" src="/main/left.webp" width={32} height={32} /> */}
           </ClickButton>
           <span>알림</span>
           <div className="w-4" />
