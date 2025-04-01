@@ -55,7 +55,7 @@ const FstSection = () => {
             dateTime="2025-03-05"
             className="text-sm md:text-[19px] lg:text-2xl font-semibold transition-[font-size] duration-200 ease-in-out"
           >
-            <span className="mr-3">일정</span> <span>2025. 3. 5 ~ 3. 7 (3일간)</span>
+            <span className="mr-3">일정</span> <span>2025. 4. 1 ~ 4. 3 (3일간)</span>
           </time>
         </article>
 
