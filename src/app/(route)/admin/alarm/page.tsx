@@ -214,7 +214,7 @@ const NotificationPage = () => {
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                   disabled={!isInit && !isEdit}
-                  className={`w-[383px] h-[38px] border-none rounded-md bg-[#F1F5F9] text-[#BDBDBD] p-2 rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600 ${
+                  className={`w-[383px] h-[38px] border-none bg-[#F1F5F9] text-[#BDBDBD] p-2 rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600 ${
                     !isInit && !isEdit ? 'bg-gray-100 text-gray-400' : ''
                   }`}
                 >
@@ -261,7 +261,7 @@ const NotificationPage = () => {
                   value={room}
                   onChange={(e) => setRoom(e.target.value)}
                   disabled={!isInit && !isEdit}
-                  className={`w-[383px] h-[38px] border-none rounded-md bg-[#F1F5F9] text-[#BDBDBD] p-2 rounded-md dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600 ${
+                  className={`w-[383px] h-[38px] border-none rounded-md bg-[#F1F5F9] text-[#BDBDBD] p-2 dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600 ${
                     !isInit && !isEdit ? 'bg-gray-100 text-gray-400' : ''
                   }`}
                 >
