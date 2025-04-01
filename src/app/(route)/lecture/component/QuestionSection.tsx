@@ -64,7 +64,6 @@ const QuestionSection = () => {
         throw new Error('네트워크 응답 오류');
       }
       const data = await response.json();
-      console.log(data);
       const questionList: QuestionProps[] = data.questionList;
       setQuestions(questionList);
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
 import useAuthStore from '@/_store/auth/useAuth';
@@ -45,6 +45,7 @@ const formatLectureDate = (startTime: string, endTime: string) => {
 
 const LectureDetailPage = () => {
   const params = useParams();
+  const router = useRouter();
   const lectureId = params.id as string;
   const [lecture, setLecture] = useState<LectureDetailProps>();
   const accessToken = useAuthStore((store) => store.state.accessToken);
@@ -159,7 +160,14 @@ const LectureDetailPage = () => {
               iconClassName="w-6 h-6 text-[#015AFF] dark:text-[#014DD9]"
               onBeforeToggle={() => {
                 if (!accessToken) {
-                  openLoginModal();
+                  const isMobile = window.innerWidth <= 768;
+
+                  if (isMobile) {
+                    router.push('/login');
+                  } else {
+                    openLoginModal();
+                  }
+
                   return false;
                 }
                 return true;

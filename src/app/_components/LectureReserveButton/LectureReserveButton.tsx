@@ -30,7 +30,13 @@ const LectureReserveButton = ({
     e.stopPropagation();
 
     if (!accessToken) {
-      openLoginModal();
+      const isMobile = window.innerWidth <= 768;
+
+      if (isMobile) {
+        router.push('/login');
+      } else {
+        openLoginModal();
+      }
       return;
     }
 
