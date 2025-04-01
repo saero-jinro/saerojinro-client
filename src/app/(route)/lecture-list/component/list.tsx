@@ -91,22 +91,19 @@ const LectureListPage = ({
   const totalFilteredCount = Object.values(filteredLectures).flat().length;
 
   return (
-    <div className="px-10 py-16 max-md:px-4 max-md:py-8">
-      {/* <DayTab
-        days={Object.values(dateToDayMap)}
-        selectedDay={selectedDay}
-        onSelectDay={setSelectedDay}
-      /> */}
+    <main className="px-10 py-16 max-md:px-4 max-md:py-8">
       <DayTab
         days={Object.values(dateToDayMap)}
         selectedDay={selectedDay}
         onSelectDay={setSelectedDay}
       />
       <div className="relative flex justify-between items-center h-10 mt-10 max-md:mt-5">
-        <h1 className="text-[#212121] dark:text-white text-lg font-medium leading-[140%] max-md:text-sm">
-          <span className="text-[#015AFF] dark:text-[#014DD9]">{totalFilteredCount || 0}</span>{' '}
-          lecture
-        </h1>
+        <header>
+          <h1 className="text-[#212121] dark:text-white text-lg font-medium leading-[140%] max-md:text-sm">
+            <span className="text-[#015AFF] dark:text-[#014DD9]">{totalFilteredCount || 0}</span>{' '}
+            lecture
+          </h1>
+        </header>
         <button
           onClick={() => setIsFilterOpen((prev) => !prev)}
           className="p-1 w-8 h-8 max-md:w-6 max-md:h-6 flex items-center justify-center cursor-pointer"
@@ -188,7 +185,7 @@ const LectureListPage = ({
         )}
       </div>
 
-      <div className="space-y-8  max-md:space-y-4">
+      <section className="space-y-8  max-md:space-y-4">
         {sortedTime.length > 0 ? (
           sortedTime.map((time) => {
             const lecturesForTime = filteredLectures[time] || [];
@@ -224,8 +221,8 @@ const LectureListPage = ({
         ) : (
           <p className="text-center text-gray-500 text-lg py-12">선택한 날짜에 강의가 없습니다.</p>
         )}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 

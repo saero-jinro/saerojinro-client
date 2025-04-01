@@ -28,18 +28,20 @@ const WebNavList = ({ children }: WebNavListProps) => {
     <div className="flex justify-center items-center gap-2 select-none text-lg">
       {children}
       <nav>
-        <ol className="flex gap-2 items-center tracking-tighter">
+        <ul className="flex gap-2 items-center tracking-tighter">
           {/* 아이템 */}
           {web.map((props) => (
             <WebNavItem key={props.title} {...props} />
           ))}
           {role !== 'guest' && (
-            <Link className="px-2 py-3 hover:brightness-90" href={path[role]}>
-              {name}
-            </Link>
+            <li>
+              <Link className="px-2 py-3 hover:brightness-90" href={path[role]}>
+                {name}
+              </Link>
+            </li>
           )}
           {role === 'guest' && <LoginButton />}
-        </ol>
+        </ul>
       </nav>
       {role === 'user' && <AlarmButton scale={32} />}
     </div>
@@ -60,12 +62,14 @@ const WebNavItem = ({ path, title }: NavItem) => {
 const LoginButton = () => {
   const { open } = useLoginModalStore();
   return (
-    <ClickButton
-      className="px-2 py-3 hover:brightness-90"
-      actionDesc="open-login-modal"
-      onClick={open}
-    >
-      로그인
-    </ClickButton>
+    <li>
+      <ClickButton
+        className="px-2 py-3 hover:brightness-90"
+        actionDesc="open-login-modal"
+        onClick={open}
+      >
+        로그인
+      </ClickButton>
+    </li>
   );
 };
