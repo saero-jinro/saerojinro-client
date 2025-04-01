@@ -60,11 +60,12 @@ const AdminLoginPage = () => {
             이메일
           </div>
           <input
+            aria-label="admin-emial"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="이메일을 입력해주세요"
-            className="w-96 h-12 px-4 bg-color-bg-enabled rounded-sm text-color-text-primary placeholder:text-color-text-disabled font-['Pretendard']"
+            className="w-96 h-12 px-4 bg-color-bg-enabled text-color-text-primary placeholder:text-color-text-disabled bg-[#F1F5F9] dark:bg-[#0D121E] rounded-xs focus-within:outline outline-[#015AFF] focus-within:bg-white dark:focus-within:outline-[#003AA5] dark:focus-within:bg-[#070A12]"
           />
         </div>
 
@@ -74,11 +75,12 @@ const AdminLoginPage = () => {
             비밀번호
           </div>
           <input
+            aria-label="admin-password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="비밀번호를 입력해주세요"
-            className="w-96 h-12 px-4 bg-color-bg-enabled rounded-sm text-color-text-primary placeholder:text-color-text-disabled font-['Pretendard']"
+            className="w-96 h-12 px-4 bg-color-bg-enabled text-color-text-primary placeholder:text-color-text-disabled bg-[#F1F5F9] dark:bg-[#0D121E] rounded-xs focus-within:outline outline-[#015AFF] focus-within:bg-white dark:focus-within:outline-[#003AA5] dark:focus-within:bg-[#070A12]"
           />
         </div>
       </div>
