@@ -46,7 +46,7 @@ const AlarmList = () => {
 
   useEffect(() => {
     const hasScroll = () => {
-      if (ulRef.current) setIsEnd(!(ulRef.current.scrollHeight > ulRef.current.clientHeight));
+      if (ulRef.current) setIsEnd(!(ulRef.current.scrollHeight === 0));
     };
 
     window.addEventListener('resize', hasScroll);
