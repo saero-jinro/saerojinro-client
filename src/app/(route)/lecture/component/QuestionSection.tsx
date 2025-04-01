@@ -173,7 +173,7 @@ const QuestionSection = () => {
         <div className="flex items-center justify-center resize-none w-full bg-[#F1F5F9] dark:bg-[#0D121E] rounded-xs focus-within:outline outline-[#015AFF] focus-within:bg-white dark:focus-within:outline-[#003AA5] dark:focus-within:bg-[#070A12]">
           <Textarea
             placeholder="사전 질문을 작성해 주세요."
-            className="text-[#212121] dark:text-white w-full border-none min-h-6 overflow-hidden resize-none border px-4 rounded-md focus:outline-none max-md:text-sm max-md:px-0"
+            className="text-[#212121] dark:text-white w-full border-none min-h-6 overflow-hidden resize-none border px-4 rounded-md focus:outline-none max-md:text-sm"
             value={text}
             onChange={(e) => setText(e.target.value)}
             rows={1}

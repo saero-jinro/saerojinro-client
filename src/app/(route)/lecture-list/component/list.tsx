@@ -103,7 +103,7 @@ const LectureListPage = ({
         onSelectDay={setSelectedDay}
       />
       <div className="relative flex justify-between items-center h-10 mt-10 max-md:mt-5">
-        <h1 className="text-[#212121] text-lg font-medium leading-[140%] max-md:text-sm">
+        <h1 className="text-[#212121] dark:text-white text-lg font-medium leading-[140%] max-md:text-sm">
           <span className="text-[#015AFF] dark:text-[#014DD9]">{totalFilteredCount || 0}</span>{' '}
           lecture
         </h1>
@@ -190,7 +190,7 @@ const LectureListPage = ({
 
             return (
               <div key={time}>
-                <h2 className="text-[#212121] text-2xl font-bold mt-8 mb-4 max-md:text-lg max-md:my-4">
+                <h2 className="text-[#212121] dark:text-white text-2xl font-bold mt-8 mb-4 max-md:text-lg max-md:my-4">
                   {time}
                 </h2>
                 <ul className="flex flex-wrap gap-6 max-md:gap-3">
