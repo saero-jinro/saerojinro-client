@@ -64,7 +64,6 @@ const QuestionSection = () => {
         throw new Error('네트워크 응답 오류');
       }
       const data = await response.json();
-      console.log(data);
       const questionList: QuestionProps[] = data.questionList;
       setQuestions(questionList);
 
@@ -177,11 +176,13 @@ const QuestionSection = () => {
             value={text}
             onChange={(e) => setText(e.target.value)}
             rows={1}
+            aria-label="question-input"
           />
         </div>
         <button
           onClick={handleSubmit}
           className="btn font-semibold text-base max-md:text-sm rounded-xs whitespace-nowrap px-4 max-md:py-1.5 py-1 h-12 max-md:h-11 overflow-hidden cursor-pointer bg-[#015AFF] dark:bg-[#003AA5]"
+          aria-label="submit-question"
         >
           등록
         </button>
@@ -223,12 +224,15 @@ const QuestionSection = () => {
                   <div className="md:absolute md:right-0 md:top-0 flex gap-2">
                     {editingId === question.id ? (
                       <>
-                        <button onClick={handleSave}>저장</button>
+                        <button onClick={handleSave} aria-label="save-edited-question">
+                          저장
+                        </button>
                         <button
                           onClick={() => {
                             setEditingId(null);
                             setEditingContent('');
                           }}
+                          aria-label="cancel-edit-question"
                         >
                           취소
                         </button>
@@ -238,6 +242,7 @@ const QuestionSection = () => {
                         <button
                           onClick={() => handleEditClick(question)}
                           className="cursor-pointer font-medium text-base text-[#424242] dark:text-[#CAD5E2]"
+                          aria-label={`edit-question-${question.id}`}
                         >
                           수정
                         </button>
@@ -249,6 +254,7 @@ const QuestionSection = () => {
                             });
                           }}
                           className="cursor-pointer font-medium text-base text-[#424242] dark:text-[#CAD5E2]"
+                          aria-label={`delete-question-${question.id}`}
                         >
                           삭제
                         </button>
@@ -265,6 +271,7 @@ const QuestionSection = () => {
                     spellCheck={false}
                     onChange={(e) => setEditingContent(e.target.value)}
                     className="resize-none w-full overflow-hidden rounded-[4px] border border-solid border-[#015AFF] p-2"
+                    aria-label="edit-question-input"
                   />
                 ) : (
                   <p

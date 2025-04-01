@@ -110,6 +110,7 @@ const LectureListPage = ({
         <button
           onClick={() => setIsFilterOpen((prev) => !prev)}
           className="p-1 w-8 h-8 max-md:w-6 max-md:h-6 flex items-center justify-center cursor-pointer"
+          aria-label="toggle-filter"
         >
           <FilterSvg />
         </button>
@@ -147,6 +148,7 @@ const LectureListPage = ({
                     checked={selectedCategories.includes('ALL')}
                     onChange={() => setSelectedCategories(['ALL'])}
                     className="mr-[10px] max-md:mr-2 w-5 h-5 accent-[#015AFF] dark:accent-[#003AA5]"
+                    aria-label="select-all-categories"
                   />
                   <span className="text-base font-medium leading-[140%] text-[#212121] dark:text-white">
                     ALL
@@ -169,6 +171,7 @@ const LectureListPage = ({
                         }
                       }}
                       className="mr-[10px] max-md:mr-2 w-5 h-5 accent-[#015AFF] dark:accent-[#003AA5]"
+                      aria-label={`select-category-${category.toLowerCase().replace(/\s+/g, '-')}`}
                     />
                     <span className="text-base font-medium leading-[140%] text-[#212121] dark:text-white">
                       {category}

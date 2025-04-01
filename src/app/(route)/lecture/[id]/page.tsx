@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useTimetableStore } from '@/_store/timetable/useTimetableStore';
 import useAuthStore from '@/_store/auth/useAuth';
@@ -45,6 +45,7 @@ const formatLectureDate = (startTime: string, endTime: string) => {
 
 const LectureDetailPage = () => {
   const params = useParams();
+  const router = useRouter();
   const lectureId = params.id as string;
   const [lecture, setLecture] = useState<LectureDetailProps>();
   const accessToken = useAuthStore((store) => store.state.accessToken);
@@ -142,6 +143,7 @@ const LectureDetailPage = () => {
           className={`btn rounded-xs py-[6px] px-4 flex flex-row items-center justify-center gap-2 font-semibold text-base border 
                 ${isLoggedIn ? 'bg-white text-[#015AFF] border-[#015AFF] dark:bg-[#070A12] dark:text-[#014DD9] dark:border-[#003AA5] cursor-pointer' : 'bg-gray-200 text-gray-400 border-gray-300 dark:bg-[#1a1a1a] dark:text-gray-600 dark:border-gray-600 cursor-not-allowed'}
             `}
+          aria-label="download"
         >
           <DownloadSvg />
           download
@@ -159,7 +161,14 @@ const LectureDetailPage = () => {
               iconClassName="w-6 h-6 text-[#015AFF] dark:text-[#014DD9]"
               onBeforeToggle={() => {
                 if (!accessToken) {
-                  openLoginModal();
+                  const isMobile = window.innerWidth <= 768;
+
+                  if (isMobile) {
+                    router.push('/login');
+                  } else {
+                    openLoginModal();
+                  }
+
                   return false;
                 }
                 return true;

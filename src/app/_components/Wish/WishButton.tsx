@@ -27,7 +27,7 @@ const WishButton = ({
         if (onBeforeToggle && onBeforeToggle() === false) return;
         toggleWish(itemId);
       }}
-      aria-label="즐겨찾기"
+      aria-label={isWished ? 'remove-from-wishlist' : 'add-to-wishlist'}
     >
       {isWished ? (
         <WishFillSvg className={iconClassName || 'text-[#00249C]'} />

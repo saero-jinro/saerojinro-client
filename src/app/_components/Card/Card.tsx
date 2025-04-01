@@ -61,11 +61,17 @@ const Card = ({
         <WishButton
           isWished={isWished}
           itemId={id}
-          className="absolute top-2 right-2"
+          className="absolute top-2 right-2 max-md:top-1 max-md:right-1"
           iconClassName="w-10 h-10 p-1 text-[#015AFF] dark:text-[#003AA5] max-md:w-6 max-md:h-6"
           onBeforeToggle={() => {
             if (!accessToken) {
-              openLoginModal();
+              const isMobile = window.innerWidth <= 768;
+
+              if (isMobile) {
+                router.push('/login');
+              } else {
+                openLoginModal();
+              }
               return false;
             }
             return true;

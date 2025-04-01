@@ -30,7 +30,13 @@ const LectureReserveButton = ({
     e.stopPropagation();
 
     if (!accessToken) {
-      openLoginModal();
+      const isMobile = window.innerWidth <= 768;
+
+      if (isMobile) {
+        router.push('/login');
+      } else {
+        openLoginModal();
+      }
       return;
     }
 
@@ -71,6 +77,7 @@ const LectureReserveButton = ({
     <button
       className={`font-semibold text-base text-white leading-[140%] rounded-xs cursor-pointer ${className}`}
       onClick={handleClick}
+      aria-label={isReserved ? 'cancel-lecture-reservation' : 'reserve-lecture'}
     >
       {isReserved ? '강의 취소' : '강의 신청'}
     </button>
