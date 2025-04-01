@@ -1,22 +1,19 @@
 import Link from 'next/link';
 import SectionWrapper from './component/SectionWrapper';
+import Image from 'next/image';
 
 const FstSection = () => {
   return (
     <SectionWrapper
       role="region"
       aria-labelledby="conference-title"
-      className="
-    w-full h-[560px] 
-    mx-auto flex flex-col
-    bg-[url('/main/mainImg.webp')]
-    bg-no-repeat bg-cover bg-center
-    md:h-[640px] lg:h-[720px]
-    transition-[height] duration-100 ease-in-out
-  "
+      className="relative w-full h-[560px] md:h-[640px] lg:h-[720px] transition-[height] duration-100 ease-in-out"
     >
+      {/* 배경 이미지 대체 */}
+      <Image src="/main/mainImg.webp" alt="" fill priority className="object-cover" />
+
       {/* 제목과 소개 */}
-      <div className="max-w-7xl w-full text-[#fff] h-full px-4 md:px-[40px] py-[64px] mx-auto flex flex-col justify-center">
+      <div className=" relative max-w-7xl z-10 w-full text-[#fff] h-full px-4 md:px-[40px] py-[64px] mx-auto flex flex-col justify-center">
         <article className="flex flex-col">
           <h1
             id="conference-title"

@@ -14,7 +14,13 @@ const ColorPickerButton = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <span className="relative h-[15px]" onClick={() => setIsOpen(true)}>
+    <span
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') setIsOpen(true);
+      }}
+      className="relative h-[15px]"
+      onClick={() => setIsOpen(true)}
+    >
       {/* 버튼 모양 */}
       <Image alt="컬러 선택" src="/editor/color.webp" width={15} height={15} />
 

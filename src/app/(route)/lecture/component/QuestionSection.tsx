@@ -4,6 +4,7 @@ import useHeaderStore from '@/_store/Header/useHeaderStore';
 import useAuthStore from '@/_store/auth/useAuth';
 import useLoginModalStore from '@/_store/modal/useLoginModalStore';
 import UserSVG from '@/assets/Lecture/Regular.svg';
+import Image from 'next/image';
 
 interface QuestionProps {
   id: number;
@@ -201,11 +202,12 @@ const QuestionSection = () => {
             >
               <div className="flex justify-between">
                 <div className="flex items-center gap-1 min-w-20">
-                  <div className="w-8 h-8 rounded-xs overflow-hidden">
+                  <div className="w-8 h-8 relative rounded-xs overflow-hidden">
                     {question.profileImage ? (
-                      <img
+                      <Image
                         src={question.profileImage}
                         alt="프로필 이미지"
+                        fill
                         className="w-full h-full object-cover"
                       />
                     ) : (

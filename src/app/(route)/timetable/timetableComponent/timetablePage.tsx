@@ -144,8 +144,8 @@ const TimetablePage = ({ initDay, initShowWishlist }: Props) => {
   };
 
   return (
-    <div className="py-16 px-10 max-md:py-8 max-md:px-4">
-      <div className="w-full flex justify-between items-center pb-8 max-md:pb-5">
+    <main className="py-16 px-10 max-md:py-8 max-md:px-4">
+      <header className="w-full flex justify-between items-center pb-8 max-md:pb-5">
         <h1 className="text-[#212121] dark:text-white text-[32px] font-bold max-md:text-xl">
           컨퍼런스 시간표
         </h1>
@@ -164,7 +164,7 @@ const TimetablePage = ({ initDay, initShowWishlist }: Props) => {
         ) : (
           <div></div>
         )}
-      </div>
+      </header>
       <div className="flex gap-6 w-full ">
         <div className="flex-grow">
           <div className="pb-6 max-md:pb-4">
@@ -175,21 +175,21 @@ const TimetablePage = ({ initDay, initShowWishlist }: Props) => {
             />
           </div>
           {isLoggedIn ? (
-            <div className="grid rounded-sm border border-[#E2E8F0] dark:border-[#161F2E] [grid-template-columns:100px_1fr] max-md:[grid-template-columns:75px_1fr] max-md:rounded-xs">
+            <section className="grid rounded-sm border border-[#E2E8F0] dark:border-[#161F2E] [grid-template-columns:100px_1fr] max-md:[grid-template-columns:75px_1fr] max-md:rounded-xs">
               {timeSlots.map(({ start, end }) => {
                 const currentSlotKey = `${selectedDay} ${start}`;
                 const isSelected = selectedTime === currentSlotKey;
 
                 if (occupiedSlots.has(start) && !isSelected) {
                   return (
-                    <div
+                    <time
                       key={`empty-${start}`}
                       className="flex justify-center items-center border border-[#E2E8F0] px-5 py-6 bg-white max-md:p-4 h-full text-center font-semibold text-base max-md:text-sm leading-[140%] text-[#757575] dark:bg-[#070A12] dark:border-[#161F2E] dark:text-[#62748E]"
                     >
                       {start}
                       <br />-<br />
                       {end}
-                    </div>
+                    </time>
                   );
                 }
 
@@ -237,11 +237,14 @@ const TimetablePage = ({ initDay, initShowWishlist }: Props) => {
                     </div>
 
                     {lecture ? (
-                      <div
+                      <article
                         key={lecture.reservationId}
                         className={`flex flex-col justify-center p-6 max-md:p-4 cursor-pointer bg-white dark:bg-[#070A12] border border-[#E2E8F0] dark:border-[#161F2E] ${rowSpan > 1 ? 'border-b-0' : 'border-b'}`}
                         style={{
                           gridRow: `span ${rowSpan}`,
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') router.push(`/lecture/${lecture.lectureId}`);
                         }}
                         onClick={() => router.push(`/lecture/${lecture.lectureId}`)}
                       >
@@ -261,7 +264,7 @@ const TimetablePage = ({ initDay, initShowWishlist }: Props) => {
                             {lecture.capacity}
                           </p>
                         </div>
-                      </div>
+                      </article>
                     ) : (
                       <div
                         className={`flex justify-center items-center border font-medium text-lg max-md:text-sm cursor-pointer 
@@ -277,6 +280,11 @@ const TimetablePage = ({ initDay, initShowWishlist }: Props) => {
                         aria-label="open-recommendation-lecture"
                         role="button"
                         tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            handleEmptySlotClick(Number(selectedDay.replace('Day', '')), start);
+                          }
+                        }}
                       >
                         빈 시간 클릭 시 추천 일정이 나타납니다.
                       </div>
@@ -284,7 +292,7 @@ const TimetablePage = ({ initDay, initShowWishlist }: Props) => {
                   </Fragment>
                 );
               })}
-            </div>
+            </section>
           ) : (
             <div className="flex justify-center items-center h-[690px] bg-[#F1F5F9] text-[#757575] dark:bg-[#0D121E] dark:text-[#62748E]">
               로그인 이후 이용 가능합니다.
@@ -330,12 +338,18 @@ const TimetablePage = ({ initDay, initShowWishlist }: Props) => {
           <div
             className="fixed inset-0 z-40 bg-[#000000B2]"
             onClick={handleClose}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleClose();
+              }
+            }}
             aria-label="close-recommendation-lecture"
             role="button"
             tabIndex={0}
           >
             <div
               className={`fixed bottom-0 left-0 w-full max-h-[70vh] bg-[#F8FAFC] dark:bg-[#02050C] rounded-t-[20px] px-4 py-6 z-50 overflow-y-auto ${isClosing ? 'animate-slide-down' : 'animate-slide-up'}`}
+              aria-hidden="true"
               onClick={(e) => e.stopPropagation()}
             >
               <style jsx>{`
@@ -396,7 +410,7 @@ const TimetablePage = ({ initDay, initShowWishlist }: Props) => {
           </div>
         )}
       </div>
-    </div>
+    </main>
   );
 };
 
