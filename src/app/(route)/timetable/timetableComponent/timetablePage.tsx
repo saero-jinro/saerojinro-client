@@ -243,6 +243,9 @@ const TimetablePage = ({ initDay, initShowWishlist }: Props) => {
                         style={{
                           gridRow: `span ${rowSpan}`,
                         }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') router.push(`/lecture/${lecture.lectureId}`);
+                        }}
                         onClick={() => router.push(`/lecture/${lecture.lectureId}`)}
                       >
                         <p className="w-fit rounded-sm bg-[#F1F5F9] text-[#015AFF] dark:bg-[#0D121E] dark:text-[#014DD9] px-2 py-1 max-md:py-0.5 font-semibold text-sm max-md:text-xs leading-[140%]">
@@ -277,6 +280,11 @@ const TimetablePage = ({ initDay, initShowWishlist }: Props) => {
                         aria-label="open-recommendation-lecture"
                         role="button"
                         tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            handleEmptySlotClick(Number(selectedDay.replace('Day', '')), start);
+                          }
+                        }}
                       >
                         빈 시간 클릭 시 추천 일정이 나타납니다.
                       </div>
@@ -330,12 +338,18 @@ const TimetablePage = ({ initDay, initShowWishlist }: Props) => {
           <div
             className="fixed inset-0 z-40 bg-[#000000B2]"
             onClick={handleClose}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleClose();
+              }
+            }}
             aria-label="close-recommendation-lecture"
             role="button"
             tabIndex={0}
           >
             <div
               className={`fixed bottom-0 left-0 w-full max-h-[70vh] bg-[#F8FAFC] dark:bg-[#02050C] rounded-t-[20px] px-4 py-6 z-50 overflow-y-auto ${isClosing ? 'animate-slide-down' : 'animate-slide-up'}`}
+              aria-hidden="true"
               onClick={(e) => e.stopPropagation()}
             >
               <style jsx>{`

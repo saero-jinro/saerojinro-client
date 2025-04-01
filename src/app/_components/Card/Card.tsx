@@ -48,6 +48,9 @@ const Card = ({
     <div
       className="overflow-hidden w-[282px] h-[410px] max-md:w-[165px] max-md:h-[295px] bg-white dark:bg-[#070A12] border border-[#DEE2E6] dark:border-[#161F2E] rounded-lg max-md:rounded-sm cursor-pointer"
       onClick={handleClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') handleClick();
+      }}
     >
       <div className="relative">
         <Image

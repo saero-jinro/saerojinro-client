@@ -119,8 +119,12 @@ const LectureListPage = ({
           <div
             className="absolute top-10 right-0 z-10 rounded-sm max-md:fixed max-md:inset-0 max-md:top-16 max-md:bg-[#000000B2]"
             onClick={() => setIsFilterOpen(false)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') setIsFilterOpen(false);
+            }}
           >
             <div
+              aria-hidden
               className="bg-[#fff] dark:bg-[#070A12] p-6 w-75 shadow-[0px_4px_8px_0px_rgba(0,0,0,0.15)] max-md:w-screen max-md:rounded-b-sm max-md:px-4 max-md:py-5"
               onClick={(e) => e.stopPropagation()}
             >
