@@ -1,3 +1,5 @@
+import { ApiResponse, AuthRefreshResponse } from '@/_types/Auth/auth.type';
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
@@ -88,5 +90,47 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('카카오 로그인 처리 중 오류:', error);
     return NextResponse.json({ error: '서버 오류' }, { status: 500 });
+  }
+}
+
+export async function DELETE() {
+  try {
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get('accessToken')?.value;
+
+    if (!accessToken) {
+      return NextResponse.json({ ok: false, error: 'No accessToken found' }, { status: 401 });
+    }
+    const BACK_URL = process.env.NEXT_PUBLIC_BACKEND_API;
+
+    const backendResponse = await fetch(`${BACK_URL}/api/users`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!backendResponse.ok) {
+      return NextResponse.json<ApiResponse<AuthRefreshResponse>>(
+        { ok: false, error: 'Refresh token invalid' },
+        { status: 403 },
+      );
+    }
+
+    const response = NextResponse.json<ApiResponse<AuthRefreshResponse>>({
+      ok: true,
+    });
+
+    response.cookies.delete('accessToken');
+    response.cookies.delete('refreshToken');
+    response.cookies.delete('adminToken');
+
+    return response;
+  } catch {
+    return NextResponse.json<ApiResponse<AuthRefreshResponse>>(
+      { ok: false, error: 'Server error' },
+      { status: 500 },
+    );
   }
 }
