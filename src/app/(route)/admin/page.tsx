@@ -40,7 +40,6 @@ const AdminDashboard = () => {
           },
         });
 
-        console.log('API 주소:', process.env.NEXT_PUBLIC_BACKEND_ADMIN_API);
         if (!response.ok) throw new Error('API 호출 실패');
         const data = await response.json();
 
@@ -114,7 +113,11 @@ const AdminDashboard = () => {
               <table className="w-full table-auto border-collapse">
                 <thead>
                   <tr className="bg-[#00249C] dark:bg-[#1E3A8A] text-bold text-white h-[46px] px-[16px] py-[12px]">
-                    <th className="px-[16px] py-[8px] whitespace-nowrap" onClick={toggleSort}>
+                    <th
+                      className="px-[16px] py-[8px] whitespace-nowrap"
+                      aria-label="priority toggle"
+                      onClick={toggleSort}
+                    >
                       {isLowToHigh ? '높은 순▲' : '낮은 순▼'}
                     </th>
                     <th className="px-[16px] py-[8px] text-left whitespace-nowrap">강의명</th>

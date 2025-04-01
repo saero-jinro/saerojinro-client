@@ -169,6 +169,7 @@ const NotificationPage = () => {
               label: '카테고리',
               element: (
                 <select
+                  aria-label="select categories"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-[383px] h-[38px] border-none rounded-md bg-[#F1F5F9] text-[#BDBDBD] dark:bg-[#2A2A2A] dark:text-white dark:border-gray-600"
@@ -186,6 +187,7 @@ const NotificationPage = () => {
               label: '강의명',
               element: (
                 <select
+                  aria-label="select lectures"
                   value={lecture}
                   onChange={(e) => setLecture(e.target.value)}
                   disabled={!isInit && isEmergency}
@@ -208,6 +210,7 @@ const NotificationPage = () => {
               label: '변경 날짜',
               element: (
                 <select
+                  aria-label="select date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                   disabled={!isInit && !isEdit}
@@ -228,6 +231,7 @@ const NotificationPage = () => {
               label: '변경 시간',
               element: (
                 <select
+                  aria-label="select time"
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
                   disabled={!isInit && !isEdit}
@@ -253,6 +257,7 @@ const NotificationPage = () => {
               label: '변경 장소',
               element: (
                 <select
+                  aria-label="select place"
                   value={room}
                   onChange={(e) => setRoom(e.target.value)}
                   disabled={!isInit && !isEdit}
@@ -274,6 +279,7 @@ const NotificationPage = () => {
               label: '내용',
               element: (
                 <input
+                  aria-label="emergency alarm contents"
                   type="text"
                   placeholder={placeholder}
                   value={message}
@@ -305,6 +311,7 @@ const NotificationPage = () => {
         <div className="w-[1122px] mt-4">
           <button
             onClick={handleSendNotification}
+            aria-label="send alarm button"
             className="flex items-center justify-center bg-blue-600 text-white px-6 py-2 hover:bg-blue-700 w-[92px] h-[48px] whitespace-nowrap"
           >
             알림 전송
