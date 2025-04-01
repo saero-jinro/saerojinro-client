@@ -16,7 +16,7 @@ const SecSection = async () => {
           <div className="mx-auto flex flex-col gap-6 px-4 py-[64px] md:px-[40px]">
             <h2
               id="introduce-sections"
-              className="text-[32px] font-bold text-[#212121] dark:text-[#FFFFFF]"
+              className="text-xl md:text-[32px] font-bold text-[#212121] dark:text-[#FFFFFF]"
             >
               강연 소개
             </h2>

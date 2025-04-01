@@ -55,7 +55,7 @@ const FstSection = () => {
             dateTime="2025-03-05"
             className="text-sm md:text-[19px] lg:text-2xl font-semibold transition-[font-size] duration-200 ease-in-out"
           >
-            <span className="mr-3">일정</span> <span>2025. 3. 5 ~ 3. 7 (3일간)</span>
+            <span className="mr-3">일정</span> <span>2025. 4. 1 ~ 4. 3 (3일간)</span>
           </time>
         </article>
 
@@ -63,7 +63,7 @@ const FstSection = () => {
         <div className="mt-8 md:mt-12">
           <Link
             href="/lecture-list"
-            className="flex items-center justify-center bg-[#00249C] w-[160px] text-sm h-11 px-4 py-[6px] rounded-[4px] md:text-base md:w-[300px] md:h-12 md:px-4 md:py-1 md:rounded-[2px] hover:brightness-90"
+            className="flex items-center font-semibold justify-center bg-[#00249C] w-[160px] text-sm h-11 px-4 py-[6px] rounded-[4px] md:text-base md:w-[300px] md:h-12 md:px-4 md:py-1 md:rounded-[2px] hover:brightness-90"
             aria-label="참가 등록하기"
           >
             참가 등록하기

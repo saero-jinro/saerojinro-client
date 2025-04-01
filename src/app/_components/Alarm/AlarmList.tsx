@@ -1,7 +1,7 @@
 import useAlarmStore from '@/_store/Header/useAlarmStore';
 import { Alarm } from '@/_types/Header/Alarm.type';
 import { UIEvent, useCallback, useEffect, useRef, useState } from 'react';
-import DownSVG from '@/assets/Main/down.svg';
+import UpSVG from '@/assets/Main/up.svg';
 import ClickButton from '@/_components/ClickButton';
 type ItemProps = Alarm;
 
@@ -24,35 +24,29 @@ export const getAlarmTime = (time: string) => {
 
 const AlarmList = () => {
   const alarms = useAlarmStore((store) => store.alarms.state.alarms);
-  const isOpen = useAlarmStore((store) => store.isOpen.state.isOpen);
   const [isEnd, setIsEnd] = useState<boolean>(false);
   const ulRef = useRef<HTMLUListElement>(null);
-  const SCROLL_THRESHOLD = 100;
+  const SCROLL_THRESHOLD = 50;
 
   // 스크롤이 끝인지 아닌지 판별
   const scrollHandler = useCallback((e: UIEvent<HTMLUListElement>) => {
-    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-    const isBottom = scrollTop >= scrollHeight - clientHeight - SCROLL_THRESHOLD;
+    const { scrollTop } = e.currentTarget;
+    const isBottom = scrollTop < SCROLL_THRESHOLD;
     setIsEnd(isBottom);
   }, []);
 
-  const scrollToBottom = useCallback(({ smooth = false }: { smooth?: boolean }) => {
+  const scrollToTop = useCallback(({ smooth = false }: { smooth?: boolean }) => {
     const ul = ulRef.current;
     if (!ul) return;
     ul.scrollTo({
-      top: ul.scrollHeight,
+      top: 0,
       behavior: smooth ? 'smooth' : 'auto',
     });
   }, []);
 
   useEffect(() => {
-    if (!isOpen) return;
-    scrollToBottom({ smooth: false });
-  }, [isOpen, scrollToBottom]);
-
-  useEffect(() => {
     const hasScroll = () => {
-      if (ulRef.current) setIsEnd(!(ulRef.current.scrollHeight > ulRef.current.clientHeight));
+      if (ulRef.current) setIsEnd(!(ulRef.current.scrollHeight === 0));
     };
 
     window.addEventListener('resize', hasScroll);
@@ -80,11 +74,11 @@ const AlarmList = () => {
         <ClickButton
           actionDesc="scroll-end"
           onClick={() => {
-            scrollToBottom({ smooth: true });
+            scrollToTop({ smooth: true });
           }}
           className="fixed z-[10000] w-8 h-8 shadow-[0_0_0_1.5px_#6a728249] cursor-pointer bg-[#f8f8f8] text-gray-400 rounded-full overflow-hidden right-[4px] bottom-[20px] hover:brightness-90"
         >
-          <DownSVG className="pt-[2.5px]" width={32} height={32} />
+          <UpSVG width={32} height={32} />
         </ClickButton>
       )}
     </ul>
@@ -98,7 +92,6 @@ const AlarmItem = ({ createdAt, title, contents }: ItemProps) => {
         <span className=" font-bold">{title}</span>
         <span className="text-xs md:text-sm font-medium ">{getAlarmTime(createdAt)}</span>
       </div>
-
       <div className="mt-2 w-full">
         <p className="break-words whitespace-normal w-full block">{contents}</p>
       </div>

@@ -44,7 +44,10 @@ const TrdSection = () => {
       <div className="max-w-7xl w-full mx-auto">
         {/* 제목 */}
         <div>
-          <h2 id="conference-location" className="text-xl md:text-[32px] font-bold block">
+          <h2
+            id="conference-location"
+            className="text-xl md:text-[32px] font-bold block max-md:mb-[20px]"
+          >
             컨퍼런스 위치
           </h2>
         </div>

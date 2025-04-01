@@ -82,7 +82,7 @@ export const EditableField = ({ id, label, value, onSave }: EditableFieldProps) 
           value={state}
           onChange={handleChange}
           placeholder={`${label}을 입력하세요`}
-          className="h-12 w-full px-4 outline-none focus:border focus:border-[#90a1b981] dark:focus:border-[#6f76815d]  rounded-[2px] bg-[#F1F5F9] dark:bg-[#0D121E]"
+          className="h-12 w-full px-4 bg-[#F1F5F9] dark:bg-[#0D121E] rounded-xs focus-within:outline outline-[#015AFF] focus-within:bg-white dark:focus-within:outline-[#003AA5] dark:focus-within:bg-[#070A12]"
         />
         <ClickButton
           actionDesc={`${id}-change`}

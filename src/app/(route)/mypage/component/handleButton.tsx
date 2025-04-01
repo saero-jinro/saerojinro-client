@@ -1,7 +1,9 @@
 'use client';
 import useHeaderStore from '@/_store/Header/useHeaderStore';
+import { handleDeleteUser } from '@/_utils/Auth/deleteUser';
 import { handleLogout } from '@/_utils/Auth/logout';
 import ClickButton from '@/_components/ClickButton';
+import useAuthStore from '@/_store/auth/useAuth';
 
 export const LogoutButton = () => {
   const showPopup = useHeaderStore((store) => store.popup.actions.showPopup);
@@ -46,6 +48,9 @@ export const LogoutButton = () => {
 
 export const UserDeleteButton = () => {
   const showPopup = useHeaderStore((store) => store.popup.actions.showPopup);
+  const role = useAuthStore((store) => store.state.role);
+
+  if (role === 'admin') return <></>;
 
   const onOpen = () =>
     showPopup({
@@ -61,7 +66,7 @@ export const UserDeleteButton = () => {
     });
 
   const onLogout = async () => {
-    const success = await handleLogout();
+    const success = await handleDeleteUser();
     if (success) {
       window.location.href = '/';
     } else {
