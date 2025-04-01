@@ -150,7 +150,11 @@ const TimetablePage = ({ initDay, initShowWishlist }: Props) => {
           컨퍼런스 시간표
         </h1>
         {isLoggedIn ? (
-          <button className="cursor-pointer p-1" onClick={handleWishlistClick}>
+          <button
+            className="cursor-pointer p-1"
+            onClick={handleWishlistClick}
+            aria-label="toggle-wishlist-view"
+          >
             {showWishlist || selectedTime ? (
               <WishlistOpenSvg className="w-8 h-8 max-md:w-6 max-md:h-6" />
             ) : (
@@ -270,6 +274,9 @@ const TimetablePage = ({ initDay, initShowWishlist }: Props) => {
                         onClick={() =>
                           handleEmptySlotClick(Number(selectedDay.replace('Day', '')), start)
                         }
+                        aria-label="open-recommendation-lecture"
+                        role="button"
+                        tabIndex={0}
                       >
                         빈 시간 클릭 시 추천 일정이 나타납니다.
                       </div>
@@ -320,7 +327,13 @@ const TimetablePage = ({ initDay, initShowWishlist }: Props) => {
         )}
 
         {showBottomSheet && (
-          <div className="fixed inset-0 z-40 bg-[#000000B2]" onClick={handleClose}>
+          <div
+            className="fixed inset-0 z-40 bg-[#000000B2]"
+            onClick={handleClose}
+            aria-label="close-recommendation-lecture"
+            role="button"
+            tabIndex={0}
+          >
             <div
               className={`fixed bottom-0 left-0 w-full max-h-[70vh] bg-[#F8FAFC] dark:bg-[#02050C] rounded-t-[20px] px-4 py-6 z-50 overflow-y-auto ${isClosing ? 'animate-slide-down' : 'animate-slide-up'}`}
               onClick={(e) => e.stopPropagation()}

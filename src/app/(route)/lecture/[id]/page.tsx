@@ -143,6 +143,7 @@ const LectureDetailPage = () => {
           className={`btn rounded-xs py-[6px] px-4 flex flex-row items-center justify-center gap-2 font-semibold text-base border 
                 ${isLoggedIn ? 'bg-white text-[#015AFF] border-[#015AFF] dark:bg-[#070A12] dark:text-[#014DD9] dark:border-[#003AA5] cursor-pointer' : 'bg-gray-200 text-gray-400 border-gray-300 dark:bg-[#1a1a1a] dark:text-gray-600 dark:border-gray-600 cursor-not-allowed'}
             `}
+          aria-label="download"
         >
           <DownloadSvg />
           download
