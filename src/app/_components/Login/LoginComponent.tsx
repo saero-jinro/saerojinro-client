@@ -24,17 +24,21 @@ const LoginComponent = ({ onClose, ...props }: Props) => {
   return (
     <div {...props}>
       <div className="flex flex-col justify-center items-center gap-6 text-[#212121] dark:text-[#fff]">
-        <span className="font-bold text-5xl">IT TIME</span>
-        <span className="text-2xl text-wrap">로그인하고 더 편하게 IT 컨퍼런스를 즐겨보세요</span>
+        <span className="max-md:text-[32px] font-bold text-5xl">IT TIME</span>
+        <span className="max-md:text-[16px] text-2xl text-wrap">
+          로그인하고 더 편하게 IT 컨퍼런스를 즐겨보세요
+        </span>
       </div>
       <div className="flex flex-col mt-11 gap-[14px]">
         <ClickButton
           actionDesc="user-kakao-login"
           onClick={onClickhandler}
-          className="px-7 h-[90px] flex justify-center items-center gap-4 rounded-[12px] text-[#000000d9] bg-[#FEE500] cursor-pointer"
+          className="max-md:px-[14px] px-7 max-md:h-[45px] h-[90px] flex justify-center items-center gap-4 rounded-[12px] text-[#000000d9] bg-[#FEE500] cursor-pointer"
         >
-          <KaKaoLogoSvg width="36px" height="36px" />
-          <span className="text-3xl">카카오 로그인</span>
+          <div className="w-9 h-9 max-md:w-[18px] max-md:h-[18px]">
+            <KaKaoLogoSvg />
+          </div>
+          <span className="max-md:text-base text-3xl">카카오 로그인</span>
         </ClickButton>
       </div>
     </div>

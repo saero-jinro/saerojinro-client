@@ -19,7 +19,7 @@ const LoginModal = () => {
         hasOverlay={true}
       >
         {/* <div className="relative"> */}
-        <div className="fixed overflow-hidden z-[1000] top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 scale-[45%] xs:scale-[60%] md:scale-[100%]">
+        <div className="fixed overflow-hidden z-[1000] top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 md:scale-[100%]">
           <div className="text-black dark:text-white bg-white dark:bg-[#0F172B] w-[768px] h-[720px] px-[83px] flex flex-col justify-center">
             <ClickButton
               actionDesc="close-modal"
