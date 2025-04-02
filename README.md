@@ -1,60 +1,53 @@
-# 새로운 진로
+# ittime
 
-### 배포 url
+<a alt="ittime" href="https://ittime.site">ittime</a>
 
-https://ittime.site
 
-### Branch Naming Convention
 
-- `main` : 배포 브랜치
-- `dev` : 개발 브랜치
-- `feat/{feat-name}` : 새로운 기능 개발 브랜치
-- `refactor/{refactor-name}` : 코드 리팩토링 브랜치
-- `fix/{bug-name}` : 버그 수정 브랜치
-- `hotfix/{hotfix-name}` : 긴급 수정 브랜치
 
-### Commit Message Convention
+## 프로젝트 소개
+> 시간표 기반의 일정 관리 기능을 중심으로, 대규모 컨퍼런스 참가자와 운영진 모두가 효율적으로 일정을 확인하고 관리할 수 있는 웹 서비스를 개발하는 것이 본 프로젝트의 목표입니다.
 
-커밋 메시지는 **타입: 내용** 형식으로 작성합니다.
+<br/>
 
-#### Commit Type
+## 👫 Member
 
-- `feat` : 새로운 기능 추가
-- `fix` : 버그 수정
-- `refactor` : 코드 리팩토링 (기능 변경 없음)
-- `chore` : 기타 변경사항 (빌드, 패키지 매니저 설정 등)
-- `style` : 코드 스타일 수정 (세미콜론 추가, 들여쓰기 등)
-- `perf` : 성능 개선
+|                                         Frontend                                          |                                         Frontend                                         |                                         Frontend                                         |
+| :----------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------: |
+| <img src="https://avatars.githubusercontent.com/u/105642658?v=4" width=150px alt="황효주"/>     | <img src="https://avatars.githubusercontent.com/u/127025192?v=4" width=150px alt="김준아"/> | <img src="https://avatars.githubusercontent.com/u/124009657?s=400&v=4" width=150px alt="김기준"/> |
+|              [@hjoo830](https://github.com/hjoo830)              |            [@junaanjuna](https://github.com/junaanjuna)            |               [@ki2183](https://github.com/ki2183)               |
 
----
+<br/>
 
-## Tech Stacks 📚
+<div align=left><h2>📚 STACKS</h2></div>
 
-**Fe Stack**
+<div> 
+  <img src="https://img.shields.io/badge/next.js-3F3F3F?style=for-the-badge&logo=next.js&logoColor=white">
+  <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
+  <img src="https://img.shields.io/badge/tailwindcss-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white">
+  <img src="https://img.shields.io/badge/zustand-25148F?style=for-the-badge&logo=Zustand&logoColor=white">
+  <br>
+</div>
 
-- Next.js
-- Tailwind css
-- Zustand
+<div align=left><h2>🚀 Deployment</h2></div>
 
-**Deploy**
+<div>
+  <img src="https://img.shields.io/badge/vercel-000000?style=for-the-badge&logo=vercel&logoColor=white">
+</div>
 
-- vercel
+<br>
 
-## Package 📦
+<div align=left><h2>🛠 Tools</h2></div>
 
-- **Next.js**: `15.2.0`
-- **React**: `18.2.0`
-- **Tailwind CSS**: `^4`
+<div>
+  <img src="https://img.shields.io/badge/github%20actions-3F3F3F?style=for-the-badge&logo=githubactions&logoColor=white">
+  <img src="https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white">
+</div>
+<br>
+<div align=left><h2>📈 접근성 및 SEO 점수</h2></div>
 
-### Development Tools
+> Lighthouse 기준 접근성 및 SEO 점수를 측정한 결과입니다.
+  <img width="50%" src="https://github.com/user-attachments/assets/4b57df9a-1813-43ba-9f78-4f63c14f84a7">
+<br>
 
-- **ESLint**: `9.21.0`
-- **TypeScript**: `5^`
-
-### ESLint Rules
-
-- var 사용 금지
-- 항상 세미콜론(`;`) 사용 강제
-- 들여쓰기 2칸, switch 문은 1단계 추가 들여쓰기
-- 모든 리액트 함수형 컴포넌트를 화살표 함수(`() => {}`)로 작성해야 함
-- 코드 최대 길이 100자로 제한 (Prettier)
+## 주요기능
