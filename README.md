@@ -51,3 +51,39 @@
 <br>
 
 ## 주요기능
+<table>
+  <tr>
+    <td>
+      <h3>강의 정보 페이지</h3>
+      <img width="438" alt="" src="https://github.com/user-attachments/assets/bfc2bda7-7fd5-4308-938c-fe0ab89e6b0c" />
+    </td>
+    <td>
+      <h3>강의 예약 및 즐겨찾기 기능</h3>
+      <img width="438" alt="" src="https://github.com/user-attachments/assets/208c512e-4bee-498b-bf9f-620e3bfe6637" />
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>
+      <h3>시간표 관리 기능</h3>
+      <img width="438" alt="강의 예약 및 즐겨찾기 이미지" src="https://github.com/user-attachments/assets/c368e5fc-f90b-4b1d-96d5-6e252022f59a" />
+    </td>
+    <td>
+      <h3>즐겨찾기 목록</h3>
+      <img width="438" alt="시간표 관리 이미지" src="https://github.com/user-attachments/assets/ad291203-e14f-4add-830f-9f48f3a4a425" />
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>
+      <h3>강의 추천 기능</h3>
+      <img width="438" alt="강의 예약 및 즐겨찾기 이미지" src="https://github.com/user-attachments/assets/080e2acb-7ca2-4661-ba60-a5e9b8079571" />
+    </td>
+  </tr>
+
+
+
